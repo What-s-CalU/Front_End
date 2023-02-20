@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/SignUpPage.dart';
 import 'package:http/src/response.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'HomePage.dart';
@@ -6,6 +7,7 @@ import 'httpRequests.dart';
 import 'package:http_status_code/http_status_code.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'SignUpPage.dart';
 
 class MyLoginPage extends StatefulWidget {
   const MyLoginPage({super.key, required this.title});
@@ -148,7 +150,8 @@ class _MyLoginPageState extends State<MyLoginPage> {
                           print("yay we login");
                           print(statcode);
                           setState(() {
-                            _navigateToNextScreen(context);
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => MyHomePage()));
                           });
                         } else {
                           print(statcode);
@@ -171,7 +174,10 @@ class _MyLoginPageState extends State<MyLoginPage> {
                     height: 40,
                     child: TextButton(
                       onPressed: () {
-                        print('Loggin in');
+                        setState(() {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => const MySignUpPage()));
+                        });
                       },
                       style: TextButton.styleFrom(backgroundColor: mainColor),
                       child: const Text(
