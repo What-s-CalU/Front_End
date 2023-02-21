@@ -74,8 +74,6 @@ GPIO.add_event_detect(Bnpin2,GPIO.FALLING,callback=Bnpin2_callback,bouncetime=20
 #######################################################################
 try:
     while True:
-        # Remember that your sentences can only be 16 characters long!
-        print("Writing to display") # to make sure that it is printing to the LCD
         display.lcd_display_string(" What's @ CALU!", 1)  # Write line of text to first line of display
         sleep(2)
         display.lcd_clear()
@@ -85,15 +83,15 @@ try:
         sleep(1)
         display.lcd_display_string("Notifications:", 1)  # Write line of text to second line of display
         sleep(3)                                           # Give time for the message to be read
-        #long_string(display,"most recent notification was: ", 2)   # Refresh the first line of display with a different message
+        #long_string(display,"most recent notification was: ", 2)   #might use this as another notification 
         #sleep(2)                                           # Give time for the message to be read
         display.lcd_clear()                                # Clear the display of any data
-        sleep(3)          # Give time for the message to be read	
+        sleep(3)          # clear, then loop starts again 	
                 
 		
 		
 except KeyboardInterrupt as e:
     print(e)
-    display.lcd_clear()	 
-    GPIO.cleanup()	
+    display.lcd_clear()	 # clear the display 
+    GPIO.cleanup()	 #clear gpio settings 
    
