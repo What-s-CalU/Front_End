@@ -1,7 +1,6 @@
 #! /usr/bin/env python
 
-# Simple string program. Writes and updates strings.
-# Demo program for the I2C 16x2 Display with leds and buttons 
+# test program  interfacing a 16x2 Display with LEDs and buttons 
 ################################################################################
 # Import necessary libraries for communication and display use
 from time import sleep
