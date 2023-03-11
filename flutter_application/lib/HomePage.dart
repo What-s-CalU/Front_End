@@ -1,5 +1,8 @@
+import 'package:flutter_application_1/AddEventPage.dart';
+import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({super.key});
@@ -45,6 +48,9 @@ class _MyHomePageState extends State<MyHomePage> {
               viewHeaderStyle: ViewHeaderStyle(),
               initialDisplayDate: DateTime.now(),
               dataSource: _getCalendarDataSource(),
+              monthViewSettings: MonthViewSettings(
+                showAgenda: true,
+              ),
             ),
           ),
           Padding(
@@ -56,7 +62,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   children: [
                     IconButton(
                       iconSize: 40,
-                      onPressed: () {},
+                      onPressed: () {
+                        setState(() {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => const AddEventPage()));
+                        });
+                      },
                       icon: Icon(Icons.add_circle_rounded, color: mainColor),
                     ),
                     Text(
@@ -107,14 +118,21 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   _AppointmentDataSource _getCalendarDataSource() {
-    List<Appointment> appointments = <Appointment>[];
+    List<Appointment> appointments = <Appointment>[
+      Appointment(
+        startTime: DateTime.now(),
+        endTime: DateTime.now().add(Duration(minutes: 60)),
+        subject: 'Event',
+        color: Colors.red,
+        //description: 'none',
+      )
+    ];
     appointments.add(Appointment(
       startTime: DateTime.now(),
       endTime: DateTime.now().add(Duration(minutes: 10)),
       subject: 'Meeting',
       color: Colors.blue,
-      startTimeZone: '',
-      endTimeZone: '',
+      //description: 'none',
     ));
 
     return _AppointmentDataSource(appointments);
@@ -126,3 +144,50 @@ class _AppointmentDataSource extends CalendarDataSource {
     appointments = source;
   }
 }
+
+// Widget appointmentBuilder(BuildContext context,
+//     CalendarAppointmentDetails calendarAppointmentDetails) {
+//   final Appointment appointment = calendarAppointmentDetails.appointments.first;
+//   return Column(
+//     children: [
+//       Container(
+//           width: calendarAppointmentDetails.bounds.width,
+//           height: calendarAppointmentDetails.bounds.height / 2,
+//           color: appointment.color,
+//           child: Center(
+//             child: Icon(
+//               Icons.group,
+//               color: Colors.black,
+//             ),
+//           )),
+//       Container(
+//         width: calendarAppointmentDetails.bounds.width,
+//         height: calendarAppointmentDetails.bounds.height / 2,
+//         color: appointment.color,
+//         child: Text(
+//           appointment.subject +
+//               DateFormat(' (hh:mm a').format(appointment.startTime) +
+//               '-' +
+//               DateFormat('hh:mm a)').format(appointment.endTime),
+//           textAlign: TextAlign.center,
+//           style: TextStyle(fontSize: 10),
+//         ),
+//       )
+//     ],
+//   );
+// }
+
+// class Appointment {
+//   String subject;
+//   DateTime startTime;
+//   DateTime endTime;
+//   String description;
+//   Color color;
+
+//   Appointment(
+//       {required this.subject,
+//       required this.color,
+//       required this.startTime,
+//       required this.endTime,
+//       required this.description});
+// }

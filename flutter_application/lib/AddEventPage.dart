@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'HomePage.dart';
+import 'package:syncfusion_flutter_calendar/calendar.dart';
+import 'Events.dart';
+import 'package:provider/provider.dart';
 
 class AddEventPage extends StatefulWidget {
   const AddEventPage({super.key});
@@ -84,7 +88,7 @@ class _AddEventPageState extends State<AddEventPage> {
                           context: context, initialTime: TimeOfDay.now());
                       if (time != null) {
                         setState(() {
-                          _ToTimeController.text = time.format(context);
+                          _FromTimeController.text = time.format(context);
                         });
                       }
                     },
@@ -154,6 +158,35 @@ class _AddEventPageState extends State<AddEventPage> {
               decoration: InputDecoration(
                   border: OutlineInputBorder(
                       borderSide: BorderSide(width: 2, color: mainColor))),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(60, 30, 60, 0),
+            child: SizedBox(
+              width: double.infinity,
+              height: 40,
+              child: TextButton(
+                onPressed: () {
+                  Event newEvent = Event(
+                    startTime: DateTime(2022, 3, 15, 10, 0, 0),
+                    endTime: DateTime(2022, 3, 15, 11, 0, 0),
+                    subject: 'New Event',
+                    color: Colors.blue,
+                  );
+                  //if return correct event add it and return to home page
+                  final eventsModel =
+                      Provider.of<EventsModel>(context, listen: false);
+                  eventsModel.addEvent(newEvent);
+                  Navigator.pop(context);
+                },
+                style: TextButton.styleFrom(backgroundColor: mainColor),
+                child: const Text(
+                  'ADD EVENT',
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+              ),
             ),
           ),
         ],

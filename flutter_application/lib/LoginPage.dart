@@ -8,20 +8,10 @@ import 'package:http_status_code/http_status_code.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'SignUpPage.dart';
+import 'package:intl/intl.dart';
 
 class MyLoginPage extends StatefulWidget {
-  const MyLoginPage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
+  const MyLoginPage({super.key});
 
   @override
   State<MyLoginPage> createState() => _MyLoginPageState();
@@ -255,9 +245,4 @@ Future<void> _launchUrl(Uri url) async {
   if (!await launchUrl(url)) {
     throw Exception('Could not launch $url');
   }
-}
-
-void _navigateToNextScreen(BuildContext context) {
-  Navigator.of(context)
-      .push(MaterialPageRoute(builder: (context) => MyHomePage()));
 }
