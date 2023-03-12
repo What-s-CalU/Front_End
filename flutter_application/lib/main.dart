@@ -10,8 +10,6 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
 import 'Events.dart';
 
-DateTime get _now => DateTime.now();
-
 void main() {
   runApp(
     ChangeNotifierProvider<EventsModel>(
