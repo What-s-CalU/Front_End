@@ -63,32 +63,28 @@ class _MySignUpPageState extends State<MySignUpPage> {
             padding: const EdgeInsets.fromLTRB(40, 5, 40, 5),
             child: TextField(
               controller: _firstNameController,
-              decoration: InputDecoration(
-                  hintText: "First Name", border: const OutlineInputBorder()),
+              decoration: InputDecoration(hintText: "First Name", border: const OutlineInputBorder()),
             ),
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(40, 5, 40, 5),
             child: TextField(
               controller: _lastNameController,
-              decoration: InputDecoration(
-                  hintText: "Last Name", border: const OutlineInputBorder()),
+              decoration: InputDecoration(hintText: "Last Name", border: const OutlineInputBorder()),
             ),
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(40, 5, 40, 5),
             child: TextField(
               controller: _emailController,
-              decoration: InputDecoration(
-                  hintText: "Email", border: const OutlineInputBorder()),
+              decoration: InputDecoration(hintText: "Email", border: const OutlineInputBorder()),
             ),
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(40, 5, 40, 5),
             child: TextField(
               controller: _usernameController,
-              decoration: const InputDecoration(
-                  hintText: "Username", border: OutlineInputBorder()),
+              decoration: const InputDecoration(hintText: "Username", border: OutlineInputBorder()),
             ),
           ),
           Padding(
@@ -96,8 +92,7 @@ class _MySignUpPageState extends State<MySignUpPage> {
             child: TextField(
               controller: _passwordController,
               obscureText: !_showPassword,
-              decoration: InputDecoration(
-                  hintText: "Password", border: const OutlineInputBorder()),
+              decoration: InputDecoration(hintText: "Password", border: const OutlineInputBorder()),
             ),
           ),
           Padding(
@@ -107,17 +102,12 @@ class _MySignUpPageState extends State<MySignUpPage> {
               height: 40,
               child: TextButton(
                 onPressed: () async {
-                  int statcode = await (sendSignUp(
-                      _firstNameController.text,
-                      _lastNameController.text,
-                      _emailController.text,
-                      _usernameController.text,
-                      _passwordController.text));
+                  int statcode = await (sendSignUp(_firstNameController.text, _lastNameController.text,
+                      _emailController.text, _usernameController.text, _passwordController.text));
                   if (statcode == 200) {
                     print("yay we sign up");
                     setState(() {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => MyHomePage()));
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => MyHomePage()));
                     });
                   }
                 },

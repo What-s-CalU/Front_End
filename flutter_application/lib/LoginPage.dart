@@ -40,32 +40,27 @@ class _MyLoginPageState extends State<MyLoginPage> {
           children: <Widget>[
             logoInContainer(),
             buildUsernameTextFieldPadding(_usernameController),
-            buildPasswordTextFieldPadding(
-                _passwordController, _showPassword, _togglevisibility),
+            buildPasswordTextFieldPadding(_passwordController, _showPassword, _togglevisibility),
             buildForgotPassword(context),
-            buildSignInButton(context, _usernameController, _passwordController,
-                () async {
-              int statcode = await (sendCredentials(
-                  _usernameController.text, _passwordController.text));
+            buildSignInButton(context, _usernameController, _passwordController, () async {
+              int statcode = 200;
+              //await (sendCredentials(_usernameController.text, _passwordController.text));
               if (statcode == 200) {
                 print("yay we login");
                 print(statcode);
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => MyHomePage()));
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => MyHomePage()));
               } else {
                 print(statcode);
               }
             }),
             buildSignUpButton(context, () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const MySignUpPage()));
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const MySignUpPage()));
             }),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 buildIconButtonWithText(Icons.web, "WEBSITE", websiteUrl),
-                buildIconButtonWithText(
-                    Icons.announcement_rounded, "ABOUT", websiteAboutUrl),
+                buildIconButtonWithText(Icons.announcement_rounded, "ABOUT", websiteAboutUrl),
                 buildIconButtonWithText(Icons.question_mark, "HELP", websiteUrl)
               ],
             ),

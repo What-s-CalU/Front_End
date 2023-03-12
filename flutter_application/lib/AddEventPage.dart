@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/addEventPageUtil.dart';
+import 'package:flutter_application_1/main.dart';
 import 'package:intl/intl.dart';
 import 'HomePage.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
@@ -41,15 +43,9 @@ class _AddEventPageState extends State<AddEventPage> {
       ),
       body: ListView(
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.fromLTRB(40, 20, 40, 5),
-            child: TextField(
-              decoration: InputDecoration(
-                  hintText: "Title", border: const OutlineInputBorder()),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(40, 20, 40, 0),
+          buildTitleTextField(_TitleController),
+          const Padding(
+            padding: EdgeInsets.fromLTRB(40, 20, 40, 0),
             child: Text("From"),
           ),
           Padding(
@@ -66,8 +62,7 @@ class _AddEventPageState extends State<AddEventPage> {
                         lastDate: DateTime(2030),
                       );
                       if (pickedDate != null) {
-                        String formattedDate =
-                            DateFormat("MM/dd/yyyy").format(pickedDate);
+                        String formattedDate = DateFormat("MM/dd/yyyy").format(pickedDate);
                         _FromDateController.text = formattedDate.toString();
                       }
                     },
@@ -84,8 +79,7 @@ class _AddEventPageState extends State<AddEventPage> {
               decoration: InputDecoration(
                   suffixIcon: GestureDetector(
                     onTap: () async {
-                      final TimeOfDay? time = await showTimePicker(
-                          context: context, initialTime: TimeOfDay.now());
+                      final TimeOfDay? time = await showTimePicker(context: context, initialTime: TimeOfDay.now());
                       if (time != null) {
                         setState(() {
                           _FromTimeController.text = time.format(context);
@@ -98,8 +92,8 @@ class _AddEventPageState extends State<AddEventPage> {
                   border: const OutlineInputBorder()),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(40, 20, 40, 0),
+          const Padding(
+            padding: EdgeInsets.fromLTRB(40, 20, 40, 0),
             child: Text("To"),
           ),
           Padding(
@@ -116,8 +110,7 @@ class _AddEventPageState extends State<AddEventPage> {
                         lastDate: DateTime(2030),
                       );
                       if (pickedDate != null) {
-                        String formattedDate =
-                            DateFormat("MM/dd/yyyy").format(pickedDate);
+                        String formattedDate = DateFormat("MM/dd/yyyy").format(pickedDate);
                         _ToDateController.text = formattedDate.toString();
                       }
                     },
@@ -134,8 +127,7 @@ class _AddEventPageState extends State<AddEventPage> {
               decoration: InputDecoration(
                   suffixIcon: GestureDetector(
                     onTap: () async {
-                      final TimeOfDay? time = await showTimePicker(
-                          context: context, initialTime: TimeOfDay.now());
+                      final TimeOfDay? time = await showTimePicker(context: context, initialTime: TimeOfDay.now());
                       if (time != null) {
                         setState(() {
                           _ToTimeController.text = time.format(context);
@@ -148,16 +140,15 @@ class _AddEventPageState extends State<AddEventPage> {
                   border: const OutlineInputBorder()),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(40, 20, 40, 0),
+          const Padding(
+            padding: EdgeInsets.fromLTRB(40, 20, 40, 0),
             child: Text("Description"),
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(40, 5, 40, 5),
             child: TextField(
-              decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                      borderSide: BorderSide(width: 2, color: mainColor))),
+              decoration:
+                  InputDecoration(border: OutlineInputBorder(borderSide: BorderSide(width: 2, color: mainColor))),
             ),
           ),
           Padding(
@@ -168,15 +159,15 @@ class _AddEventPageState extends State<AddEventPage> {
               child: TextButton(
                 onPressed: () {
                   Event newEvent = Event(
-                    startTime: DateTime(2022, 3, 15, 10, 0, 0),
-                    endTime: DateTime(2022, 3, 15, 11, 0, 0),
-                    subject: 'New Event',
+                    startTime: convertStringsToDateTime(_FromDateController.text, _FromTimeController.text),
+                    endTime: convertStringsToDateTime(_ToDateController.text, _ToTimeController.text),
+                    subject: _TitleController.text,
                     color: Colors.blue,
                   );
                   //if return correct event add it and return to home page
-                  final eventsModel =
-                      Provider.of<EventsModel>(context, listen: false);
-                  eventsModel.addEvent(newEvent);
+                  setState(() {
+                    events.add(newEvent);
+                  });
                   Navigator.pop(context);
                 },
                 style: TextButton.styleFrom(backgroundColor: mainColor),

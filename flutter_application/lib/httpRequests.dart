@@ -15,8 +15,7 @@ Future<int> sendCredentials(String username, String password) async {
   return response.statusCode;
 }
 
-Future<int> sendSignUp(String firstName, String lastName, String email,
-    String username, String password) async {
+Future<int> sendSignUp(String firstName, String lastName, String email, String username, String password) async {
   final Map<String, String> requestBody = {
     'firstName': firstName,
     'lastName': lastName,
@@ -33,8 +32,7 @@ Future<int> sendSignUp(String firstName, String lastName, String email,
   return response.statusCode;
 }
 
-Future<int> sendAddEvent(
-    String name, String description, String start, String end) async {
+Future<int> sendAddEvent(String name, String description, String start, String end) async {
   final Map<String, String> requestBody = {
     'name': name,
     'description': description,

@@ -70,7 +70,6 @@ Widget buildUsernameTextFieldPadding(TextEditingController controller) {
   a hint text of "Password", and an outline border.
 
   Parameters:
-
     controller: a TextEditingController object for managing the input and decoration of the TextField widget.
     showPassword: a boolean value indicating whether or not the password should be obscured.
     toggleVisibility: a VoidCallback function for toggling the visibility of the password.
@@ -79,8 +78,8 @@ Widget buildUsernameTextFieldPadding(TextEditingController controller) {
 
   Author: Thomas Terhune
 */
-Widget buildPasswordTextFieldPadding(TextEditingController controller,
-    bool showPassword, VoidCallback toggleVisibility) {
+Widget buildPasswordTextFieldPadding(
+    TextEditingController controller, bool showPassword, VoidCallback toggleVisibility) {
   return Padding(
     padding: const EdgeInsets.fromLTRB(40, 5, 40, 5),
     child: TextField(
@@ -177,14 +176,14 @@ Widget buildSignUpButton(BuildContext context, VoidCallback onPressed) {
   These two TextEditingController objects are passed as arguments.
 
   Parameters:
-  context: a BuildContext object.
+    context: a BuildContext object.
     usernameController: a TextEditingController object for managing the input of the username.
     passwordController: a TextEditingController object for managing the input of the password.
     onPressed: a VoidCallback function to be called when the TextButton is pressed.
 
   Return: Widget object
 
-  Author: Unknown
+  Author: Thomas Terhune
 */
 Widget buildSignInButton(
   BuildContext context,

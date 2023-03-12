@@ -1,20 +1,10 @@
 import 'package:flutter_application_1/AddEventPage.dart';
-import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/date_symbol_data_local.dart';
+import 'Events.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({super.key});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
   final CalendarController _controller = CalendarController();
 
   @override
@@ -29,8 +19,6 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         backgroundColor: mainColor,
         toolbarHeight: 0,
         elevation: 0,
@@ -47,7 +35,8 @@ class _MyHomePageState extends State<MyHomePage> {
               ],
               viewHeaderStyle: ViewHeaderStyle(),
               initialDisplayDate: DateTime.now(),
-              dataSource: _getCalendarDataSource(),
+              dataSource: EventDataSource(events),
+              appointmentBuilder: appointmentBuilder,
               monthViewSettings: MonthViewSettings(
                 showAgenda: true,
               ),
@@ -64,8 +53,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       iconSize: 40,
                       onPressed: () {
                         setState(() {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => const AddEventPage()));
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => const AddEventPage()));
                         });
                       },
                       icon: Icon(Icons.add_circle_rounded, color: mainColor),
@@ -83,8 +71,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     IconButton(
                       iconSize: 40,
                       onPressed: () {},
-                      icon:
-                          Icon(Icons.manage_search_outlined, color: mainColor),
+                      icon: Icon(Icons.manage_search_outlined, color: mainColor),
                     ),
                     Text(
                       'Manage Events',
@@ -115,33 +102,6 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
     );
-  }
-
-  _AppointmentDataSource _getCalendarDataSource() {
-    List<Appointment> appointments = <Appointment>[
-      Appointment(
-        startTime: DateTime.now(),
-        endTime: DateTime.now().add(Duration(minutes: 60)),
-        subject: 'Event',
-        color: Colors.red,
-        //description: 'none',
-      )
-    ];
-    appointments.add(Appointment(
-      startTime: DateTime.now(),
-      endTime: DateTime.now().add(Duration(minutes: 10)),
-      subject: 'Meeting',
-      color: Colors.blue,
-      //description: 'none',
-    ));
-
-    return _AppointmentDataSource(appointments);
-  }
-}
-
-class _AppointmentDataSource extends CalendarDataSource {
-  _AppointmentDataSource(List<Appointment> source) {
-    appointments = source;
   }
 }
 
