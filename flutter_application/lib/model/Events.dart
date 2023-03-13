@@ -15,33 +15,6 @@ class Event {
     required this.color,
   });
 }
-
-class _EventDataSource extends CalendarDataSource {
-  _EventDataSource(List<Event> source) {
-    appointments = source;
-  }
-
-  @override
-  DateTime getStartTime(int index) {
-    return appointments![index].startTime;
-  }
-
-  @override
-  DateTime getEndTime(int index) {
-    return appointments![index].endTime;
-  }
-
-  @override
-  String getSubject(int index) {
-    return appointments![index].subject;
-  }
-
-  @override
-  Color getColor(int index) {
-    return appointments![index].color;
-  }
-}
-
   // Widget appointmentBuilder(BuildContext context, CalendarAppointmentDetails details) {
   //   final Event event = details.appointments.first;
 

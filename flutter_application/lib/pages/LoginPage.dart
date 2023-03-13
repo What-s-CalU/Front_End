@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/SignUpPage.dart';
+import 'package:flutter_application_1/pages/SignUpPage.dart';
 import 'HomePage.dart';
-import 'httpRequests.dart';
-import 'LoginPageUtil.dart';
+import '../httpRequests/httpRequests.dart';
+import '../pageUtility/LoginPageUtil.dart';
 
 class MyLoginPage extends StatefulWidget {
   const MyLoginPage({super.key});

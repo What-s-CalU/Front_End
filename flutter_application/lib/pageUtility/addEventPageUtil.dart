@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/LoginPageUtil.dart';
+import 'package:flutter_application_1/pageUtility/LoginPageUtil.dart';
 import 'package:intl/intl.dart';
 
 Widget buildTitleTextField(TextEditingController controller) {
@@ -54,8 +54,7 @@ Padding dateInputField(TextEditingController controller, BuildContext context) {
               lastDate: DateTime(2030),
             );
             if (pickedDate != null) {
-              String formattedDate =
-                  DateFormat("MM/dd/yyyy").format(pickedDate);
+              String formattedDate = DateFormat("MM/dd/yyyy").format(pickedDate);
               controller.text = formattedDate.toString();
             }
           },

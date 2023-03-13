@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/LoginPageUtil.dart';
+import 'package:flutter_application_1/pageUtility/LoginPageUtil.dart';
 
 Column iconButtonWithText(BuildContext context, String buttonText, VoidCallback onPressed) {
   return Column(

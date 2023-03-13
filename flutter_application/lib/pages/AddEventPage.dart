@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/addEventPageUtil.dart';
+import 'package:flutter_application_1/pageUtility/addEventPageUtil.dart';
 import 'package:flutter_application_1/main.dart';
+import 'package:flutter_application_1/provider/eventProvider.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'HomePage.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
-import 'Events.dart';
+import '../model/Events.dart';
 
 class AddEventPage extends StatefulWidget {
   const AddEventPage({super.key});
@@ -53,9 +55,8 @@ class _AddEventPageState extends State<AddEventPage> {
                     color: Colors.blue,
                   );
                   //if return correct event add it and return to home page
-                  setState(() {
-                    //widget.eventDataSource.addAppointment(newEvent);
-                  });
+                  final provider = Provider.of<EventProvider>(context, listen: false);
+                  provider.addEvent(newEvent);
                   Navigator.pop(context);
                 },
                 style: TextButton.styleFrom(backgroundColor: mainColor),

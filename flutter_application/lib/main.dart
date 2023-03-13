@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'LoginPage.dart';
+import 'package:flutter_application_1/provider/eventProvider.dart';
+import 'pages/LoginPage.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(
@@ -12,8 +14,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: MyLoginPage(),
+    return ChangeNotifierProvider(
+      create: (context) => EventProvider(),
+      child: const MaterialApp(
+        home: MyLoginPage(),
+      ),
     );
   }
 }

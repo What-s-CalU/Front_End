@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/signUpPageUtil.dart';
-import 'httpRequests.dart';
+import 'package:flutter_application_1/pageUtility/signUpPageUtil.dart';
+import '../httpRequests/httpRequests.dart';
 import 'HomePage.dart';
 
 class MySignUpPage extends StatefulWidget {
@@ -51,8 +51,8 @@ class _MySignUpPageState extends State<MySignUpPage> {
               height: 40,
               child: TextButton(
                 onPressed: () async {
-                  int statcode = await (sendSignUp(_firstNameController.text, _lastNameController.text,
-                      _emailController.text, _usernameController.text, _passwordController.text));
+                  int statcode = await (sendSignUp(_firstNameController.text, _lastNameController.text, _emailController.text,
+                      _usernameController.text, _passwordController.text));
                   if (statcode == 200) {
                     print("yay we sign up");
                     setState(() {

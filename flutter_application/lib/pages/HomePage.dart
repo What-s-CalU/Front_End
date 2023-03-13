@@ -1,8 +1,10 @@
-import 'package:flutter_application_1/AddEventPage.dart';
+import 'package:flutter_application_1/pages/AddEventPage.dart';
+import 'package:flutter_application_1/provider/eventProvider.dart';
+import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:flutter/material.dart';
-import 'Events.dart';
-import 'homePageUtil.dart';
+import '../model/eventDataSource.dart';
+import '../pageUtility/homePageUtil.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({super.key});
@@ -14,10 +16,10 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   Color mainColor = const Color(0xff083c74);
-  Color BackgroundColor = const Color(0xff3A3B3C);
 
   @override
   Widget build(BuildContext context) {
+    final events = Provider.of<EventProvider>(context).events;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: mainColor,
@@ -29,16 +31,16 @@ class _MyHomePageState extends State<MyHomePage> {
           Expanded(
             child: SfCalendar(
               view: CalendarView.day,
-              allowedViews: [
+              allowedViews: const [
                 CalendarView.day,
                 CalendarView.week,
                 CalendarView.month,
               ],
               viewHeaderStyle: ViewHeaderStyle(),
               initialDisplayDate: DateTime.now(),
-              dataSource: _getCalendarDataSource(),
+              dataSource: EventDataSource(events),
               //appointmentBuilder: appointmentBuilder,
-              monthViewSettings: MonthViewSettings(
+              monthViewSettings: const MonthViewSettings(
                 showAgenda: true,
               ),
             ),
