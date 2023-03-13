@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/signUpPageUtil.dart';
 import 'httpRequests.dart';
 import 'HomePage.dart';
 
@@ -26,75 +27,23 @@ class _MySignUpPageState extends State<MySignUpPage> {
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   Color mainColor = const Color(0xff083c74);
-  void _togglevisibility() {
-    setState(() {
-      _showPassword = !_showPassword;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         backgroundColor: mainColor,
         toolbarHeight: 0,
         elevation: 0,
       ),
       body: ListView(
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-            child: Container(
-              color: mainColor,
-              width: double.infinity,
-              child: const Padding(
-                padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
-                child: Image(
-                  height: 200,
-                  width: 200,
-                  image: AssetImage('assets/Logo2.png'),
-                ),
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(40, 5, 40, 5),
-            child: TextField(
-              controller: _firstNameController,
-              decoration: InputDecoration(hintText: "First Name", border: const OutlineInputBorder()),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(40, 5, 40, 5),
-            child: TextField(
-              controller: _lastNameController,
-              decoration: InputDecoration(hintText: "Last Name", border: const OutlineInputBorder()),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(40, 5, 40, 5),
-            child: TextField(
-              controller: _emailController,
-              decoration: InputDecoration(hintText: "Email", border: const OutlineInputBorder()),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(40, 5, 40, 5),
-            child: TextField(
-              controller: _usernameController,
-              decoration: const InputDecoration(hintText: "Username", border: OutlineInputBorder()),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(40, 5, 40, 5),
-            child: TextField(
-              controller: _passwordController,
-              obscureText: !_showPassword,
-              decoration: InputDecoration(hintText: "Password", border: const OutlineInputBorder()),
-            ),
-          ),
+          buildLogoWidget(),
+          buildInputTextField(_firstNameController, "First Name"),
+          buildInputTextField(_lastNameController, "Last Name"),
+          buildInputTextField(_emailController, "Email"),
+          buildInputTextField(_usernameController, "Username"),
+          buildInputTextField(_passwordController, "Password"),
           Padding(
             padding: const EdgeInsets.fromLTRB(60, 10, 60, 10),
             child: SizedBox(

@@ -2,6 +2,7 @@ import 'package:flutter_application_1/AddEventPage.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:flutter/material.dart';
 import 'Events.dart';
+import 'homePageUtil.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({super.key});
@@ -35,8 +36,8 @@ class _MyHomePageState extends State<MyHomePage> {
               ],
               viewHeaderStyle: ViewHeaderStyle(),
               initialDisplayDate: DateTime.now(),
-              dataSource: EventDataSource(events),
-              appointmentBuilder: appointmentBuilder,
+              dataSource: _getCalendarDataSource(),
+              //appointmentBuilder: appointmentBuilder,
               monthViewSettings: MonthViewSettings(
                 showAgenda: true,
               ),
@@ -47,54 +48,24 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                Column(
-                  children: [
-                    IconButton(
-                      iconSize: 40,
-                      onPressed: () {
-                        setState(() {
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => const AddEventPage()));
-                        });
-                      },
-                      icon: Icon(Icons.add_circle_rounded, color: mainColor),
-                    ),
-                    Text(
-                      'Add Event',
-                      style: TextStyle(
-                        color: Colors.black,
-                      ),
-                    ),
-                  ],
+                iconButtonWithText(
+                  context,
+                  'Add Event',
+                  () {
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => const AddEventPage()));
+                  },
                 ),
-                Column(
-                  children: [
-                    IconButton(
-                      iconSize: 40,
-                      onPressed: () {},
-                      icon: Icon(Icons.manage_search_outlined, color: mainColor),
-                    ),
-                    Text(
-                      'Manage Events',
-                      style: TextStyle(
-                        color: Colors.black,
-                      ),
-                    ),
-                  ],
+                iconButtonWithText(
+                  context,
+                  'Manage Events',
+                  () {},
                 ),
-                Column(
-                  children: [
-                    IconButton(
-                      iconSize: 40,
-                      onPressed: () {},
-                      icon: Icon(Icons.remove_circle_rounded, color: mainColor),
-                    ),
-                    Text(
-                      'Remove Event',
-                      style: TextStyle(
-                        color: Colors.black,
-                      ),
-                    ),
-                  ],
+                iconButtonWithText(
+                  context,
+                  'Remove Event',
+                  () {
+                    // Insert your desired action here for when the button is pressed
+                  },
                 ),
               ],
             ),
