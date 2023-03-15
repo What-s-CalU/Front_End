@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/pageUtility/addEventPageUtil.dart';
-import 'package:flutter_application_1/main.dart';
 import 'package:flutter_application_1/provider/eventProvider.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'HomePage.dart';
-import 'package:syncfusion_flutter_calendar/calendar.dart';
 import '../model/Events.dart';
 
 class AddEventPage extends StatefulWidget {

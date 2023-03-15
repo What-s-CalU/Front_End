@@ -32,4 +32,12 @@ class EventDataSource extends CalendarDataSource {
   String getDescription(int index) {
     return appointments![index].description;
   }
+
+  String? getSubsriptions(int index) {
+    return appointments![index].subscriptions;
+  }
+
+  String? getCategory(int index) {
+    return appointments![index].category;
+  }
 }

@@ -5,10 +5,10 @@ import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:flutter/material.dart';
 import '../model/eventDataSource.dart';
 import '../pageUtility/homePageUtil.dart';
-import 'package:flutter_application_1/model/Events.dart';
+import '../model/appointmentBuilder.dart';
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({super.key});
+  const MyHomePage({super.key});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -38,7 +38,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 CalendarView.week,
                 CalendarView.month,
               ],
-              viewHeaderStyle: ViewHeaderStyle(),
               initialDisplayDate: DateTime.now(),
               dataSource: EventDataSource(events),
               appointmentBuilder: (context, details) => appointmentBuilder(context, details, _calendarController),
@@ -79,50 +78,3 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
-
-// Widget appointmentBuilder(BuildContext context,
-//     CalendarAppointmentDetails calendarAppointmentDetails) {
-//   final Appointment appointment = calendarAppointmentDetails.appointments.first;
-//   return Column(
-//     children: [
-//       Container(
-//           width: calendarAppointmentDetails.bounds.width,
-//           height: calendarAppointmentDetails.bounds.height / 2,
-//           color: appointment.color,
-//           child: Center(
-//             child: Icon(
-//               Icons.group,
-//               color: Colors.black,
-//             ),
-//           )),
-//       Container(
-//         width: calendarAppointmentDetails.bounds.width,
-//         height: calendarAppointmentDetails.bounds.height / 2,
-//         color: appointment.color,
-//         child: Text(
-//           appointment.subject +
-//               DateFormat(' (hh:mm a').format(appointment.startTime) +
-//               '-' +
-//               DateFormat('hh:mm a)').format(appointment.endTime),
-//           textAlign: TextAlign.center,
-//           style: TextStyle(fontSize: 10),
-//         ),
-//       )
-//     ],
-//   );
-// }
-
-// class Appointment {
-//   String subject;
-//   DateTime startTime;
-//   DateTime endTime;
-//   String description;
-//   Color color;
-
-//   Appointment(
-//       {required this.subject,
-//       required this.color,
-//       required this.startTime,
-//       required this.endTime,
-//       required this.description});
-// }

@@ -34,7 +34,7 @@ DateTime convertStringsToDateTime(String date, String time) {
 
 Padding textBeforeTextField(String text) {
   return Padding(
-    padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
+    padding: const EdgeInsets.fromLTRB(40, 0, 40, 0),
     child: Text(text),
   );
 }
