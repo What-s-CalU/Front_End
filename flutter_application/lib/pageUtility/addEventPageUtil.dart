@@ -34,7 +34,7 @@ DateTime convertStringsToDateTime(String date, String time) {
 
 Padding textBeforeTextField(String text) {
   return Padding(
-    padding: EdgeInsets.fromLTRB(40, 20, 40, 0),
+    padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
     child: Text(text),
   );
 }
@@ -67,43 +67,101 @@ Padding dateInputField(TextEditingController controller, BuildContext context) {
   );
 }
 
-Padding timeInputField(TextEditingController controller, BuildContext context) {
-  return Padding(
-    padding: const EdgeInsets.fromLTRB(40, 5, 40, 5),
-    child: TextField(
-      controller: controller,
-      decoration: InputDecoration(
-        suffixIcon: GestureDetector(
-          onTap: () async {
-            final TimeOfDay? time = await showTimePicker(
-              context: context,
-              initialTime: TimeOfDay.now(),
-            );
-            if (time != null) {
-              controller.text = time.format(context);
-            }
-          },
-          child: const Icon(Icons.timer),
-        ),
-        hintText: "Time",
-        border: const OutlineInputBorder(),
+TextField timeInputField(TextEditingController controller, BuildContext context, String hint) {
+  return TextField(
+    controller: controller,
+    decoration: InputDecoration(
+      suffixIcon: GestureDetector(
+        onTap: () async {
+          final TimeOfDay? time = await showTimePicker(
+            context: context,
+            initialTime: TimeOfDay.now(),
+          );
+          if (time != null) {
+            controller.text = time.format(context);
+          }
+        },
+        child: const Icon(Icons.timer),
       ),
+      hintText: hint,
+      border: const OutlineInputBorder(),
     ),
   );
 }
 
-Padding descriptionTextField() {
+Padding descriptionTextField(BuildContext context, TextEditingController controller) {
   return Padding(
     padding: const EdgeInsets.fromLTRB(40, 5, 40, 5),
-    child: TextField(
-      decoration: InputDecoration(
-        border: OutlineInputBorder(
-          borderSide: BorderSide(
-            width: 2,
-            color: mainColor,
+    child: Stack(
+      children: [
+        TextField(
+          controller: controller,
+          maxLines: 5,
+          decoration: InputDecoration(
+            hintText: "Description",
+            border: OutlineInputBorder(
+              borderSide: BorderSide(
+                width: 2,
+                color: mainColor,
+              ),
+            ),
           ),
         ),
-      ),
+        Positioned(
+          bottom: 0,
+          right: 0,
+          child: IconButton(
+            icon: const Icon(Icons.send),
+            onPressed: () {
+              // Close the keyboard
+              FocusScope.of(context).unfocus();
+              // Handle send button press
+            },
+          ),
+        ),
+      ],
     ),
+  );
+}
+
+Widget timeInputFields(TextEditingController fromController, TextEditingController toController, BuildContext context) {
+  return Padding(
+    padding: const EdgeInsets.fromLTRB(40, 5, 40, 5),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: <Widget>[
+        Expanded(
+            child: Padding(
+          padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
+          child: timeInputField(fromController, context, "From"),
+        )),
+        Expanded(
+            child: Padding(
+          padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
+          child: timeInputField(toController, context, "To"),
+        )),
+      ],
+    ),
+  );
+}
+
+Widget buildColorDropdownButton(List<Color> colors, Color selectedColor, ValueChanged<Color?> onChanged) {
+  // Define a list of DropdownMenuItem widgets based on the provided colors
+  List<DropdownMenuItem<Color>> colorItems = colors.map((color) {
+    return DropdownMenuItem<Color>(
+      value: color,
+      child: Container(
+        width: 30,
+        height: 30,
+        color: color,
+      ),
+    );
+  }).toList();
+
+  // Create the dropdown button widget
+  return DropdownButton<Color>(
+    value: selectedColor,
+    items: colorItems,
+    onChanged: onChanged,
   );
 }

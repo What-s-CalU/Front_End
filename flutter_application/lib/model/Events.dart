@@ -7,12 +7,14 @@ class Event {
   final DateTime endTime;
   final String subject;
   final Color color;
+  final String? description;
 
   Event({
     required this.startTime,
     required this.endTime,
     required this.subject,
     required this.color,
+    this.description,
   });
 }
 
@@ -30,27 +32,39 @@ Widget appointmentBuilder(BuildContext context, CalendarAppointmentDetails detai
       ),
       borderRadius: BorderRadius.circular(12),
     ),
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        if (controller.view == CalendarView.month)
+    child: Padding(
+      padding: const EdgeInsets.all(3.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
           Text(
-            '${DateFormat.jm().format(event.startTime)} - ${DateFormat.jm().format(event.endTime)}',
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 12,
+            event.subject,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 14,
               fontWeight: FontWeight.bold,
             ),
           ),
-        SizedBox(height: 4),
-        Text(
-          event.subject,
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 14,
-          ),
-        ),
-      ],
+          if (controller.view == CalendarView.month)
+            Text(
+              '${DateFormat.jm().format(event.startTime)} - ${DateFormat.jm().format(event.endTime)}',
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          if (event.description != null && controller.view == CalendarView.day)
+            Text(
+              event.description!,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 12,
+              ),
+            ),
+        ],
+      ),
     ),
   );
 }
