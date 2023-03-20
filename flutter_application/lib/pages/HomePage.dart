@@ -5,10 +5,10 @@ import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:flutter/material.dart';
 import '../model/eventDataSource.dart';
 import '../pageUtility/homePageUtil.dart';
+import '../model/appointmentBuilder.dart';
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({super.key});
-  final CalendarController _controller = CalendarController();
+  const MyHomePage({super.key});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -16,6 +16,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   Color mainColor = const Color(0xff083c74);
+  final CalendarController _calendarController = CalendarController();
 
   @override
   Widget build(BuildContext context) {
@@ -31,15 +32,15 @@ class _MyHomePageState extends State<MyHomePage> {
           Expanded(
             child: SfCalendar(
               view: CalendarView.day,
+              controller: _calendarController,
               allowedViews: const [
                 CalendarView.day,
                 CalendarView.week,
                 CalendarView.month,
               ],
-              viewHeaderStyle: ViewHeaderStyle(),
               initialDisplayDate: DateTime.now(),
               dataSource: EventDataSource(events),
-              //appointmentBuilder: appointmentBuilder,
+              appointmentBuilder: (context, details) => appointmentBuilder(context, details, _calendarController),
               monthViewSettings: const MonthViewSettings(
                 showAgenda: true,
               ),
@@ -77,50 +78,3 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
-
-// Widget appointmentBuilder(BuildContext context,
-//     CalendarAppointmentDetails calendarAppointmentDetails) {
-//   final Appointment appointment = calendarAppointmentDetails.appointments.first;
-//   return Column(
-//     children: [
-//       Container(
-//           width: calendarAppointmentDetails.bounds.width,
-//           height: calendarAppointmentDetails.bounds.height / 2,
-//           color: appointment.color,
-//           child: Center(
-//             child: Icon(
-//               Icons.group,
-//               color: Colors.black,
-//             ),
-//           )),
-//       Container(
-//         width: calendarAppointmentDetails.bounds.width,
-//         height: calendarAppointmentDetails.bounds.height / 2,
-//         color: appointment.color,
-//         child: Text(
-//           appointment.subject +
-//               DateFormat(' (hh:mm a').format(appointment.startTime) +
-//               '-' +
-//               DateFormat('hh:mm a)').format(appointment.endTime),
-//           textAlign: TextAlign.center,
-//           style: TextStyle(fontSize: 10),
-//         ),
-//       )
-//     ],
-//   );
-// }
-
-// class Appointment {
-//   String subject;
-//   DateTime startTime;
-//   DateTime endTime;
-//   String description;
-//   Color color;
-
-//   Appointment(
-//       {required this.subject,
-//       required this.color,
-//       required this.startTime,
-//       required this.endTime,
-//       required this.description});
-// }

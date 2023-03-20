@@ -28,4 +28,16 @@ class EventDataSource extends CalendarDataSource {
   Color getColor(int index) {
     return appointments![index].color;
   }
+
+  String getDescription(int index) {
+    return appointments![index].description;
+  }
+
+  String? getSubsriptions(int index) {
+    return appointments![index].subscriptions;
+  }
+
+  String? getCategory(int index) {
+    return appointments![index].category;
+  }
 }
