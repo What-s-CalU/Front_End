@@ -22,12 +22,7 @@ class MySignUpPage extends StatefulWidget
 
 class _MySignUpPageState extends State<MySignUpPage>
 {
-  bool _showPassword = false;
-  final TextEditingController _usernameController   = TextEditingController();
-  final TextEditingController _passwordController   = TextEditingController();
   final TextEditingController _emailController      = TextEditingController();
-  final TextEditingController _firstNameController  = TextEditingController();
-  final TextEditingController _lastNameController   = TextEditingController();
   Color mainColor = const Color(0xff083c74);
 
   @override
@@ -39,8 +34,8 @@ class _MySignUpPageState extends State<MySignUpPage>
         AppBar
         (
           backgroundColor: mainColor,
-          toolbarHeight: 0,
-          elevation: 0,
+          toolbarHeight:   0,
+          elevation:       0,
         ),
       body:
         ListView
@@ -49,11 +44,7 @@ class _MySignUpPageState extends State<MySignUpPage>
             <Widget>
             [
               buildLogoWidget(),
-              buildInputTextField(_firstNameController, "First Name"),
-              buildInputTextField(_lastNameController, "Last Name"),
               buildInputTextField(_emailController, "Email"),
-              buildInputTextField(_usernameController, "Username"),
-              buildInputTextField(_passwordController, "Password"),
               Padding
               (
                 padding:
@@ -66,20 +57,18 @@ class _MySignUpPageState extends State<MySignUpPage>
                     height:
                       40,
                     child:
-                     TextButton
+                      TextButton
                       (
-                        onPressed: () async
+                        onPressed:
+                        ()async
                         {
                           int statcode =
                           await
                           (
-                            sendSignUp
+                            sendSignUpStart
                             (
-                                _firstNameController.text,
-                                _lastNameController.text,
-                                _emailController.text,
-                              _usernameController.text,
-                              _passwordController.text
+                                0,
+                                _emailController.text
                             )
                           );
                         if(statcode == 200)
