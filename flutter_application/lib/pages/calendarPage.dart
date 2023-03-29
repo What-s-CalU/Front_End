@@ -1,10 +1,11 @@
 import 'package:flutter_application_1/pages/AddEventPage.dart';
+import 'package:flutter_application_1/pages/eventList.dart';
 import 'package:flutter_application_1/provider/eventProvider.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:flutter/material.dart';
 import '../model/eventDataSource.dart';
-import '../pageUtility/homePageUtil.dart';
+import 'package:flutter_application_1/pageUtility/calendarPageUtil.dart';
 import '../model/appointmentBuilder.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -40,7 +41,8 @@ class _MyHomePageState extends State<MyHomePage> {
               ],
               initialDisplayDate: DateTime.now(),
               dataSource: EventDataSource(events),
-              appointmentBuilder: (context, details) => appointmentBuilder(context, details, _calendarController),
+              appointmentBuilder: (context, details) =>
+                  appointmentBuilder(context, details, _calendarController),
               monthViewSettings: const MonthViewSettings(
                 showAgenda: true,
               ),
@@ -53,21 +55,23 @@ class _MyHomePageState extends State<MyHomePage> {
               children: <Widget>[
                 iconButtonWithText(
                   context,
-                  'Add Event',
-                  () {
-                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => const AddEventPage()));
-                  },
-                ),
-                iconButtonWithText(
-                  context,
-                  'Manage Events',
+                  'Home',
                   () {},
                 ),
                 iconButtonWithText(
                   context,
-                  'Remove Event',
+                  'Event List',
                   () {
-                    // Insert your desired action here for when the button is pressed
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => EventList()));
+                  },
+                ),
+                iconButtonWithText(
+                  context,
+                  'Add Event',
+                  () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const AddEventPage()));
                   },
                 ),
               ],

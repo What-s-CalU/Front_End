@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/pageUtility/LoginPageUtil.dart';
 import 'package:intl/intl.dart';
 
-Widget buildTitleTextField(TextEditingController controller) {
+Padding buildTitleTextField(TextEditingController controller) {
   return Padding(
     padding: const EdgeInsets.fromLTRB(40, 20, 40, 5),
     child: TextField(
@@ -54,7 +54,8 @@ Padding dateInputField(TextEditingController controller, BuildContext context) {
               lastDate: DateTime(2030),
             );
             if (pickedDate != null) {
-              String formattedDate = DateFormat("MM/dd/yyyy").format(pickedDate);
+              String formattedDate =
+                  DateFormat("MM/dd/yyyy").format(pickedDate);
               controller.text = formattedDate.toString();
             }
           },
@@ -67,7 +68,8 @@ Padding dateInputField(TextEditingController controller, BuildContext context) {
   );
 }
 
-TextField timeInputField(TextEditingController controller, BuildContext context, String hint) {
+TextField timeInputField(
+    TextEditingController controller, BuildContext context, String hint) {
   return TextField(
     controller: controller,
     decoration: InputDecoration(
@@ -89,7 +91,8 @@ TextField timeInputField(TextEditingController controller, BuildContext context,
   );
 }
 
-Padding descriptionTextField(BuildContext context, TextEditingController controller) {
+Padding descriptionTextField(
+    BuildContext context, TextEditingController controller) {
   return Padding(
     padding: const EdgeInsets.fromLTRB(40, 5, 40, 5),
     child: Stack(
@@ -124,7 +127,8 @@ Padding descriptionTextField(BuildContext context, TextEditingController control
   );
 }
 
-Widget timeInputFields(TextEditingController fromController, TextEditingController toController, BuildContext context) {
+Padding timeInputFields(TextEditingController fromController,
+    TextEditingController toController, BuildContext context) {
   return Padding(
     padding: const EdgeInsets.fromLTRB(40, 5, 40, 5),
     child: Row(
@@ -142,26 +146,5 @@ Widget timeInputFields(TextEditingController fromController, TextEditingControll
         )),
       ],
     ),
-  );
-}
-
-Widget buildColorDropdownButton(List<Color> colors, Color selectedColor, ValueChanged<Color?> onChanged) {
-  // Define a list of DropdownMenuItem widgets based on the provided colors
-  List<DropdownMenuItem<Color>> colorItems = colors.map((color) {
-    return DropdownMenuItem<Color>(
-      value: color,
-      child: Container(
-        width: 30,
-        height: 30,
-        color: color,
-      ),
-    );
-  }).toList();
-
-  // Create the dropdown button widget
-  return DropdownButton<Color>(
-    value: selectedColor,
-    items: colorItems,
-    onChanged: onChanged,
   );
 }

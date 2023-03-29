@@ -40,4 +40,8 @@ class EventDataSource extends CalendarDataSource {
   String? getCategory(int index) {
     return appointments![index].category;
   }
+
+  bool getisCustom(int index) {
+    return appointments![index].isCustom;
+  }
 }

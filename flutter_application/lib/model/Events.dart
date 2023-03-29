@@ -8,6 +8,7 @@ class Event {
   final String? description;
   final int? subscriptions;
   final String? category;
+  final bool isCustom;
   Event({
     required this.startTime,
     required this.endTime,
@@ -16,5 +17,6 @@ class Event {
     this.description,
     this.subscriptions,
     this.category,
+    required this.isCustom,
   });
 }
