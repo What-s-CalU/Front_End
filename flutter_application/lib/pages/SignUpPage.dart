@@ -34,6 +34,7 @@ class _MySignUpPageState extends State<MySignUpPage> {
   bool showPasswordField = false;
   String buttonText = "SUBMIT";
   int screenState = 0;
+  int oldScreenState = 0;
 
   bool hadError = false;
   String errorText = "";
@@ -97,6 +98,8 @@ class _MySignUpPageState extends State<MySignUpPage> {
               height: 40,
               child: TextButton(
                 onPressed: () async {
+                  // Cache the old screen state so we can compare later. 
+                  oldScreenState = screenState;
                   switch (screenState) {
                     case 0:
                       int statcode =
@@ -160,6 +163,11 @@ class _MySignUpPageState extends State<MySignUpPage> {
                         hadError = true;
                       }
                       break;
+                  }
+                  // Force refresh the page if the state has changed.
+                  if(oldScreenState != screenState)
+                  {
+                    setState(() {});
                   }
                 },
                 style: TextButton.styleFrom(backgroundColor: mainColor),
