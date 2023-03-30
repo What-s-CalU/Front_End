@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import '../model/eventDataSource.dart';
 import 'package:flutter_application_1/pageUtility/calendarPageUtil.dart';
 import '../model/appointmentBuilder.dart';
+import '../pageUtility/navigationBar.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -48,37 +49,9 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                iconButtonWithText(
-                  context,
-                  'Home',
-                  () {},
-                ),
-                iconButtonWithText(
-                  context,
-                  'Event List',
-                  () {
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => EventList()));
-                  },
-                ),
-                iconButtonWithText(
-                  context,
-                  'Add Event',
-                  () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const AddEventPage()));
-                  },
-                ),
-              ],
-            ),
-          )
         ],
       ),
+      bottomNavigationBar: customBottomNavigationBar(context),
     );
   }
 }

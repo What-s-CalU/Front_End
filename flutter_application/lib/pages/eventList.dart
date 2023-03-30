@@ -4,6 +4,8 @@ import 'package:flutter_application_1/provider/eventProvider.dart';
 import 'package:flutter_application_1/pageUtility/eventListUtil.dart';
 import 'package:provider/provider.dart';
 
+import '../pageUtility/navigationBar.dart';
+
 class EventList extends StatefulWidget {
   @override
   _EventListState createState() => _EventListState();
@@ -136,6 +138,7 @@ class _EventListState extends State<EventList> {
           ],
         ),
       ),
+      bottomNavigationBar: customBottomNavigationBar(context),
     );
   }
 }

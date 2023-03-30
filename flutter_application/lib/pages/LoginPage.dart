@@ -61,8 +61,8 @@ class _MyLoginPageState extends State<MyLoginPage> {
                   if (statcode == 200) {
                     print("yay we login");
                     print(statcode);
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => MyHomePage()));
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const MyHomePage()));
                   } else {
                     print(statcode);
                   }

@@ -5,6 +5,10 @@ import '../model/categoryColorMapping.dart';
 class EventProvider extends ChangeNotifier {
   final List<Event> _events = [];
 
+  final CategoryColorMapping _categoryColorMapping = CategoryColorMapping();
+
+  CategoryColorMapping get categoryColorMapping => _categoryColorMapping;
+
   List<Event> get events => _events;
 
   DateTime _selectedDate = DateTime.now();
@@ -56,10 +60,6 @@ class EventProvider extends ChangeNotifier {
             event.startTime.isBefore(endRange))
         .toList();
   }
-
-  final CategoryColorMapping _categoryColorMapping = CategoryColorMapping();
-
-  CategoryColorMapping get categoryColorMapping => _categoryColorMapping;
 
   void addCustomEventCategory(String category, Color color) {
     _categoryColorMapping.setColorForCategory(category, color);
