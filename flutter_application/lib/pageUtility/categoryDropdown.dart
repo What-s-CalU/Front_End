@@ -44,8 +44,7 @@ class _CategoryDropdownState extends State<CategoryDropdown> {
                   width: 20,
                   height: 20,
                   decoration: BoxDecoration(
-                    color: eventProvider.categoryColorMapping
-                        .getColorForCategory(category),
+                    color: eventProvider.categoryColorMapping.getColorForCategory(category),
                     shape: BoxShape.rectangle,
                     borderRadius: BorderRadius.circular(4),
                   ),
@@ -55,7 +54,7 @@ class _CategoryDropdownState extends State<CategoryDropdown> {
           ),
         ),
         if (newCategoryAdded == false)
-          DropdownMenuItem<String?>(
+          const DropdownMenuItem<String?>(
             value: '_add_new_category_',
             child: Text('Add new category'),
           ),
@@ -71,8 +70,7 @@ class _CategoryDropdownState extends State<CategoryDropdown> {
                     width: 20,
                     height: 20,
                     decoration: BoxDecoration(
-                      color: eventProvider.categoryColorMapping
-                          .getColorForCategory(_selectedCategory!),
+                      color: eventProvider.categoryColorMapping.getColorForCategory(_selectedCategory!),
                       shape: BoxShape.rectangle,
                       borderRadius: BorderRadius.circular(4),
                     ),
@@ -144,8 +142,7 @@ Future<String?> _showAddNewCategoryDialog(BuildContext context) async {
             onPressed: () {
               if (categoryNameController.text.isNotEmpty) {
                 // Add new category with the color
-                final eventProvider =
-                    Provider.of<EventProvider>(context, listen: false);
+                final eventProvider = Provider.of<EventProvider>(context, listen: false);
                 eventProvider.addCustomEventCategory(
                   categoryNameController.text,
                   selectedColor,

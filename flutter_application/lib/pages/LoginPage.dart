@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/pages/SignUpPage.dart';
+import 'package:flutter_application_1/pages/overviewPage.dart';
 import 'calendarPage.dart';
 import '../httpRequests/httpRequests.dart';
 import '../pageUtility/LoginPageUtil.dart';
@@ -46,23 +47,19 @@ class _MyLoginPageState extends State<MyLoginPage> {
                 // User login containers.
                 logoInContainer(),
                 buildUsernameTextFieldPadding(_usernameController),
-                buildPasswordTextFieldPadding(
-                    _passwordController, _showPassword, _togglevisibility),
+                buildPasswordTextFieldPadding(_passwordController, _showPassword, _togglevisibility),
 
                 // Forgot password button
                 buildForgotPassword(context),
 
                 // Script for the signin button (inline)
-                buildSignInButton(
-                    context, _usernameController, _passwordController,
-                    () async {
+                buildSignInButton(context, _usernameController, _passwordController, () async {
                   int statcode = 200; //await (sendCredentials(
                   //_usernameController.text, _passwordController.text));
                   if (statcode == 200) {
                     print("yay we login");
                     print(statcode);
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const MyHomePage()));
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => OverviewPage()));
                   } else {
                     print(statcode);
                   }
@@ -70,8 +67,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
 
                 // Script for the signup button (inline, creates page)
                 buildSignUpButton(context, () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const MySignUpPage()));
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => const MySignUpPage()));
                 }),
 
                 // Misc menu bottons (website urls)
@@ -79,10 +75,8 @@ class _MyLoginPageState extends State<MyLoginPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     buildIconButtonWithText(Icons.web, "WEBSITE", websiteUrl),
-                    buildIconButtonWithText(
-                        Icons.announcement_rounded, "ABOUT", websiteAboutUrl),
-                    buildIconButtonWithText(
-                        Icons.question_mark, "HELP", websiteUrl)
+                    buildIconButtonWithText(Icons.announcement_rounded, "ABOUT", websiteAboutUrl),
+                    buildIconButtonWithText(Icons.question_mark, "HELP", websiteUrl)
                   ],
                 ),
               ],

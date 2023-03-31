@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/pages/calendarPage.dart';
 import 'package:flutter_application_1/pages/eventList.dart';
+import 'package:flutter_application_1/pages/overviewPage.dart';
 
 Container customBottomNavigationBar(BuildContext context) {
   Color mainColor = const Color(0xff083c74);
@@ -11,26 +12,20 @@ Container customBottomNavigationBar(BuildContext context) {
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        buildIconButton(
-            context, Icons.home, 'Home', const MyHomePage(), mainColor),
-        const VerticalDivider(
-            color: Colors.white, thickness: 1.0, indent: 10, endIndent: 10),
-        buildIconButton(context, Icons.calendar_today, 'Calendar',
-            const MyHomePage(), mainColor),
-        const VerticalDivider(
-            color: Colors.white, thickness: 1.0, indent: 10, endIndent: 10),
+        buildIconButton(context, Icons.home, 'Home', OverviewPage(), mainColor),
+        const VerticalDivider(color: Colors.white, thickness: 1.0, indent: 10, endIndent: 10),
+        buildIconButton(context, Icons.calendar_today, 'Calendar', const MyHomePage(), mainColor),
+        const VerticalDivider(color: Colors.white, thickness: 1.0, indent: 10, endIndent: 10),
         buildIconButton(context, Icons.list, 'List', EventList(), mainColor),
       ],
     ),
   );
 }
 
-Widget buildIconButton(BuildContext context, IconData icon, String label,
-    Widget destinationPage, Color mainColor) {
+Widget buildIconButton(BuildContext context, IconData icon, String label, Widget destinationPage, Color mainColor) {
   return InkWell(
     onTap: () {
-      Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => destinationPage));
+      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => destinationPage));
     },
     child: Column(
       children: [
