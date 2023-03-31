@@ -30,19 +30,11 @@ class EventProvider extends ChangeNotifier {
   }
 
   List<String> getCustomEventCategories() {
-    return _events
-        .where((event) => event.isCustom == true && event.category != null)
-        .map((event) => event.category!)
-        .toSet()
-        .toList();
+    return _events.where((event) => event.isCustom == true && event.category != null).map((event) => event.category!).toSet().toList();
   }
 
   List<String> getCaluEventCategories() {
-    return _events
-        .where((event) => event.isCustom == false && event.category != null)
-        .map((event) => event.category!)
-        .toSet()
-        .toList();
+    return _events.where((event) => event.isCustom == false && event.category != null).map((event) => event.category!).toSet().toList();
   }
 
   List<Event> getEventsByCategory(String category) {
@@ -54,11 +46,7 @@ class EventProvider extends ChangeNotifier {
     DateTime startRange = DateTime(now.year, now.month, now.day);
     DateTime endRange = startRange.add(Duration(days: daysAway));
 
-    return _events
-        .where((event) =>
-            event.startTime.isAfter(startRange) &&
-            event.startTime.isBefore(endRange))
-        .toList();
+    return _events.where((event) => event.startTime.isAfter(startRange) && event.startTime.isBefore(endRange)).toList();
   }
 
   void addCustomEventCategory(String category, Color color) {
@@ -70,7 +58,6 @@ class EventProvider extends ChangeNotifier {
     if (category == null) {
       return false;
     }
-    return !_events
-        .any((event) => event.isCustom && event.category == category);
+    return !_events.any((event) => event.isCustom && event.category == category);
   }
 }

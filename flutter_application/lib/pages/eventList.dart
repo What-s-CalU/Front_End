@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/model/Events.dart';
+import 'package:flutter_application_1/pages/AddEventPage.dart';
 import 'package:flutter_application_1/provider/eventProvider.dart';
 import 'package:flutter_application_1/pageUtility/eventListUtil.dart';
 import 'package:provider/provider.dart';
@@ -38,20 +39,30 @@ class _EventListState extends State<EventList> {
   @override
   Widget build(BuildContext context) {
     final eventProvider = Provider.of<EventProvider>(context);
-    List<Event> filteredEvents =
-        eventProvider.getEventsByDaysAway(daysAwayFilter);
+    List<Event> filteredEvents = eventProvider.getEventsByDaysAway(daysAwayFilter);
 
     if (selectedCategory != null) {
-      filteredEvents = filteredEvents
-          .where((event) => event.category == selectedCategory)
-          .toList();
+      filteredEvents = filteredEvents.where((event) => event.category == selectedCategory).toList();
     }
 
     return Scaffold(
       appBar: AppBar(
         backgroundColor: mainColor,
-        title: const Text('List View'),
+        title: const Text(
+          'List',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 24,
+          ),
+        ),
+        centerTitle: true,
         actions: [
+          IconButton(
+            icon: const Icon(Icons.add),
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const AddEventPage()));
+            },
+          ),
           PopupMenuButton<int>(
             itemBuilder: (BuildContext context) => [
               const PopupMenuItem<int>(
