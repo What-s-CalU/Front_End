@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/pages/AddEventPage.dart';
+import 'package:flutter_application_1/pages/categorySubscriptionPage.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import '../model/eventDataSource.dart';
@@ -95,11 +96,11 @@ class OverviewPage extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               buildButton(context, 'ADD EVENT', mainColor, () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => AddEventPage()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const AddEventPage()));
               }),
               const SizedBox(height: 10),
               buildButton(context, 'MANAGE SUBSCRIPTIONS', mainColor, () {
-                //Navigator.push(context, MaterialPageRoute(builder: (context) => OverviewPage()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const CategorySubscriptionPage()));
               }),
             ],
           ),
