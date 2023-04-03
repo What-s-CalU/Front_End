@@ -126,8 +126,9 @@ class _MySignUpPageState extends State<MySignUpPage> {
                       int statcode = await (sendSignUpContinue(
                           0, _emailController.text, _checksumController.text));
                       if (statcode == 200) {
-                        showEmailField = false;
+                        showEmailField    = false;
                         showChecksumField = false;
+                        showPasswordField = true;
                         buttonText = "SIGN UP";
                         screenState = 2;
                         hadError = false;
@@ -146,7 +147,7 @@ class _MySignUpPageState extends State<MySignUpPage> {
                     case 2:
                       // check for same passwords goes here ...
                       int statcode = await (sendSignUpEnd(
-                          0, _emailController.text, _passwordController.text));
+                          0, _emailController.text, _checksumController.text, _passwordController.text));
                       if (statcode == 200) {
                         screenState = 0;
                         hadError = false;
@@ -165,7 +166,7 @@ class _MySignUpPageState extends State<MySignUpPage> {
                       break;
                   }
                   // Force refresh the page if the state has changed.
-                  if(oldScreenState != screenState)
+                  if(oldScreenState != screenState || hadError)
                   {
                     setState(() {});
                   }

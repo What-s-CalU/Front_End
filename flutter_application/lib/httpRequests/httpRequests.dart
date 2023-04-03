@@ -50,7 +50,7 @@ Future<int> sendSignUpContinue(
   });
 }
 
-Future<int> sendSignUpEnd(int isReset, String username, String password) async {
+Future<int> sendSignUpEnd(int isReset, String username, String checksum, String password) async {
   // By default we use the reset type
   String requestType = "reset_end";
   if (isReset == 0) {
@@ -59,6 +59,7 @@ Future<int> sendSignUpEnd(int isReset, String username, String password) async {
 
   return _sendJsonRequest({
     'request_type': requestType,
+    'checksum': checksum,
     'username': username,
     'password': password
   });

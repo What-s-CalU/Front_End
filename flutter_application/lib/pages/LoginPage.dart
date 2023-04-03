@@ -54,8 +54,8 @@ class _MyLoginPageState extends State<MyLoginPage> {
 
                 // Script for the signin button (inline)
                 buildSignInButton(context, _usernameController, _passwordController, () async {
-                  int statcode = 200; //await (sendCredentials(
-                  //_usernameController.text, _passwordController.text));
+                  int statcode = await (sendCredentials(
+                  _usernameController.text, _passwordController.text));
                   if (statcode == 200) {
                     print("yay we login");
                     print(statcode);
