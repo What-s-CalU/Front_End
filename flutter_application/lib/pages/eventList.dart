@@ -4,7 +4,7 @@ import 'package:flutter_application_1/pages/AddEventPage.dart';
 import 'package:flutter_application_1/provider/eventProvider.dart';
 import 'package:flutter_application_1/pageUtility/eventListUtil.dart';
 import 'package:provider/provider.dart';
-
+import '../pageUtility/categoryCircleNumber.dart';
 import '../pageUtility/navigationBar.dart';
 
 class EventList extends StatefulWidget {
@@ -19,6 +19,14 @@ class _EventListState extends State<EventList> {
 
   List<String> _caluCategories = [];
   List<String> _customCategories = [];
+
+  String getAppBarTitle() {
+    if (selectedCategory == null) {
+      return 'List';
+    } else {
+      return 'List - $selectedCategory';
+    }
+  }
 
   void updateCategories() {
     final eventProvider = Provider.of<EventProvider>(context, listen: false);
@@ -48,9 +56,9 @@ class _EventListState extends State<EventList> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: mainColor,
-        title: const Text(
-          'List',
-          style: TextStyle(
+        title: Text(
+          getAppBarTitle(),
+          style: const TextStyle(
             color: Colors.white,
             fontSize: 24,
           ),
@@ -120,8 +128,10 @@ class _EventListState extends State<EventList> {
               title: const Text('CalU', style: TextStyle(fontSize: 18)),
               leading: Icon(Icons.school, color: mainColor),
               children: _caluCategories.map((category) {
+                int categoryCount = eventProvider.getNumberOfEventsByCategory(category, daysAwayFilter);
                 return ListTile(
                   title: Text(category, style: const TextStyle(fontSize: 16)),
+                  trailing: CategoryCircleNumber(color: eventProvider.categoryColorMapping.getColorForCategory(category), count: categoryCount),
                   leading: const SizedBox(width: 40),
                   onTap: () {
                     setState(() {
@@ -135,9 +145,11 @@ class _EventListState extends State<EventList> {
               title: const Text('Custom', style: TextStyle(fontSize: 18)),
               leading: Icon(Icons.create, color: mainColor),
               children: _customCategories.map((category) {
+              int categoryCount = eventProvider.getNumberOfEventsByCategory(category, daysAwayFilter);
                 return ListTile(
                   title: Text(category, style: const TextStyle(fontSize: 16)),
                   leading: const SizedBox(width: 40),
+                  trailing: CategoryCircleNumber(color: eventProvider.categoryColorMapping.getColorForCategory(category), count: categoryCount),
                   onTap: () {
                     setState(() {
                       selectedCategory = category;

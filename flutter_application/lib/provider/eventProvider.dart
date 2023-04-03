@@ -49,6 +49,18 @@ class EventProvider extends ChangeNotifier {
     return _events.where((event) => event.startTime.isAfter(startRange) && event.startTime.isBefore(endRange)).toList();
   }
 
+    int getNumberOfEventsByCategory(String category, int daysAwayFilter) {
+    final DateTime now = DateTime.now();
+    final DateTime startRange = DateTime(now.year, now.month, now.day);
+    final DateTime daysAway = startRange.add(Duration(days: daysAwayFilter));
+
+    return _events.where((event) {
+      return event.category == category &&
+          event.startTime.isAfter(startRange) &&
+          event.startTime.isBefore(daysAway);
+    }).length;
+  }
+
   void addCustomEventCategory(String category, Color color) {
     _categoryColorMapping.setColorForCategory(category, color);
     notifyListeners();
@@ -60,4 +72,5 @@ class EventProvider extends ChangeNotifier {
     }
     return !_events.any((event) => event.isCustom && event.category == category);
   }
+
 }
