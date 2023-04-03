@@ -36,53 +36,53 @@ Widget logoInContainer() {
 }
 
 /*
-  A widget function that returns a Padding widget containing a TextField widget for entering a username.
-  The Padding widget has left, right, and bottom padding of 40, and top padding of 0.
-  The TextField widget is bound to a TextEditingController object for managing its input and decoration.
-  The decoration of the TextField widget has an icon for the prefix, a hint text of "Username", and an outline border.
+  Builds a username text field with validation to ensure the field is not empty.
 
-  Parameters: a TextEditingController object for managing the input and decoration of the TextField widget.
+  Parameters: 
+    controller: A TextEditingController object for managing the input and decoration of the TextFormField widget.
 
-  Return: Widget object
+  Returns: 
+    A Padding widget containing the TextFormField with validation.
 
   Author: Thomas Terhune
 */
-Widget buildUsernameTextFieldPadding(TextEditingController controller) {
+Padding buildUsernameTextFieldPadding(TextEditingController controller) {
   return Padding(
     padding: const EdgeInsets.fromLTRB(40, 0, 40, 5),
-    child: TextField(
+    child: TextFormField(
       controller: controller,
       decoration: const InputDecoration(
         prefixIcon: Icon(Icons.account_circle),
         hintText: "Username",
         border: OutlineInputBorder(),
       ),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please enter a username';
+        }
+        return null;
+      },
     ),
   );
 }
 
 /*
-  A widget function that returns a Padding widget containing a TextField widget for entering a password.
-  The Padding widget has left, right, and bottom padding of 40, and top padding of 5.
-  The TextField widget is bound to a TextEditingController object for managing its input and decoration.
-  The TextField widget can be toggled between obscured and unobscured using the showPassword boolean and toggleVisibility VoidCallback.
-  The decoration of the TextField widget has an icon for the prefix, a suffix icon for toggling the password visibility,
-  a hint text of "Password", and an outline border.
+  Builds a password text field with validation to ensure the field is not empty.
 
   Parameters:
     controller: a TextEditingController object for managing the input and decoration of the TextField widget.
     showPassword: a boolean value indicating whether or not the password should be obscured.
     toggleVisibility: a VoidCallback function for toggling the visibility of the password.
 
-  Return: Widget object
+  Return: A Padding widget containing the TextFormField with validation.
 
   Author: Thomas Terhune
 */
-Widget buildPasswordTextFieldPadding(
+Padding buildPasswordTextFieldPadding(
     TextEditingController controller, bool showPassword, VoidCallback toggleVisibility) {
   return Padding(
     padding: const EdgeInsets.fromLTRB(40, 5, 40, 5),
-    child: TextField(
+    child: TextFormField(
       controller: controller,
       obscureText: !showPassword,
       decoration: InputDecoration(
@@ -96,6 +96,12 @@ Widget buildPasswordTextFieldPadding(
         hintText: "Password",
         border: const OutlineInputBorder(),
       ),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please enter a password';
+        }
+        return null;
+      },
     ),
   );
 }

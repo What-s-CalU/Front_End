@@ -12,7 +12,7 @@ class OverviewPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final events = Provider.of<EventProvider>(context).events;
+    final eventProvider = Provider.of<EventProvider>(context);
     Color mainColor = const Color(0xff083c74);
 
     return Scaffold(
@@ -78,7 +78,7 @@ class OverviewPage extends StatelessWidget {
                           child: SfCalendar(
                             view: CalendarView.schedule,
                             headerHeight: 0,
-                            dataSource: EventDataSource(events),
+                            dataSource: EventDataSource(eventProvider.getEventsByDaysAway(30)),
                             scheduleViewSettings: const ScheduleViewSettings(
                                 hideEmptyScheduleWeek: true,
                                 monthHeaderSettings: MonthHeaderSettings(

@@ -14,6 +14,7 @@ class MyLoginPage extends StatefulWidget {
 
 class _MyLoginPageState extends State<MyLoginPage> {
   bool _showPassword = false;
+  final _loginformKey = GlobalKey<FormState>();
 
   // Constants used by the page builder below.
   final TextEditingController _usernameController = TextEditingController();
@@ -38,50 +39,55 @@ class _MyLoginPageState extends State<MyLoginPage> {
         toolbarHeight: 0,
         elevation: 0,
       ),
-      body: ListView(
-          // Main content of the page.
-          children: <Widget>[
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                // User login containers.
-                logoInContainer(),
-                buildUsernameTextFieldPadding(_usernameController),
-                buildPasswordTextFieldPadding(_passwordController, _showPassword, _togglevisibility),
-
-                // Forgot password button
-                buildForgotPassword(context),
-
-                // Script for the signin button (inline)
-                buildSignInButton(context, _usernameController, _passwordController, () async {
-                  int statcode = 200;//= await (sendCredentials(
-                  //_usernameController.text, _passwordController.text));
-                  if (statcode == 200) {
-                    print("yay we login");
-                    print(statcode);
-                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => OverviewPage()));
-                  } else {
-                    print(statcode);
-                  }
-                }),
-
-                // Script for the signup button (inline, creates page)
-                buildSignUpButton(context, () {
-                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => const MySignUpPage()));
-                }),
-
-                // Misc menu bottons (website urls)
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    buildIconButtonWithText(Icons.web, "WEBSITE", websiteUrl),
-                    buildIconButtonWithText(Icons.announcement_rounded, "ABOUT", websiteAboutUrl),
-                    buildIconButtonWithText(Icons.question_mark, "HELP", websiteUrl)
-                  ],
-                ),
-              ],
-            ),
-          ]),
+      body: Form(
+        key: _loginformKey,
+        child: ListView(
+            // Main content of the page.
+            children: <Widget>[
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  // User login containers.
+                  logoInContainer(),
+                  buildUsernameTextFieldPadding(_usernameController),
+                  buildPasswordTextFieldPadding(_passwordController, _showPassword, _togglevisibility),
+      
+                  // Forgot password button
+                  buildForgotPassword(context),
+      
+                  // Script for the signin button (inline)
+                  buildSignInButton(context, _usernameController, _passwordController, () async {
+                    if (_loginformKey.currentState!.validate()) {
+                      int statcode = await (sendCredentials(
+                      _usernameController.text, _passwordController.text));
+                      if (statcode == 200) {
+                        print("yay we login");
+                        print(statcode);
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => OverviewPage()));
+                      } else {
+                        print(statcode);
+                      }
+                    }
+                  }),
+      
+                  // Script for the signup button (inline, creates page)
+                  buildSignUpButton(context, () {
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => const MySignUpPage()));
+                  }),
+      
+                  // Misc menu bottons (website urls)
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      buildIconButtonWithText(Icons.web, "WEBSITE", websiteUrl),
+                      buildIconButtonWithText(Icons.announcement_rounded, "ABOUT", websiteAboutUrl),
+                      buildIconButtonWithText(Icons.question_mark, "HELP", websiteUrl)
+                    ],
+                  ),
+                ],
+              ),
+            ]),
+      ),
     );
   }
 }
