@@ -2,19 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/pageUtility/LoginPageUtil.dart';
 import 'package:intl/intl.dart';
 
-Padding buildTitleTextField(TextEditingController controller) {
-  return Padding(
-    padding: const EdgeInsets.fromLTRB(40, 20, 40, 5),
-    child: TextField(
-      controller: controller,
-      decoration: const InputDecoration(
-        hintText: "Title",
-        border: OutlineInputBorder(),
-      ),
-    ),
-  );
-}
-
 DateTime convertStringsToDateTime(String date, String time) {
   // Split the date string into its components
   List<String> dateParts = date.split('/');
@@ -39,10 +26,58 @@ Padding textBeforeTextField(String text) {
   );
 }
 
+Padding timeInputFields(TextEditingController fromController,
+    TextEditingController toController, BuildContext context) {
+  return Padding(
+    padding: const EdgeInsets.fromLTRB(40, 5, 40, 5),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: <Widget>[
+        Expanded(
+            child: Padding(
+          padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
+          child: timeInputField(
+            fromController,
+            context,
+            "From",
+            (value) => validateTime(value, toController.text, context),
+          ),
+        )),
+        Expanded(
+            child: Padding(
+          padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
+          child: timeInputField(
+            toController,
+            context,
+            "To",
+            (value) => validateTime(fromController.text, value, context),
+          ),
+        )),
+      ],
+    ),
+  );
+}
+
+TextFormField buildTitleTextField(TextEditingController controller) {
+  return TextFormField(
+    controller: controller,
+    decoration: const InputDecoration(
+      hintText: "Title",
+      border: OutlineInputBorder(),
+    ),
+    validator: (value) {
+      if (value == null || value.isEmpty) {
+        return 'Please enter a title';
+      }
+      return null;
+    },
+  );
+}
+
 Padding dateInputField(TextEditingController controller, BuildContext context) {
   return Padding(
     padding: const EdgeInsets.fromLTRB(40, 5, 40, 5),
-    child: TextField(
+    child: TextFormField(
       controller: controller,
       decoration: InputDecoration(
         suffixIcon: GestureDetector(
@@ -64,13 +99,27 @@ Padding dateInputField(TextEditingController controller, BuildContext context) {
         hintText: "Date",
         border: const OutlineInputBorder(),
       ),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please select a date';
+        }
+
+        final format = DateFormat("MM/dd/yyyy");
+        try {
+          format.parse(value);
+        } catch (e) {
+          return 'Invalid date format';
+        }
+
+        return null;
+      },
     ),
   );
 }
 
-TextField timeInputField(
-    TextEditingController controller, BuildContext context, String hint) {
-  return TextField(
+TextFormField timeInputField(TextEditingController controller,
+    BuildContext context, String hint, String? Function(String?) validator) {
+  return TextFormField(
     controller: controller,
     decoration: InputDecoration(
       suffixIcon: GestureDetector(
@@ -88,6 +137,7 @@ TextField timeInputField(
       hintText: hint,
       border: const OutlineInputBorder(),
     ),
+    validator: validator,
   );
 }
 
@@ -127,24 +177,35 @@ Padding descriptionTextField(
   );
 }
 
-Padding timeInputFields(TextEditingController fromController,
-    TextEditingController toController, BuildContext context) {
-  return Padding(
-    padding: const EdgeInsets.fromLTRB(40, 5, 40, 5),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: <Widget>[
-        Expanded(
-            child: Padding(
-          padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
-          child: timeInputField(fromController, context, "From"),
-        )),
-        Expanded(
-            child: Padding(
-          padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
-          child: timeInputField(toController, context, "To"),
-        )),
-      ],
-    ),
-  );
+String? validateTime(
+    String? fromTimeValue, String? toTimeValue, BuildContext context) {
+  if (fromTimeValue == null || fromTimeValue.isEmpty) {
+    return 'Please select a time';
+  }
+
+  if (toTimeValue == null || toTimeValue.isEmpty) {
+    return null;
+  }
+
+  final format = DateFormat("hh:mm a");
+  DateTime? fromTime;
+  DateTime? toTime;
+
+  try {
+    fromTime = format.parse(fromTimeValue);
+  } catch (e) {
+    return 'Invalid time format';
+  }
+
+  try {
+    toTime = format.parse(toTimeValue);
+  } catch (e) {
+    return 'Invalid time format';
+  }
+
+  if (fromTime.isAfter(toTime)) {
+    return 'From must be before to';
+  }
+
+  return null;
 }

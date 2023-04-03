@@ -1,3 +1,6 @@
 {
-    "dart.lineLength": 120
+    "editor.formatOnSave": false,
+    "[dart]": {
+        "editor.formatOnSave": false
+    }
 }

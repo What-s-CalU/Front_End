@@ -6,7 +6,7 @@ import '../model/Events.dart';
 import '../pageUtility/categoryDropdown.dart';
 
 class AddEventPage extends StatefulWidget {
-  const AddEventPage({super.key});
+  const AddEventPage({Key? key}) : super(key: key);
   @override
   State<AddEventPage> createState() => _AddEventPageState();
 }
@@ -19,6 +19,7 @@ class _AddEventPageState extends State<AddEventPage> {
   final TextEditingController _descriptionController = TextEditingController();
 
   String? _selectedCategory;
+  final _formKey = GlobalKey<FormState>();
 
   Color mainColor = const Color(0xff083c74);
 
@@ -35,55 +36,63 @@ class _AddEventPageState extends State<AddEventPage> {
         toolbarHeight: 0,
         elevation: 0,
       ),
-      body: ListView(
-        children: <Widget>[
-          buildTitleTextField(_titleController),
-          dateInputField(_dateController, context),
-          textBeforeTextField("Time"),
-          timeInputFields(_fromTimeController, _toTimeController, context),
-          descriptionTextField(context, _descriptionController),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(40, 5, 40, 5),
-            child: CategoryDropdown(
-              onCategoryChanged: _onCategoryChanged,
+      body: Form(
+        key: _formKey,
+        child: ListView(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.fromLTRB(40, 20, 40, 5),
+              child: buildTitleTextField(_titleController),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(60, 30, 60, 0),
-            child: SizedBox(
-              width: double.infinity,
-              height: 40,
-              child: TextButton(
-                onPressed: () {
-                  Event newEvent = Event(
-                    startTime: convertStringsToDateTime(
-                        _dateController.text, _fromTimeController.text),
-                    endTime: convertStringsToDateTime(
-                        _dateController.text, _toTimeController.text),
-                    subject: _titleController.text,
-                    color: eventProvider.categoryColorMapping
-                        .getColorForCategory(_selectedCategory!),
-                    description: _descriptionController.text,
-                    isCustom: true,
-                    category: _selectedCategory,
-                  );
-                  //if return correct event add it and return to home page
-                  final provider =
-                      Provider.of<EventProvider>(context, listen: false);
-                  provider.addEvent(newEvent);
-                  Navigator.pop(context);
-                },
-                style: TextButton.styleFrom(backgroundColor: mainColor),
-                child: const Text(
-                  'ADD EVENT',
-                  style: TextStyle(
-                    color: Colors.white,
+            dateInputField(_dateController, context),
+            textBeforeTextField("Time"),
+            timeInputFields(_fromTimeController, _toTimeController, context),
+            descriptionTextField(context, _descriptionController),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(40, 5, 40, 5),
+              child: CategoryDropdown(
+                onCategoryChanged: _onCategoryChanged,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(60, 30, 60, 0),
+              child: SizedBox(
+                width: double.infinity,
+                height: 40,
+                child: TextButton(
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      Event newEvent = Event(
+                        startTime: convertStringsToDateTime(
+                            _dateController.text, _fromTimeController.text),
+                        endTime: convertStringsToDateTime(
+                            _dateController.text, _toTimeController.text),
+                        subject: _titleController.text,
+                        color: eventProvider.categoryColorMapping
+                            .getColorForCategory(_selectedCategory),
+                        description: _descriptionController.text,
+                        isCustom: true,
+                        category: _selectedCategory,
+                      );
+                      //if return correct event add it and return to home page
+                      final provider =
+                          Provider.of<EventProvider>(context, listen: false);
+                      provider.addEvent(newEvent);
+                      Navigator.pop(context);
+                    }
+                  },
+                  style: TextButton.styleFrom(backgroundColor: mainColor),
+                  child: const Text(
+                    'ADD EVENT',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
