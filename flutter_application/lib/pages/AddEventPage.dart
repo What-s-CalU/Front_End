@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/pageUtility/addEventPageUtil.dart';
 import 'package:flutter_application_1/provider/eventProvider.dart';
 import 'package:provider/provider.dart';
+import '../httpRequests/httpRequests.dart';
 import '../model/Events.dart';
 import '../pageUtility/categoryDropdown.dart';
 
@@ -60,7 +61,7 @@ class _AddEventPageState extends State<AddEventPage> {
                 width: double.infinity,
                 height: 40,
                 child: TextButton(
-                  onPressed: () {
+                  onPressed: () async{
                     if (_formKey.currentState!.validate()) {
                       Event newEvent = Event(
                         startTime: convertStringsToDateTime(
@@ -74,11 +75,25 @@ class _AddEventPageState extends State<AddEventPage> {
                         isCustom: true,
                         category: _selectedCategory,
                       );
-                      //if return correct event add it and return to home page
-                      final provider =
-                          Provider.of<EventProvider>(context, listen: false);
-                      provider.addEvent(newEvent);
-                      Navigator.pop(context);
+                      int response = await sendAddCustomEvent(
+                        eventProvider.username,
+                        newEvent.startTime,
+                        newEvent.endTime,
+                        newEvent.subject,
+                        newEvent.color,
+                        newEvent.description,
+                        newEvent.category,
+                      );
+
+                      if (response == 200) {
+                        // If the response is successful, add the event and return to the home page
+                        final provider =
+                            Provider.of<EventProvider>(context, listen: false);
+                        provider.addEvent(newEvent);
+                        Navigator.pop(context);
+                      } else {
+                        print("Error adding custom event: Status code $response");
+                      }
                     }
                   },
                   style: TextButton.styleFrom(backgroundColor: mainColor),

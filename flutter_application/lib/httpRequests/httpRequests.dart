@@ -65,23 +65,24 @@ Future<int> sendSignUpEnd(int isReset, String username, String checksum, String 
   });
 }
 
-Future<int> sendAddEvent(
+Future<int> sendAddCustomEvent(
+    String username,
     DateTime startTime,
     DateTime endTime,
     String subject,
     Color color,
     String? description,
-    int? subscriptions,
     String? category) async {
   return _sendJsonRequest({
-    'request_type': 'add_event',
+    'request_type': 'add_custom_event',
+    'username': username,
     'start_time': startTime.toIso8601String(),
     'end_time': endTime.toIso8601String(),
-    'subject': subject,
+    'title': subject,
     'color': color.value,
     'description': description,
-    'subscriptions': subscriptions,
     'category': category,
+    'isCustom': true,
   });
 }
 

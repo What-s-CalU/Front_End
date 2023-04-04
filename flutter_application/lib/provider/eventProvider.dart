@@ -7,6 +7,15 @@ class EventProvider extends ChangeNotifier {
 
   final CategoryColorMapping _categoryColorMapping = CategoryColorMapping();
 
+  String _username = '';
+
+  String get username => _username;
+
+  set username(String value) {
+    _username = value;
+    notifyListeners();
+  }
+
   CategoryColorMapping get categoryColorMapping => _categoryColorMapping;
 
   List<Event> get events => _events;

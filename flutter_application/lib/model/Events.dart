@@ -6,7 +6,6 @@ class Event {
   final String subject;
   final Color color;
   final String? description;
-  final int? subscriptions;
   final String? category;
   final bool isCustom;
   Event({
@@ -15,7 +14,6 @@ class Event {
     required this.subject,
     required this.color,
     this.description,
-    this.subscriptions,
     this.category,
     required this.isCustom,
   });

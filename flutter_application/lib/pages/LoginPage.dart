@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/pages/SignUpPage.dart';
 import 'package:flutter_application_1/pages/overviewPage.dart';
-import 'calendarPage.dart';
+import 'package:provider/provider.dart';
 import '../httpRequests/httpRequests.dart';
 import '../pageUtility/LoginPageUtil.dart';
+import '../provider/eventProvider.dart';
 
 class MyLoginPage extends StatefulWidget {
   const MyLoginPage({super.key});
@@ -63,7 +64,9 @@ class _MyLoginPageState extends State<MyLoginPage> {
                       if (statcode == 200) {
                         print("yay we login");
                         print(statcode);
-                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => OverviewPage()));
+
+                        Provider.of<EventProvider>(context, listen: false).username = _usernameController.text.toUpperCase();
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const OverviewPage()));
                       } else {
                         print(statcode);
                       }
