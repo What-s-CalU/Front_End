@@ -39,7 +39,7 @@ class _EventViewPageState extends State<EventViewPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                widget.event.subject,
+                widget.event.title,
                 style:
                     const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
               ),

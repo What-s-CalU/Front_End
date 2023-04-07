@@ -35,7 +35,7 @@ Widget appointmentBuilder(BuildContext context,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             if (controller.view != CalendarView.week)
-              customText(event.subject, 14),
+              customText(event.title, 14),
             if (controller.view == CalendarView.month)
               customText(
                   '${DateFormat.jm().format(event.startTime)} - ${DateFormat.jm().format(event.endTime)}',

@@ -33,6 +33,11 @@ class EventProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void addEvents(List<Event> eventsToAdd) {
+    _events.addAll(eventsToAdd);
+    notifyListeners();
+  }
+
   void removeEvent(Event event) {
     _events.remove(event);
     notifyListeners();

@@ -68,7 +68,7 @@ class _AddEventPageState extends State<AddEventPage> {
                             _dateController.text, _fromTimeController.text),
                         endTime: convertStringsToDateTime(
                             _dateController.text, _toTimeController.text),
-                        subject: _titleController.text,
+                        title: _titleController.text,
                         color: eventProvider.categoryColorMapping
                             .getColorForCategory(_selectedCategory),
                         description: _descriptionController.text,
@@ -79,7 +79,7 @@ class _AddEventPageState extends State<AddEventPage> {
                         eventProvider.username,
                         newEvent.startTime,
                         newEvent.endTime,
-                        newEvent.subject,
+                        newEvent.title,
                         newEvent.color,
                         newEvent.description,
                         newEvent.category,

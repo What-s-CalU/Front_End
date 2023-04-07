@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class Event {
   final DateTime startTime;
   final DateTime endTime;
-  final String subject;
+  final String title;
   final Color color;
   final String? description;
   final String? category;
@@ -11,7 +11,7 @@ class Event {
   Event({
     required this.startTime,
     required this.endTime,
-    required this.subject,
+    required this.title,
     required this.color,
     this.description,
     this.category,

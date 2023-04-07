@@ -65,7 +65,17 @@ class _MyLoginPageState extends State<MyLoginPage> {
                         print("yay we login");
                         print(statcode);
 
-                        Provider.of<EventProvider>(context, listen: false).username = _usernameController.text.toUpperCase();
+                        // Get the event provider
+                        final eventProvider = Provider.of<EventProvider>(context, listen: false);
+
+                        // Set the username in the event provider
+                        eventProvider.username = _usernameController.text.toUpperCase();
+
+                        // Call sendGetUserSubscribedEvents and add the events to the event provider
+                        int eventsStatusCode = await sendGetUserSubscribedEvents(eventProvider.username, eventProvider);
+                        print("Events loaded with status code: $eventsStatusCode");
+
+                        // Navigate to the OverviewPage
                         Navigator.of(context).push(MaterialPageRoute(builder: (context) => const OverviewPage()));
                       } else {
                         print(statcode);

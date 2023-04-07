@@ -21,7 +21,7 @@ class EventDataSource extends CalendarDataSource {
 
   @override
   String getSubject(int index) {
-    return appointments![index].subject;
+    return appointments![index].title;
   }
 
   @override

@@ -45,7 +45,7 @@ class _EventContainerState extends State<EventContainer> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 customText('Title:', 14, FontWeight.bold),
-                customText(widget.event.subject, 14, FontWeight.normal),
+                customText(widget.event.title, 14, FontWeight.normal),
                 const SizedBox(height: 4),
                 customText('Date:', 14, FontWeight.bold),
                 customText(DateFormat.yMMMMd().format(widget.event.startTime),
