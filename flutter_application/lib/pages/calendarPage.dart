@@ -79,6 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
               monthViewSettings: const MonthViewSettings(
                 showAgenda: true,
               ),
+              timeSlotViewSettings: const TimeSlotViewSettings(timeIntervalHeight: -1),
               headerHeight: 0,
               onViewChanged: (ViewChangedDetails details) {
                 final displayDate = details.visibleDates.first;

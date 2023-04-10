@@ -104,6 +104,7 @@ Future<int> sendGetUserSubscribedEvents(String username, EventProvider eventProv
   if (response.statusCode == 200) {
     final List<Event> events = parseJsonToEvents(response.body);
     eventProvider.addEvents(events);
+    eventProvider.setColorsForCategories(events);
   }
   return response.statusCode;
 }

@@ -87,4 +87,12 @@ class EventProvider extends ChangeNotifier {
     return !_events.any((event) => event.isCustom && event.category == category);
   }
 
+  void setColorsForCategories(List<Event> events) {
+    for (Event event in events) {
+      if (categoryColorMapping.getColorForCategory(event.category) == Colors.blue) {
+        categoryColorMapping.setColorForCategory(event.category!, event.color);
+      }
+    }
+    }
+
 }

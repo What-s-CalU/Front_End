@@ -14,4 +14,6 @@ class CategoryColorMapping {
   void setColorForCategory(String category, Color color) {
     _categoryColorMapping[category] = color;
   }
+
+  
 }
