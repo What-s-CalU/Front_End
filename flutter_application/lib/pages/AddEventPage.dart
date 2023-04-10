@@ -34,8 +34,8 @@ class _AddEventPageState extends State<AddEventPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: mainColor,
-        toolbarHeight: 0,
-        elevation: 0,
+        title: const Text('ADD EVENT'),
+        centerTitle: true,
       ),
       body: Form(
         key: _formKey,

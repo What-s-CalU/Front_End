@@ -46,7 +46,7 @@ class _EventListState extends State<EventList> {
 
   @override
   Widget build(BuildContext context) {
-    final eventProvider = Provider.of<EventProvider>(context);
+    final eventProvider = Provider.of<EventProvider>(context, listen: true);
     List<Event> filteredEvents = eventProvider.getEventsByDaysAway(daysAwayFilter);
 
     if (selectedCategory != null) {

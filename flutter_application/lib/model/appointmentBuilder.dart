@@ -21,11 +21,7 @@ Widget appointmentBuilder(BuildContext context,
       width: details.bounds.width,
       height: details.bounds.height,
       decoration: BoxDecoration(
-        color: event.color.withOpacity(0.5),
-        border: Border.all(
-          color: event.color,
-          width: 2,
-        ),
+        color: event.color,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Padding(
@@ -34,15 +30,14 @@ Widget appointmentBuilder(BuildContext context,
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (controller.view != CalendarView.week)
-              customText(event.title, 14),
-            if (controller.view == CalendarView.month)
+            if (controller.view != CalendarView.week && controller.view != CalendarView.day)
+              customText(event.title, 15),
+            if (controller.view == CalendarView.day)
+              customText(event.title, 12),
+            if (controller.view == CalendarView.month || controller.view == CalendarView.schedule)
               customText(
                   '${DateFormat.jm().format(event.startTime)} - ${DateFormat.jm().format(event.endTime)}',
-                  14),
-            if (event.description != null &&
-                controller.view == CalendarView.day)
-              customText(event.description!, 12)
+                  15),
           ],
         ),
       ),
@@ -50,13 +45,15 @@ Widget appointmentBuilder(BuildContext context,
   );
 }
 
-Text customText(String text, double fontSize) {
-  return Text(
-    text,
-    style: TextStyle(
-      color: Colors.white,
-      fontSize: fontSize,
-      fontWeight: FontWeight.bold,
+Widget customText(String text, double fontSize) {
+  return Flexible(
+    child: Text(
+      text,
+      style: TextStyle(
+        color: Colors.white,
+        fontSize: fontSize,
+        fontWeight: FontWeight.bold,
+      ),
     ),
   );
 }

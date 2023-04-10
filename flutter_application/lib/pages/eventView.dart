@@ -6,7 +6,6 @@ import 'package:provider/provider.dart';
 
 class EventViewPage extends StatefulWidget {
   final Event event;
-
   const EventViewPage({Key? key, required this.event}) : super(key: key);
 
   @override
@@ -14,11 +13,15 @@ class EventViewPage extends StatefulWidget {
 }
 
 class _EventViewPageState extends State<EventViewPage> {
+  Color mainColor = const Color(0xff083c74);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: mainColor,
         title: const Text('Event Details'),
+        centerTitle: true,
         actions: widget.event.isCustom
             ? [
                 IconButton(

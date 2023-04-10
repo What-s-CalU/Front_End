@@ -3,6 +3,7 @@ import 'package:flutter_application_1/pages/AddEventPage.dart';
 import 'package:flutter_application_1/pages/categorySubscriptionPage.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
+import '../model/appointmentBuilder.dart';
 import '../model/eventDataSource.dart';
 import '../pageUtility/navigationBar.dart';
 import '../provider/eventProvider.dart';
@@ -14,7 +15,7 @@ class OverviewPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final eventProvider = Provider.of<EventProvider>(context);
     Color mainColor = const Color(0xff083c74);
-
+    final CalendarController calendarController = CalendarController();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: mainColor,
@@ -60,7 +61,7 @@ class OverviewPage extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8.0),
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.all(5),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -74,11 +75,13 @@ class OverviewPage extends StatelessWidget {
                         ),
                         const SizedBox(height: 10),
                         SizedBox(
-                          height: 200,
+                          height: 270,
                           child: SfCalendar(
                             view: CalendarView.schedule,
                             headerHeight: 0,
                             dataSource: EventDataSource(eventProvider.getEventsByDaysAway(30)),
+                            controller: calendarController,
+                            appointmentBuilder: (context, details) => appointmentBuilder(context, details, calendarController),
                             scheduleViewSettings: const ScheduleViewSettings(
                                 hideEmptyScheduleWeek: true,
                                 monthHeaderSettings: MonthHeaderSettings(
