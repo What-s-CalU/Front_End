@@ -20,13 +20,11 @@ class EventProvider extends ChangeNotifier {
 
   List<Event> get events => _events;
 
-  DateTime _selectedDate = DateTime.now();
-
-  DateTime get selectedDate => _selectedDate;
-
-  void setDate(DateTime date) => _selectedDate = date;
-
-  List<Event> get eventsOfSelectedDate => _events;
+  void logout(){
+    _events.clear();
+    _username = '';
+    _categoryColorMapping.removeColorsForCategories();
+  }
 
   void addEvent(Event event) {
     _events.add(event);
@@ -40,6 +38,11 @@ class EventProvider extends ChangeNotifier {
 
   void removeEvent(Event event) {
     _events.remove(event);
+    notifyListeners();
+  }
+
+  void removeEventsByCategory(String category) {
+    _events.removeWhere((event) => event.category == category);
     notifyListeners();
   }
 
@@ -63,15 +66,10 @@ class EventProvider extends ChangeNotifier {
     return _events.where((event) => event.startTime.isAfter(startRange) && event.startTime.isBefore(endRange)).toList();
   }
 
-    int getNumberOfEventsByCategory(String category, int daysAwayFilter) {
-    final DateTime now = DateTime.now();
-    final DateTime startRange = DateTime(now.year, now.month, now.day);
-    final DateTime daysAway = startRange.add(Duration(days: daysAwayFilter));
+    int getNumberOfEventsByCategory(String category) {;
 
     return _events.where((event) {
-      return event.category == category &&
-          event.startTime.isAfter(startRange) &&
-          event.startTime.isBefore(daysAway);
+      return event.category == category;
     }).length;
   }
 
@@ -93,6 +91,6 @@ class EventProvider extends ChangeNotifier {
         categoryColorMapping.setColorForCategory(event.category!, event.color);
       }
     }
-    }
+  }
 
 }

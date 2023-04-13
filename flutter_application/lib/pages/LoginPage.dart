@@ -16,6 +16,7 @@ class MyLoginPage extends StatefulWidget {
 class _MyLoginPageState extends State<MyLoginPage> {
   bool _showPassword = false;
   final _loginformKey = GlobalKey<FormState>();
+  bool _clicked = false;
 
   // Constants used by the page builder below.
   final TextEditingController _usernameController = TextEditingController();
@@ -34,6 +35,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
   @override
   // Build script for this page
   Widget build(BuildContext context) {
+    final eventProvider = Provider.of<EventProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: mainColor,
@@ -57,26 +59,28 @@ class _MyLoginPageState extends State<MyLoginPage> {
                   buildForgotPassword(context),
       
                   // Script for the signin button (inline)
-                  buildSignInButton(context, _usernameController, _passwordController, () async {
+                  buildSignInButton(context, _usernameController, _passwordController, _clicked, () async {
+                    final navigator = Navigator.of(context);
                     if (_loginformKey.currentState!.validate()) {
-                      int statcode = await (sendCredentials(
+                      setState(() => _clicked = true);
+                      final statcode = await (sendCredentials(
                       _usernameController.text, _passwordController.text));
                       if (statcode == 200) {
                         print("yay we login");
                         print(statcode);
 
-                        // Get the event provider
-                        final eventProvider = Provider.of<EventProvider>(context, listen: false);
-
                         // Set the username in the event provider
                         eventProvider.username = _usernameController.text.toUpperCase();
 
                         // Call sendGetUserSubscribedEvents and add the events to the event provider
-                        int eventsStatusCode = await sendGetUserSubscribedEvents(eventProvider.username, eventProvider);
-                        print("Events loaded with status code: $eventsStatusCode");
+                        final eventsStatusCode = await sendGetUserSubscribedEvents(eventProvider.username, eventProvider);
+                        if(eventsStatusCode == 200 && statcode == 200){
+                          print("Events loaded with status code: $eventsStatusCode");
+                          // Navigate to the OverviewPage
+                          navigator.push(MaterialPageRoute(builder: (context) => const OverviewPage()));
+                        }
+                        setState(() => _clicked = false);
 
-                        // Navigate to the OverviewPage
-                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const OverviewPage()));
                       } else {
                         print(statcode);
                       }

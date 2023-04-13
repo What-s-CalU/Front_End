@@ -44,21 +44,15 @@ class _EventContainerState extends State<EventContainer> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                customText('Title:', 14, FontWeight.bold),
-                customText(widget.event.title, 14, FontWeight.normal),
+                customText('Title: ', widget.event.title, 14, FontWeight.bold),
                 const SizedBox(height: 4),
-                customText('Date:', 14, FontWeight.bold),
-                customText(DateFormat.yMMMMd().format(widget.event.startTime),
-                    14, FontWeight.normal),
+                customText('Date: ',DateFormat.yMMMMd().format(widget.event.startTime), 14, FontWeight.bold),
                 const SizedBox(height: 4),
-                customText('Time:', 14, FontWeight.bold),
-                customText(
-                    '${DateFormat.jm().format(widget.event.startTime)} - ${DateFormat.jm().format(widget.event.endTime)}',
-                    14,
-                    FontWeight.normal),
+                customText('Time: ',  '${DateFormat.jm().format(widget.event.startTime)} - ${DateFormat.jm().format(widget.event.endTime)}', 14, FontWeight.bold),
                 const SizedBox(height: 4),
-                customText('Description:', 14, FontWeight.bold),
-                customText(widget.event.description!, 12, FontWeight.normal),
+                customText('Description: ',widget.event.description!, 14, FontWeight.bold),
+                const SizedBox(height: 4),
+                customText('Category: ', widget.event.category!, 14, FontWeight.bold),
               ],
             ),
           ],
@@ -68,13 +62,25 @@ class _EventContainerState extends State<EventContainer> {
   }
 }
 
-Text customText(String text, double fontSize, FontWeight fontWeight) {
-  return Text(
-    text,
-    style: TextStyle(
-      color: Colors.white,
-      fontSize: fontSize,
-      fontWeight: fontWeight,
-    ),
+Row customText(String text, String text2, double fontSize, FontWeight fontWeight) {
+  return Row(
+    children: [
+      Text(
+        text,
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: fontSize,
+          fontWeight: fontWeight,
+        ),
+      ),
+      Text(
+        text2,
+        style: const TextStyle(
+          color: Colors.white,
+          fontSize: 14,
+        ),
+      ),
+    ],
+    
   );
 }

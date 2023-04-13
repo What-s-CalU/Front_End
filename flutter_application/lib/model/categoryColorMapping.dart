@@ -15,5 +15,8 @@ class CategoryColorMapping {
     _categoryColorMapping[category] = color;
   }
 
+  void removeColorsForCategories() {
+    _categoryColorMapping.clear();
+  }
   
 }

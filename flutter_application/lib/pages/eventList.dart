@@ -8,6 +8,7 @@ import '../pageUtility/categoryCircleNumber.dart';
 import '../pageUtility/navigationBar.dart';
 
 class EventList extends StatefulWidget {
+  const EventList({super.key});
   @override
   _EventListState createState() => _EventListState();
 }
@@ -15,7 +16,6 @@ class EventList extends StatefulWidget {
 class _EventListState extends State<EventList> {
   Color mainColor = const Color(0xff083c74);
   String? selectedCategory;
-  int daysAwayFilter = 7;
 
   List<String> _caluCategories = [];
   List<String> _customCategories = [];
@@ -28,29 +28,15 @@ class _EventListState extends State<EventList> {
     }
   }
 
-  void updateCategories() {
-    final eventProvider = Provider.of<EventProvider>(context, listen: false);
-    setState(() {
-      _caluCategories = eventProvider.getCaluEventCategories();
-      _customCategories = eventProvider.getCustomEventCategories();
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      updateCategories();
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     final eventProvider = Provider.of<EventProvider>(context, listen: true);
-    List<Event> filteredEvents = eventProvider.getEventsByDaysAway(daysAwayFilter);
+    _caluCategories = eventProvider.getCaluEventCategories();
+    _customCategories = eventProvider.getCustomEventCategories();
+    List<Event> Events = eventProvider.events;
 
     if (selectedCategory != null) {
-      filteredEvents = filteredEvents.where((event) => event.category == selectedCategory).toList();
+      Events = Events.where((event) => event.category == selectedCategory).toList();
     }
 
     return Scaffold(
@@ -71,28 +57,6 @@ class _EventListState extends State<EventList> {
               Navigator.of(context).push(MaterialPageRoute(builder: (context) => const AddEventPage()));
             },
           ),
-          PopupMenuButton<int>(
-            itemBuilder: (BuildContext context) => [
-              const PopupMenuItem<int>(
-                value: 1,
-                child: Text('1 day'),
-              ),
-              const PopupMenuItem<int>(
-                value: 7,
-                child: Text('7 days'),
-              ),
-              const PopupMenuItem<int>(
-                value: 30,
-                child: Text('30 days'),
-              ),
-            ],
-            onSelected: (int value) {
-              setState(() {
-                daysAwayFilter = value;
-              });
-            },
-            icon: const Icon(Icons.filter_alt),
-          ),
         ],
       ),
       body: Padding(
@@ -100,7 +64,7 @@ class _EventListState extends State<EventList> {
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: filteredEvents
+            children: Events
                 .map((event) => EventContainer(
                       event: event,
                     ))
@@ -128,7 +92,7 @@ class _EventListState extends State<EventList> {
               title: const Text('CalU', style: TextStyle(fontSize: 18)),
               leading: Icon(Icons.school, color: mainColor),
               children: _caluCategories.map((category) {
-                int categoryCount = eventProvider.getNumberOfEventsByCategory(category, daysAwayFilter);
+                int categoryCount = eventProvider.getNumberOfEventsByCategory(category);
                 return ListTile(
                   title: Text(category, style: const TextStyle(fontSize: 16)),
                   trailing: CategoryCircleNumber(color: eventProvider.categoryColorMapping.getColorForCategory(category), count: categoryCount),
@@ -145,7 +109,7 @@ class _EventListState extends State<EventList> {
               title: const Text('Custom', style: TextStyle(fontSize: 18)),
               leading: Icon(Icons.create, color: mainColor),
               children: _customCategories.map((category) {
-              int categoryCount = eventProvider.getNumberOfEventsByCategory(category, daysAwayFilter);
+              int categoryCount = eventProvider.getNumberOfEventsByCategory(category);
                 return ListTile(
                   title: Text(category, style: const TextStyle(fontSize: 16)),
                   leading: const SizedBox(width: 40),

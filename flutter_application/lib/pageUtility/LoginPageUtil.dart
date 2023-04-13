@@ -195,6 +195,7 @@ Widget buildSignInButton(
   BuildContext context,
   TextEditingController usernameController,
   TextEditingController passwordController,
+  bool clicked,
   VoidCallback onPressed,
 ) {
   return Padding(
@@ -203,7 +204,9 @@ Widget buildSignInButton(
       width: double.infinity,
       height: 40,
       child: TextButton(
-        onPressed: onPressed,
+        onPressed: clicked 
+                ? null
+                : onPressed,
         style: TextButton.styleFrom(backgroundColor: mainColor),
         child: const Text(
           'SIGN IN',

@@ -109,6 +109,41 @@ Future<int> sendGetUserSubscribedEvents(String username, EventProvider eventProv
   return response.statusCode;
 }
 
+Future<List<Map<String, dynamic>>> sendGetCaluCategoryNamesWithSubscriptionStatus(String username) async {
+  final response = await _sendJsonRequest({
+    'request_type': 'get_calu_category_names',
+    'username': username,
+  });
+
+  if (response.statusCode == 200) {
+    List<dynamic> jsonResponse = json.decode(response.body);
+    return jsonResponse.cast<Map<String, dynamic>>();
+  } else {
+    return [];
+  }
+}
+
+Future<void> sendUpdateCategorySubscription(String username, String categoryName, bool isSubscribed) async {
+  final response = await _sendJsonRequest({
+    'request_type': 'update_calu_category_subscription',
+    'username': username,
+    'category_name': categoryName,
+    'is_subscribed': isSubscribed ? 1 : 0,
+  });
+}
+
+Future<void> getCaluCategoryEvents(String categoryName, EventProvider eventProvider) async {
+  final response = await _sendJsonRequest({
+    'request_type': 'get_calu_category_events',
+    'category_name': categoryName,
+  });
+  if (response.statusCode == 200) {
+    final List<Event> events = parseJsonToEvents(response.body);
+    eventProvider.addEvents(events);
+    eventProvider.setColorsForCategories(events);
+  }
+}
+
 Future<http.Response> _sendJsonRequest(Map<String, dynamic> requestBody) async {
   return await http.post(
     Uri.parse("http://10.0.2.2:80"),
