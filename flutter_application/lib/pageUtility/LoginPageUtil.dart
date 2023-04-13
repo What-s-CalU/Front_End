@@ -1,3 +1,5 @@
+import 'package:flutter_application_1/pages/forgotPassword.dart';
+
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -239,6 +241,7 @@ Widget buildForgotPassword(BuildContext context) {
       child: GestureDetector(
         onTap: () {
           print('Forgot Password...');
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) => const MyResetPage()));
         },
         child: const Text(
           "Forgot Password?",
