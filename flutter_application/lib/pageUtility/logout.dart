@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/httpRequests/httpRequests.dart';
 import 'package:flutter_application_1/provider/eventProvider.dart';
 import 'package:provider/provider.dart';
 ///shows a dialog box for the user to choose to logout.
@@ -23,8 +24,8 @@ Future<void> showLogoutConfirmation(BuildContext context) async {
             child: const Text('Yes'),
             onPressed: () {
               // Perform the logout action here
+              sendLogout(eventProvider.user.getName, eventProvider.user.getChecsum, eventProvider);
               eventProvider.logout();
-
               Navigator.of(context).pop();
               Navigator.of(context).pop();
             },

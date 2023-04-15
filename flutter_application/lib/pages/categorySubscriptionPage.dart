@@ -37,7 +37,7 @@ class _CategorySubscriptionPageState extends State<CategorySubscriptionPage> {
 
     final response = await _sendJsonRequest({
       'request_type': 'get_calu_category_names',
-      'username': eventProvider.username,
+      'username': eventProvider.user.getName,
     });
 
     if (response.statusCode == 200) {
@@ -62,7 +62,7 @@ class _CategorySubscriptionPageState extends State<CategorySubscriptionPage> {
       eventProvider.addCategory(category);
       await getCaluCategoryEvents(category.id, eventProvider);
     }
-    await sendUpdateCategorySubscription(eventProvider.username, category.id, isSubscribed);
+    await sendUpdateCategorySubscription(eventProvider.user.getName, category.id, isSubscribed, eventProvider);
   }
 
   @override

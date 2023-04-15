@@ -5,8 +5,13 @@ import '../model/EventCategory.dart';
 import '../model/Events.dart';
 import '../provider/eventProvider.dart';
 
-Future<int> sendCredentials(String username, String password) async {
+Future<int> sendCredentials(String username, String password, EventProvider eventProvider) async {
   final response = await _sendJsonRequest({'request_type': 'signin', 'username': username, 'password': password});
+
+  final jsonresponse = json.decode(response.body);
+  eventProvider.user.id = (jsonresponse['id']);
+  eventProvider.user.name = username;
+  eventProvider.user.checksum = (jsonresponse['checksum']);
   return response.statusCode;
 }
 
@@ -17,7 +22,7 @@ Future<int> sendSignUp(String firstName, String lastName, String email, String u
     'lastName': lastName,
     'email': email,
     'username': username,
-    'password': password,
+    'password': password, 
   });
   return response.statusCode;
 }
@@ -76,6 +81,7 @@ Future<void> sendAddCustomEvent(String username, DateTime startTime, DateTime en
     'description': description,
     'categoryID': categoryID,
     'isCustom': true,
+    'checksum' : eventProvider.user.checksum,
   });
   if (response.statusCode == 200) {
     final jsonResponse = json.decode(response.body);
@@ -90,6 +96,7 @@ Future<void> sendAddCustomEvent(String username, DateTime startTime, DateTime en
       'categoryID': categoryID,
       'isCustom': 1,
       'flag': 0,
+      'checksum' : eventProvider.user.checksum,
     });
 
     eventProvider.addEvent(newEvent);
@@ -98,10 +105,11 @@ Future<void> sendAddCustomEvent(String username, DateTime startTime, DateTime en
 
 ///delete custom event from the database
 Future<void> sendDeleteCustomEvent(
-    int eventID) async {
+    int eventID, EventProvider eventProvider) async {
     await _sendJsonRequest({
     'request_type': 'delete_event',
     'event_id': eventID,
+    'checksum' : eventProvider.user.checksum,
   });
 }
 
@@ -110,7 +118,9 @@ Future<int> sendGetUserSubscribedEvents(String username, EventProvider eventProv
   final response = await _sendJsonRequest({
     'request_type': 'get_user_subscribed_events',
     'username': username,
+    'checksum' : eventProvider.user.checksum,
   });
+  print(eventProvider.user.checksum);
   print('Received JSON data: ${response.body}');
 
   if (response.statusCode == 200) {
@@ -125,6 +135,7 @@ Future<void> sendGetUserSubscribedCategories(String username, EventProvider even
   final response = await _sendJsonRequest({
     'request_type': 'get_user_subscribed_categories',
     'username': username,
+    'checksum' : eventProvider.user.checksum,
   });
 
   if (response.statusCode == 200) {
@@ -135,12 +146,13 @@ Future<void> sendGetUserSubscribedCategories(String username, EventProvider even
 }
 
 ///updates the status of a user subscription to a category in the server
-Future<void> sendUpdateCategorySubscription(String username, int categoryID, bool isSubscribed) async {
+Future<void> sendUpdateCategorySubscription(String username, int categoryID, bool isSubscribed, EventProvider eventProvider) async {
   await _sendJsonRequest({
     'request_type': 'update_calu_category_subscription',
     'username': username,
     'category_id': categoryID,
     'is_subscribed': isSubscribed ? 1 : 0,
+    'checksum' : eventProvider.user.checksum,
   });
 }
 
@@ -149,6 +161,7 @@ Future<void> getCaluCategoryEvents(int categoryID, EventProvider eventProvider) 
   final response = await _sendJsonRequest({
     'request_type': 'get_calu_category_events',
     'category_id': categoryID,
+    'checksum' : eventProvider.user.checksum,
   });
   if (response.statusCode == 200) {
     final List<Event> events = parseJsonToEvents(response.body);
@@ -163,6 +176,7 @@ Future<int> sendAddCategory(String username, String categoryName, Color category
     'username' : username,
     'category_name': categoryName,
     'color' : categoryColor.value,
+    'checksum' : eventProvider.user.checksum,
   });
   final jsonResponse = json.decode(response.body);
   int categoryId = jsonResponse['category_id'];
@@ -170,9 +184,18 @@ Future<int> sendAddCategory(String username, String categoryName, Color category
       id: categoryId,
       name: categoryName,
       color: categoryColor,
+      userID: eventProvider.user.getId, 
     )
   );
   return categoryId;
+}
+
+Future<void> sendLogout(String username, String checksum, EventProvider eventProvider) async {
+  await _sendJsonRequest({
+    'request_type': 'signout',
+    'username' : username,
+    'checksum' : eventProvider.user.checksum,
+  });
 }
 
 ///base request template

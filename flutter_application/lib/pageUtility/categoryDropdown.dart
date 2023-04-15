@@ -119,7 +119,7 @@ Future<int?> _showAddNewCategoryDialog(BuildContext context) async {
               if (categoryNameController.text.isNotEmpty) {
                 // Add new category with the color
                 final eventProvider = Provider.of<EventProvider>(context, listen: false);
-                int categoryId = await sendAddCategory(eventProvider.username, categoryNameController.text, selectedColor, eventProvider);
+                int categoryId = await sendAddCategory(eventProvider.user.getName, categoryNameController.text, selectedColor, eventProvider);
 
                 Navigator.of(context).pop(categoryId);
               }

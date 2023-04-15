@@ -5,18 +5,14 @@ import 'package:url_launcher/url_launcher.dart';
 
 Color mainColor = const Color(0xff083c74);
 
-/*
-  A widget function that returns a container with an image logo inside it.
-  The container has a fixed mainColor background and takes the full width of its parent.
-  The logo image has a fixed height and width of 200 pixels and is centered inside the container.
-
-  parameters : none
-
-  Return: Widget Object
-
-  Author: Thomas Terhune
-*/
-Widget logoInContainer() {
+///  Logo 200x200 in a container with main color
+///
+///  Parameters : none
+///
+///  Return: Padding Object
+///
+///  Author: Thomas Terhune
+Padding logoInContainer() {
   const EdgeInsets padding = EdgeInsets.fromLTRB(0, 0, 0, 20);
   const EdgeInsets innerPadding = EdgeInsets.fromLTRB(0, 20, 0, 20);
 
@@ -37,17 +33,16 @@ Widget logoInContainer() {
   );
 }
 
-/*
-  Builds a username text field with validation to ensure the field is not empty.
 
-  Parameters: 
-    controller: A TextEditingController object for managing the input and decoration of the TextFormField widget.
-
-  Returns: 
-    A Padding widget containing the TextFormField with validation.
-
-  Author: Thomas Terhune
-*/
+///  Builds a username text field with validation to ensure the field is not empty.
+///
+///  Parameters: 
+///    controller: A TextEditingController object for managing the input and decoration of the TextFormField widget.
+///
+///  Returns: 
+///    A Padding widget containing the TextFormField with validation.
+///
+///  Author: Thomas Terhune
 Padding buildUsernameTextFieldPadding(TextEditingController controller) {
   return Padding(
     padding: const EdgeInsets.fromLTRB(40, 0, 40, 5),
@@ -68,18 +63,18 @@ Padding buildUsernameTextFieldPadding(TextEditingController controller) {
   );
 }
 
-/*
-  Builds a password text field with validation to ensure the field is not empty.
 
-  Parameters:
-    controller: a TextEditingController object for managing the input and decoration of the TextField widget.
-    showPassword: a boolean value indicating whether or not the password should be obscured.
-    toggleVisibility: a VoidCallback function for toggling the visibility of the password.
+///  Builds a password text field with validation to ensure the field is not empty.
+///
+///  Parameters:
+///    controller: a TextEditingController object for managing the input and decoration of the TextField widget.
+///    showPassword: a boolean value indicating whether or not the password should be obscured.
+///    toggleVisibility: a VoidCallback function for toggling the visibility of the password.
+///
+///  Return: A Padding widget containing the TextFormField with validation.
+///
+///  Author: Thomas Terhune
 
-  Return: A Padding widget containing the TextFormField with validation.
-
-  Author: Thomas Terhune
-*/
 Padding buildPasswordTextFieldPadding(
     TextEditingController controller, bool showPassword, VoidCallback toggleVisibility) {
   return Padding(
@@ -108,22 +103,19 @@ Padding buildPasswordTextFieldPadding(
   );
 }
 
-/*
-  A widget function that returns a Column widget containing an IconButton widget and a Text widget.
-  The IconButton widget contains an icon and its color is set to the mainColor constant.
-  When pressed, it launches the URL passed as a String argument using the _launchUrl function.
-  The Text widget displays the text passed as a String argument and has a black color.
 
-  Parameters:
-    icon: an IconData object representing the icon to be displayed.
-    text: a String object representing the text to be displayed.
-    url: a String object representing the URL to be launched when the IconButton is pressed.
-
-  Return: Widget object
-
-  Author: Thomas Terhune
-*/
-Widget buildIconButtonWithText(IconData icon, String text, String url) {
+/// Icon Button with text underneath which launches a passed url
+///
+///  Parameters:
+///    icon: an IconData object representing the icon to be displayed.
+///    text: a String object representing the text to be displayed.
+///    url: a String object representing the URL to be launched when the IconButton is pressed.
+///
+///  Return: Column object
+///
+///  Author: Thomas Terhune
+///
+Column buildIconButtonWithText(IconData icon, String text, String url) {
   return Column(
     children: [
       IconButton(
@@ -143,20 +135,18 @@ Widget buildIconButtonWithText(IconData icon, String text, String url) {
   );
 }
 
-/*
-  A widget function that returns a Padding widget containing a TextButton widget with the text "SIGN UP".
-  The TextButton widget has a background color of mainColor constant and a fixed width and height.
-  When pressed, it calls the function passed as a VoidCallback argument.
 
-  Parameters:
-    context: a BuildContext object.
-    onPressed: a VoidCallback function to be called when the TextButton is pressed.
 
-  Return: Widget object
-
-  Author: Thomas Terhune
-*/
-Widget buildSignUpButton(BuildContext context, VoidCallback onPressed) {
+///  Sign Up Button with onPressed functionality passed in
+///
+///  Parameters:
+///    context: a BuildContext object.
+///    onPressed: a VoidCallback function to be called when the TextButton is pressed.
+///
+///  Return: Padding object
+///
+///  Author: Thomas Terhune
+Padding buildSignUpButton(BuildContext context, VoidCallback onPressed) {
   return Padding(
     padding: const EdgeInsets.fromLTRB(60, 0, 60, 10),
     child: SizedBox(
@@ -176,24 +166,21 @@ Widget buildSignUpButton(BuildContext context, VoidCallback onPressed) {
   );
 }
 
-/*
-  A widget function that returns a Padding widget containing a TextButton widget with the text "SIGN IN".
-  The TextButton widget has a background color of mainColor constant and a fixed width and height.
-  When pressed, it calls the function passed as a VoidCallback argument.
-  The TextButton widget is bound to two TextEditingController objects for managing the input of the username and password.
-  These two TextEditingController objects are passed as arguments.
 
-  Parameters:
-    context: a BuildContext object.
-    usernameController: a TextEditingController object for managing the input of the username.
-    passwordController: a TextEditingController object for managing the input of the password.
-    onPressed: a VoidCallback function to be called when the TextButton is pressed.
 
-  Return: Widget object
-
-  Author: Thomas Terhune
-*/
-Widget buildSignInButton(
+  
+///  Sign In Button With onPressed action pessed in 
+///
+///  Parameters:
+///    context: a BuildContext object.
+///    usernameController: a TextEditingController object for managing the input of the username.
+///    passwordController: a TextEditingController object for managing the input of the password.
+///    onPressed: a VoidCallback function to be called when the TextButton is pressed.
+///
+///  Return: Padding object
+///
+///  Author: Thomas Terhune
+Padding buildSignInButton(
   BuildContext context,
   TextEditingController usernameController,
   TextEditingController passwordController,
@@ -221,24 +208,23 @@ Widget buildSignInButton(
   );
 }
 
-/*
-  A widget function that returns a Padding widget containing a GestureDetector widget with the text "Forgot Password?".
-  The GestureDetector widget calls the print() function when tapped.
-  The Padding widget has a top-right alignment and padding of 0 on the left and bottom and 20 on the right.
 
-  Parameters:
-    context: a BuildContext object.
 
-  Return: Widget object
-
-  Author: Thomas Terhune
-*/
-Widget buildForgotPassword(BuildContext context) {
+///  Forgot password text with inkwell
+///  when clicked goes to reset password page
+/// 
+///  Parameters:
+///    context: a BuildContext object.
+///
+///  Return: Padding object
+///
+///  Author: Thomas Terhune
+Padding buildForgotPassword(BuildContext context) {
   return Padding(
     padding: const EdgeInsets.fromLTRB(0, 0, 40, 20),
     child: Align(
       alignment: Alignment.topRight,
-      child: GestureDetector(
+      child: InkWell(
         onTap: () {
           print('Forgot Password...');
           Navigator.of(context).push(MaterialPageRoute(builder: (context) => const MyResetPage()));
@@ -251,19 +237,16 @@ Widget buildForgotPassword(BuildContext context) {
   );
 }
 
-/*
-  A Future function that launches a URL.
-  The function takes a Uri object as input and returns a Future<void>.
-  It calls the launchUrl() function to launch the URL.
-  If the URL launch fails, the function throws an Exception.
 
-  Parameters:
-    url: a Uri object representing the URL to be launched.
 
-  Return: Future object representing the result of launching the URL.
-
-  Author: Thomas Terhune
-*/
+///  launch a specified url
+///
+///  Parameters:
+///    url: a Uri object representing the URL to be launched.
+///
+///  Return: Future object representing the result of launching the URL.
+///
+///  Author: Thomas Terhune
 Future<void> _launchUrl(Uri url) async {
   if (!await launchUrl(url)) {
     throw Exception('Could not launch $url');

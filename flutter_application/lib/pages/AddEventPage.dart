@@ -66,7 +66,7 @@ class _AddEventPageState extends State<AddEventPage> {
                     if (_formKey.currentState!.validate()) {
                       
                       await sendAddCustomEvent(
-                        eventProvider.username, 
+                        eventProvider.user.getName, 
                         convertStringsToDateTime(_dateController.text, _fromTimeController.text),
                         convertStringsToDateTime(_dateController.text, _toTimeController.text),
                         _titleController.text,

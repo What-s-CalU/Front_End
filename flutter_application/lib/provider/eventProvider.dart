@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/model/Events.dart';
 import '../model/EventCategory.dart';
+import '../model/User.dart';
 
 class EventProvider extends ChangeNotifier {
   //events
@@ -101,21 +102,14 @@ class EventProvider extends ChangeNotifier {
   }
 
   //user TODO
-  String _username = '';
-
-  String get username => _username;
-
-  set username(String value) {
-    _username = value;
-    notifyListeners();
-  }
-
+  final User _user = User(id: null, name: "", checksum: "");
+  User get user => _user;
 
 
   void logout(){
     _events.clear();
     _categories.clear();
-    _username = '';
+    _user.setnull();
   }
 
 

@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/pageUtility/notifcation.dart';
 import 'package:flutter_application_1/pages/SignUpPage.dart';
 import 'package:flutter_application_1/pages/overviewPage.dart';
 import 'package:provider/provider.dart';
 import '../httpRequests/httpRequests.dart';
 import '../pageUtility/LoginPageUtil.dart';
 import '../provider/eventProvider.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
+
 
 class MyLoginPage extends StatefulWidget {
   const MyLoginPage({super.key});
@@ -17,6 +21,8 @@ class _MyLoginPageState extends State<MyLoginPage> {
   bool _showPassword = false;
   final _loginformKey = GlobalKey<FormState>();
   bool _clicked = false;
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+
 
   // Constants used by the page builder below.
   final TextEditingController _usernameController = TextEditingController();
@@ -30,6 +36,19 @@ class _MyLoginPageState extends State<MyLoginPage> {
     setState(() {
       _showPassword = !_showPassword;
     });
+  }
+
+  @override
+  void initState(){
+    super.initState();
+    requestNotificationPermission();
+  }
+
+  Future<void> requestNotificationPermission() async {
+    final androidPlugin = flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>();
+    if (androidPlugin != null) {
+      await androidPlugin.requestPermission();
+    }
   }
 
   @override
@@ -61,21 +80,21 @@ class _MyLoginPageState extends State<MyLoginPage> {
                   // Script for the signin button (inline)
                   buildSignInButton(context, _usernameController, _passwordController, _clicked, () async {
                     final navigator = Navigator.of(context);
+                                              //showNotification();
                     setState(() => _clicked = true);
                     if (_loginformKey.currentState!.validate()) {
-                      final statcode = await (sendCredentials(_usernameController.text, _passwordController.text));
+                      final statcode = await (sendCredentials(_usernameController.text, _passwordController.text, eventProvider));
                       if (statcode == 200) {
                         print("yay we login");
                         print(statcode);
                         // Set the username in the event provider
-                        eventProvider.username = _usernameController.text.toUpperCase();
-
+                        showNotification();
                         // Call sendGetUserSubscribedEvents and add the events to the event provider
-                        final eventsStatusCode = await sendGetUserSubscribedEvents(eventProvider.username, eventProvider);
+                        final eventsStatusCode = await sendGetUserSubscribedEvents(_usernameController.text.toUpperCase(), eventProvider);
                         if (eventsStatusCode == 200 && statcode == 200) {
                           print("Events loaded with status code: $eventsStatusCode");
 
-                          await sendGetUserSubscribedCategories(eventProvider.username, eventProvider);
+                          await sendGetUserSubscribedCategories(_usernameController.text.toUpperCase(), eventProvider);
                           // Navigate to the OverviewPage
                           navigator.push(MaterialPageRoute(builder: (context) => const OverviewPage()));
                         }

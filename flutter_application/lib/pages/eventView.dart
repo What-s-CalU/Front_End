@@ -29,7 +29,7 @@ class _EventViewPageState extends State<EventViewPage> {
                 IconButton(
                   icon: const Icon(Icons.delete),
                   onPressed: () async {
-                    sendDeleteCustomEvent(widget.event.id);
+                    sendDeleteCustomEvent(widget.event.id, eventProvider);
                     eventProvider.removeEvent(widget.event);
                     Navigator.of(context).pop();
                   },
