@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:ui';
 import 'package:http/http.dart' as http;
-import '../model/Category.dart';
+import '../model/EventCategory.dart';
 import '../model/Events.dart';
 import '../provider/eventProvider.dart';
 
@@ -22,7 +22,7 @@ Future<int> sendSignUp(String firstName, String lastName, String email, String u
   return response.statusCode;
 }
 
-// The first of three handshake events used to signup for a new account.
+///The first of three handshake events used to signup for a new account.
 Future<int> sendSignUpStart(int isReset, String username) async {
   // By default we use the reset type
   String requestType = "reset_start";
@@ -38,7 +38,7 @@ Future<int> sendSignUpStart(int isReset, String username) async {
   return response.statusCode;
 }
 
-// Checks for a given checksum stored locally on the server in a dummy database.
+///Checks for a given checksum stored locally on the server in a dummy database.
 Future<int> sendSignUpContinue(int isReset, String username, String checksum) async {
   // By default we use the reset type
   String requestType = "reset_continue";
@@ -65,7 +65,7 @@ Future<int> sendSignUpEnd(int isReset, String username, String checksum, String 
   return response.statusCode;
 }
 
-//good
+///adds custom event to the databse, adds event to eventProvider Event list with id recieved from the server
 Future<void> sendAddCustomEvent(String username, DateTime startTime, DateTime endTime, String title, String? description, int? categoryID, EventProvider eventProvider) async {
   final response = await _sendJsonRequest({
     'request_type': 'add_custom_event',
@@ -81,7 +81,6 @@ Future<void> sendAddCustomEvent(String username, DateTime startTime, DateTime en
     final jsonResponse = json.decode(response.body);
     int eventId = jsonResponse['ID'];
 
-    // Create an Event instance using Event.fromDict method
     Event newEvent = Event.fromDict({
       'id': eventId,
       'start_time': startTime.toIso8601String(),
@@ -90,16 +89,14 @@ Future<void> sendAddCustomEvent(String username, DateTime startTime, DateTime en
       'description': description,
       'categoryID': categoryID,
       'isCustom': 1,
-      'flag': 0, // Replace with the correct flag value if needed
+      'flag': 0,
     });
 
-    // Add the newEvent to the eventProvider
     eventProvider.addEvent(newEvent);
-  } else {
-    // Handle the error case as needed
   }
 }
 
+///delete custom event from the database
 Future<void> sendDeleteCustomEvent(
     int eventID) async {
     await _sendJsonRequest({
@@ -108,7 +105,7 @@ Future<void> sendDeleteCustomEvent(
   });
 }
 
-//good
+///gets user subscribed events from the server and adds them to the event provider
 Future<int> sendGetUserSubscribedEvents(String username, EventProvider eventProvider) async {
   final response = await _sendJsonRequest({
     'request_type': 'get_user_subscribed_events',
@@ -123,6 +120,7 @@ Future<int> sendGetUserSubscribedEvents(String username, EventProvider eventProv
   return response.statusCode;
 }
 
+///gets user subscribed categories from the server add adds then to this list in the eventprovider
 Future<void> sendGetUserSubscribedCategories(String username, EventProvider eventProvider) async {
   final response = await _sendJsonRequest({
     'request_type': 'get_user_subscribed_categories',
@@ -136,6 +134,7 @@ Future<void> sendGetUserSubscribedCategories(String username, EventProvider even
   }
 }
 
+///updates the status of a user subscription to a category in the server
 Future<void> sendUpdateCategorySubscription(String username, int categoryID, bool isSubscribed) async {
   await _sendJsonRequest({
     'request_type': 'update_calu_category_subscription',
@@ -145,6 +144,7 @@ Future<void> sendUpdateCategorySubscription(String username, int categoryID, boo
   });
 }
 
+///get all calu category events from the server and add them to the even provider
 Future<void> getCaluCategoryEvents(int categoryID, EventProvider eventProvider) async {
   final response = await _sendJsonRequest({
     'request_type': 'get_calu_category_events',
@@ -156,6 +156,7 @@ Future<void> getCaluCategoryEvents(int categoryID, EventProvider eventProvider) 
   }
 }
 
+///adds a new user created category to the database, returns id and adds it to the event provider
 Future<int> sendAddCategory(String username, String categoryName, Color categoryColor, EventProvider eventProvider) async {
   final response = await _sendJsonRequest({
     'request_type': 'add_category',
@@ -174,7 +175,7 @@ Future<int> sendAddCategory(String username, String categoryName, Color category
   return categoryId;
 }
 
-//good
+///base request template
 Future<http.Response> _sendJsonRequest(Map<String, dynamic> requestBody) async {
   return await http.post(
     Uri.parse("http://10.0.2.2:80"),
@@ -182,8 +183,7 @@ Future<http.Response> _sendJsonRequest(Map<String, dynamic> requestBody) async {
     body: json.encode(requestBody),
   );
 }
-
-//good
+///parse json to event object
 List<Event> parseJsonToEvents(String jsonString) {
   final List<dynamic> parsedJson = jsonDecode(jsonString);
   return parsedJson.map((eventDict) => Event.fromDict(eventDict as Map<String, dynamic>)).toList();

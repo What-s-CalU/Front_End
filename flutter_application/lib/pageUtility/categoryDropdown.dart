@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/httpRequests/httpRequests.dart';
-import 'package:flutter_application_1/model/Category.dart';
 import 'package:flutter_application_1/pageUtility/colorPicker.dart';
 import 'package:provider/provider.dart';
 import '../provider/eventProvider.dart';

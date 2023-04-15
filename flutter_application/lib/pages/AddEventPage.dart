@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/model/Category.dart';
+import 'package:flutter_application_1/model/EventCategory.dart';
 import 'package:flutter_application_1/pageUtility/addEventPageUtil.dart';
 import 'package:flutter_application_1/provider/eventProvider.dart';
 import 'package:provider/provider.dart';

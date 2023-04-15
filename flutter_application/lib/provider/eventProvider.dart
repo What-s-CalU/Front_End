@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/model/Events.dart';
-import '../model/Category.dart';
+import '../model/EventCategory.dart';
 
 class EventProvider extends ChangeNotifier {
   //events
@@ -100,7 +100,7 @@ class EventProvider extends ChangeNotifier {
     return _categories.firstWhere((category) => category.id == categoryId);
   }
 
-  //user
+  //user TODO
   String _username = '';
 
   String get username => _username;

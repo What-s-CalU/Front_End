@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import '../httpRequests/httpRequests.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import '../model/Category.dart';
+import '../model/EventCategory.dart';
 
 class CategorySubscriptionPage extends StatefulWidget {
   const CategorySubscriptionPage({super.key});

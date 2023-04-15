@@ -1,4 +1,5 @@
 import 'package:flutter/scheduler.dart';
+import 'package:flutter_application_1/pageUtility/logout.dart';
 import 'package:flutter_application_1/pages/AddEventPage.dart';
 import 'package:flutter_application_1/provider/eventProvider.dart';
 import 'package:provider/provider.dart';
@@ -26,82 +27,91 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     final eventProvider = Provider.of<EventProvider>(context);
     final events = eventProvider.events;
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: mainColor,
-        title: AppBarTitle(title: appBarTitle),
-        centerTitle: true,
-        elevation: 0,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.add),
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: mainColor,
+          title: AppBarTitle(title: appBarTitle),
+          centerTitle: true,
+          elevation: 0,
+          leading: IconButton(
+            icon: const Icon(Icons.logout),
             onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const AddEventPage()));
-            },
+              showLogoutConfirmation(context);
+            }
           ),
-          PopupMenuButton<CalendarView>(
-            itemBuilder: (BuildContext context) => [
-              const PopupMenuItem<CalendarView>(
-                value: CalendarView.day,
-                child: Text('Day'),
-              ),
-              const PopupMenuItem<CalendarView>(
-                value: CalendarView.week,
-                child: Text('Week'),
-              ),
-              const PopupMenuItem<CalendarView>(
-                value: CalendarView.month,
-                child: Text('Month'),
-              ),
-            ],
-            onSelected: (CalendarView value) {
-              setState(() {
-                _calendarController.view = value;
-              });
-            },
-            icon: const Icon(Icons.filter_alt),
-          ),
-        ],
-      ),
-      body: Column(
-        children: <Widget>[
-          Expanded(
-            child: SfCalendar(
-              view: CalendarView.day,
-              controller: _calendarController,
-              allowedViews: const [
-                CalendarView.day,
-                CalendarView.week,
-                CalendarView.month,
-              ],
-              initialDisplayDate: DateTime.now(),
-              dataSource: EventDataSource(events, eventProvider),
-              appointmentBuilder: (context, details) => appointmentBuilder(context, details, _calendarController),
-              monthViewSettings: const MonthViewSettings(
-                showAgenda: true,
-              ),
-              timeSlotViewSettings: const TimeSlotViewSettings(timeIntervalHeight: -1),
-              headerHeight: 0,
-              onViewChanged: (ViewChangedDetails details) {
-                final displayDate = details.visibleDates.first;
-                SchedulerBinding.instance.addPostFrameCallback((_) {
-                  setState(() {
-                    if (_calendarController.view == CalendarView.day) {
-                      appBarTitle = DateFormat('MMMM d, y').format(displayDate);
-                    } else if (_calendarController.view == CalendarView.week) {
-                      appBarTitle = DateFormat('MMMM, y').format(displayDate);
-                    } else if (_calendarController.view == CalendarView.month) {
-                      DateTime nextMonthDisplayDate = DateTime(displayDate.year, displayDate.month + 1, 1);
-                      appBarTitle = DateFormat('MMMM, y').format(nextMonthDisplayDate);
-                    }
-                  });
-                });
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.add),
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => const AddEventPage()));
               },
             ),
-          ),
-        ],
+            PopupMenuButton<CalendarView>(
+              itemBuilder: (BuildContext context) => [
+                const PopupMenuItem<CalendarView>(
+                  value: CalendarView.day,
+                  child: Text('Day'),
+                ),
+                const PopupMenuItem<CalendarView>(
+                  value: CalendarView.week,
+                  child: Text('Week'),
+                ),
+                const PopupMenuItem<CalendarView>(
+                  value: CalendarView.month,
+                  child: Text('Month'),
+                ),
+              ],
+              onSelected: (CalendarView value) {
+                setState(() {
+                  _calendarController.view = value;
+                });
+              },
+              icon: const Icon(Icons.filter_alt),
+            ),
+          ],
+        ),
+        body: Column(
+          children: <Widget>[
+            Expanded(
+              child: SfCalendar(
+                view: CalendarView.day,
+                controller: _calendarController,
+                allowedViews: const [
+                  CalendarView.day,
+                  CalendarView.week,
+                  CalendarView.month,
+                ],
+                initialDisplayDate: DateTime.now(),
+                dataSource: EventDataSource(events, eventProvider),
+                appointmentBuilder: (context, details) => appointmentBuilder(context, details, _calendarController),
+                monthViewSettings: const MonthViewSettings(
+                  showAgenda: true,
+                ),
+                timeSlotViewSettings: const TimeSlotViewSettings(timeIntervalHeight: -1),
+                headerHeight: 0,
+                onViewChanged: (ViewChangedDetails details) {
+                  final displayDate = details.visibleDates.first;
+                  SchedulerBinding.instance.addPostFrameCallback((_) {
+                    setState(() {
+                      if (_calendarController.view == CalendarView.day) {
+                        appBarTitle = DateFormat('MMMM d, y').format(displayDate);
+                      } else if (_calendarController.view == CalendarView.week) {
+                        appBarTitle = DateFormat('MMMM, y').format(displayDate);
+                      } else if (_calendarController.view == CalendarView.month) {
+                        DateTime nextMonthDisplayDate = DateTime(displayDate.year, displayDate.month + 1, 1);
+                        appBarTitle = DateFormat('MMMM, y').format(nextMonthDisplayDate);
+                      }
+                    });
+                  });
+                },
+              ),
+            ),
+          ],
+        ),
+        bottomNavigationBar: customBottomNavigationBar(context),
       ),
-      bottomNavigationBar: customBottomNavigationBar(context),
     );
   }
 }
