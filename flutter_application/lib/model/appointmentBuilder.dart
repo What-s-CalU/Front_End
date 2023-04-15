@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/pages/eventView.dart';
+import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
+import '../provider/eventProvider.dart';
 import 'Events.dart';
 import 'package:intl/intl.dart';
+
 
 Widget appointmentBuilder(BuildContext context,
     CalendarAppointmentDetails details, CalendarController controller) {
@@ -21,7 +24,7 @@ Widget appointmentBuilder(BuildContext context,
       width: details.bounds.width,
       height: details.bounds.height,
       decoration: BoxDecoration(
-        color: event.color,
+        color: Provider.of<EventProvider>(context, listen: false).getCategoryColorById(event.categoryID!),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Padding(

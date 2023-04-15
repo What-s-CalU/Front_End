@@ -1,26 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/httpRequests/httpRequests.dart';
+import 'package:flutter_application_1/model/Category.dart';
 import 'package:flutter_application_1/pageUtility/colorPicker.dart';
 import 'package:provider/provider.dart';
 import '../provider/eventProvider.dart';
 
 class CategoryDropdown extends StatefulWidget {
-  final ValueChanged<String?> onCategoryChanged;
-
-  CategoryDropdown({required this.onCategoryChanged});
+  final ValueChanged<int?> onCategoryChanged;
+  const CategoryDropdown({required this.onCategoryChanged});
   @override
   _CategoryDropdownState createState() => _CategoryDropdownState();
 }
 
 class _CategoryDropdownState extends State<CategoryDropdown> {
-  String? _selectedCategory;
-  bool newCategoryAdded = false;
+  int? _selectedCategory;
 
   @override
   Widget build(BuildContext context) {
     final eventProvider = Provider.of<EventProvider>(context);
     final customCategories = eventProvider.getCustomEventCategories();
 
-    return DropdownButtonFormField<String?>(
+    return DropdownButtonFormField<int?>(
       decoration: const InputDecoration(
         labelText: 'Category',
         labelStyle: TextStyle(color: Colors.grey),
@@ -28,23 +28,22 @@ class _CategoryDropdownState extends State<CategoryDropdown> {
       ),
       value: _selectedCategory,
       items: [
-        if (newCategoryAdded == false)
-          const DropdownMenuItem<String?>(
+          const DropdownMenuItem<int>(
             value: null,
             child: Text('No category'),
           ),
-        ...customCategories.map<DropdownMenuItem<String?>>(
-          (category) => DropdownMenuItem<String?>(
-            value: category,
+        ...customCategories.map<DropdownMenuItem<int>>(
+          (category) => DropdownMenuItem<int>(
+            value: category.getId,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(category),
+                Text(category.getName),
                 Container(
                   width: 20,
                   height: 20,
                   decoration: BoxDecoration(
-                    color: eventProvider.categoryColorMapping.getColorForCategory(category),
+                    color: eventProvider.getCategoryColorById(category.getId),
                     shape: BoxShape.rectangle,
                     borderRadius: BorderRadius.circular(4),
                   ),
@@ -53,58 +52,36 @@ class _CategoryDropdownState extends State<CategoryDropdown> {
             ),
           ),
         ),
-        if (newCategoryAdded == false)
-          const DropdownMenuItem<String?>(
-            value: '_add_new_category_',
+          const DropdownMenuItem<int>(
+            value: -1,
             child: Text('Add new category'),
           ),
-        if (_selectedCategory != null)
-          if (eventProvider.isNotCustomCategory(_selectedCategory!))
-            DropdownMenuItem<String?>(
-              value: _selectedCategory,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(_selectedCategory!),
-                  Container(
-                    width: 20,
-                    height: 20,
-                    decoration: BoxDecoration(
-                      color: eventProvider.categoryColorMapping.getColorForCategory(_selectedCategory!),
-                      shape: BoxShape.rectangle,
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                  ),
-                ],
-              ),
-            ),
       ],
       onChanged: (value) async {
-        if (value == '_add_new_category_') {
-          String? newCategory = await _showAddNewCategoryDialog(context);
+        if (value == -1) {
+          int? newCategory = await _showAddNewCategoryDialog(context);
           if (newCategory != null) {
             setState(() {
               _selectedCategory = newCategory;
-              newCategoryAdded = true;
+              widget.onCategoryChanged(_selectedCategory);
             });
-            widget.onCategoryChanged(newCategory);
           }
         } else {
           setState(() {
             _selectedCategory = value;
+            widget.onCategoryChanged(_selectedCategory);
           });
-          widget.onCategoryChanged(value);
         }
       },
     );
   }
 }
 
-Future<String?> _showAddNewCategoryDialog(BuildContext context) async {
+Future<int?> _showAddNewCategoryDialog(BuildContext context) async {
   final TextEditingController categoryNameController = TextEditingController();
   Color selectedColor = Colors.blue;
 
-  return showDialog<String?>(
+  return showDialog<int>(
     context: context,
     barrierDismissible: false,
     builder: (BuildContext context) {
@@ -139,16 +116,13 @@ Future<String?> _showAddNewCategoryDialog(BuildContext context) async {
           ),
           TextButton(
             child: const Text('Add'),
-            onPressed: () {
+            onPressed: () async {
               if (categoryNameController.text.isNotEmpty) {
                 // Add new category with the color
                 final eventProvider = Provider.of<EventProvider>(context, listen: false);
-                eventProvider.addCustomEventCategory(
-                  categoryNameController.text,
-                  selectedColor,
-                );
+                int categoryId = await sendAddCategory(eventProvider.username, categoryNameController.text, selectedColor, eventProvider);
 
-                Navigator.of(context).pop(categoryNameController.text);
+                Navigator.of(context).pop(categoryId);
               }
             },
           ),

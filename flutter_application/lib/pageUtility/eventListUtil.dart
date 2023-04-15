@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/model/Events.dart';
 import 'package:flutter_application_1/pages/eventView.dart';
+import 'package:flutter_application_1/provider/eventProvider.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class EventContainer extends StatefulWidget {
   final Event event;
@@ -35,7 +37,7 @@ class _EventContainerState extends State<EventContainer> {
             color: Colors.grey.shade900,
             borderRadius: BorderRadius.circular(8.0),
             border: Border.all(
-              color: widget.event.color,
+              color: Provider.of<EventProvider>(context, listen: false).getCategoryColorById(widget.event.categoryID!),
               width: 3,
             )),
         child: Stack(
@@ -46,13 +48,14 @@ class _EventContainerState extends State<EventContainer> {
               children: [
                 customText('Title: ', widget.event.title, 14, FontWeight.bold),
                 const SizedBox(height: 4),
-                customText('Date: ',DateFormat.yMMMMd().format(widget.event.startTime), 14, FontWeight.bold),
+                customText('Date: ', DateFormat.yMMMMd().format(widget.event.startTime), 14, FontWeight.bold),
                 const SizedBox(height: 4),
-                customText('Time: ',  '${DateFormat.jm().format(widget.event.startTime)} - ${DateFormat.jm().format(widget.event.endTime)}', 14, FontWeight.bold),
+                customText('Time: ', '${DateFormat.jm().format(widget.event.startTime)} - ${DateFormat.jm().format(widget.event.endTime)}', 14,
+                    FontWeight.bold),
                 const SizedBox(height: 4),
-                customText('Description: ',widget.event.description!, 14, FontWeight.bold),
+                customText('Description: ', widget.event.description ?? "No Description", 14, FontWeight.bold),
                 const SizedBox(height: 4),
-                customText('Category: ', widget.event.category!, 14, FontWeight.bold),
+                customText('Category: ',  Provider.of<EventProvider>(context, listen: false).getCategoryNameById(widget.event.categoryID!), 14, FontWeight.bold),
               ],
             ),
           ],
@@ -81,6 +84,5 @@ Row customText(String text, String text2, double fontSize, FontWeight fontWeight
         ),
       ),
     ],
-    
   );
 }

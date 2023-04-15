@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/model/Category.dart';
 import 'package:flutter_application_1/pageUtility/addEventPageUtil.dart';
 import 'package:flutter_application_1/provider/eventProvider.dart';
 import 'package:provider/provider.dart';
@@ -19,12 +20,12 @@ class _AddEventPageState extends State<AddEventPage> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
 
-  String? _selectedCategory;
+  int? _selectedCategory;
   final _formKey = GlobalKey<FormState>();
 
   Color mainColor = const Color(0xff083c74);
 
-  void _onCategoryChanged(String? newCategory) {
+  void _onCategoryChanged(int? newCategory) {
     _selectedCategory = newCategory;
   }
 
@@ -61,39 +62,21 @@ class _AddEventPageState extends State<AddEventPage> {
                 width: double.infinity,
                 height: 40,
                 child: TextButton(
-                  onPressed: () async{
+                  onPressed: () async {
                     if (_formKey.currentState!.validate()) {
-                      Event newEvent = Event(
-                        startTime: convertStringsToDateTime(
-                            _dateController.text, _fromTimeController.text),
-                        endTime: convertStringsToDateTime(
-                            _dateController.text, _toTimeController.text),
-                        title: _titleController.text,
-                        color: eventProvider.categoryColorMapping
-                            .getColorForCategory(_selectedCategory),
-                        description: _descriptionController.text,
-                        isCustom: true,
-                        category: _selectedCategory,
-                      );
-                      int response = await sendAddCustomEvent(
-                        eventProvider.username,
-                        newEvent.startTime,
-                        newEvent.endTime,
-                        newEvent.title,
-                        newEvent.color,
-                        newEvent.description,
-                        newEvent.category,
+                      
+                      await sendAddCustomEvent(
+                        eventProvider.username, 
+                        convertStringsToDateTime(_dateController.text, _fromTimeController.text),
+                        convertStringsToDateTime(_dateController.text, _toTimeController.text),
+                        _titleController.text,
+                        _descriptionController.text,
+                        _selectedCategory,
+                        eventProvider
                       );
 
-                      if (response == 200) {
-                        // If the response is successful, add the event and return to the home page
-                        final provider =
-                            Provider.of<EventProvider>(context, listen: false);
-                        provider.addEvent(newEvent);
                         Navigator.pop(context);
-                      } else {
-                        print("Error adding custom event: Status code $response");
-                      }
+
                     }
                   },
                   style: TextButton.styleFrom(backgroundColor: mainColor),

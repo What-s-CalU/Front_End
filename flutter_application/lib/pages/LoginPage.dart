@@ -54,44 +54,43 @@ class _MyLoginPageState extends State<MyLoginPage> {
                   logoInContainer(),
                   buildUsernameTextFieldPadding(_usernameController),
                   buildPasswordTextFieldPadding(_passwordController, _showPassword, _togglevisibility),
-      
+
                   // Forgot password button
                   buildForgotPassword(context),
-      
+
                   // Script for the signin button (inline)
                   buildSignInButton(context, _usernameController, _passwordController, _clicked, () async {
                     final navigator = Navigator.of(context);
+                    setState(() => _clicked = true);
                     if (_loginformKey.currentState!.validate()) {
-                      setState(() => _clicked = true);
-                      final statcode = await (sendCredentials(
-                      _usernameController.text, _passwordController.text));
+                      final statcode = await (sendCredentials(_usernameController.text, _passwordController.text));
                       if (statcode == 200) {
                         print("yay we login");
                         print(statcode);
-
                         // Set the username in the event provider
                         eventProvider.username = _usernameController.text.toUpperCase();
 
                         // Call sendGetUserSubscribedEvents and add the events to the event provider
                         final eventsStatusCode = await sendGetUserSubscribedEvents(eventProvider.username, eventProvider);
-                        if(eventsStatusCode == 200 && statcode == 200){
+                        if (eventsStatusCode == 200 && statcode == 200) {
                           print("Events loaded with status code: $eventsStatusCode");
+
+                          await sendGetUserSubscribedCategories(eventProvider.username, eventProvider);
                           // Navigate to the OverviewPage
                           navigator.push(MaterialPageRoute(builder: (context) => const OverviewPage()));
                         }
-                        setState(() => _clicked = false);
-
                       } else {
                         print(statcode);
                       }
                     }
+                    setState(() => _clicked = false);
                   }),
-      
+
                   // Script for the signup button (inline, creates page)
                   buildSignUpButton(context, () {
                     Navigator.of(context).push(MaterialPageRoute(builder: (context) => const MySignUpPage()));
                   }),
-      
+
                   // Misc menu bottons (website urls)
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,

@@ -12,11 +12,11 @@ Container customBottomNavigationBar(BuildContext context) {
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        buildIconButton(context, Icons.home, 'Home', OverviewPage(), mainColor),
+        buildIconButton(context, Icons.home, 'Home', const OverviewPage(), mainColor),
         const VerticalDivider(color: Colors.white, thickness: 1.0, indent: 10, endIndent: 10),
         buildIconButton(context, Icons.calendar_today, 'Calendar', const MyHomePage(), mainColor),
         const VerticalDivider(color: Colors.white, thickness: 1.0, indent: 10, endIndent: 10),
-        buildIconButton(context, Icons.list, 'List', EventList(), mainColor),
+        buildIconButton(context, Icons.list, 'List', const EventList(), mainColor),
       ],
     ),
   );

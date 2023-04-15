@@ -1,17 +1,16 @@
 import 'dart:convert';
 import 'dart:ui';
 import 'package:http/http.dart' as http;
+import '../model/Category.dart';
 import '../model/Events.dart';
 import '../provider/eventProvider.dart';
 
 Future<int> sendCredentials(String username, String password) async {
-  final response = await _sendJsonRequest(
-      {'request_type': 'signin', 'username': username, 'password': password});
+  final response = await _sendJsonRequest({'request_type': 'signin', 'username': username, 'password': password});
   return response.statusCode;
 }
 
-Future<int> sendSignUp(String firstName, String lastName, String email,
-    String username, String password) async {
+Future<int> sendSignUp(String firstName, String lastName, String email, String username, String password) async {
   final response = await _sendJsonRequest({
     'request_type': 'signup',
     'firstName': firstName,
@@ -40,8 +39,7 @@ Future<int> sendSignUpStart(int isReset, String username) async {
 }
 
 // Checks for a given checksum stored locally on the server in a dummy database.
-Future<int> sendSignUpContinue(
-    int isReset, String username, String checksum) async {
+Future<int> sendSignUpContinue(int isReset, String username, String checksum) async {
   // By default we use the reset type
   String requestType = "reset_continue";
   if (isReset == 0) {
@@ -63,87 +61,120 @@ Future<int> sendSignUpEnd(int isReset, String username, String checksum, String 
     requestType = "signup_end";
   }
 
-  final response = await _sendJsonRequest({
-    'request_type': requestType,
-    'checksum': checksum,
-    'username': username,
-    'password': password
-  });
+  final response = await _sendJsonRequest({'request_type': requestType, 'checksum': checksum, 'username': username, 'password': password});
   return response.statusCode;
 }
 
-Future<int> sendAddCustomEvent(
-    String username,
-    DateTime startTime,
-    DateTime endTime,
-    String subject,
-    Color color,
-    String? description,
-    String? category) async {
+//good
+Future<void> sendAddCustomEvent(String username, DateTime startTime, DateTime endTime, String title, String? description, int? categoryID, EventProvider eventProvider) async {
   final response = await _sendJsonRequest({
     'request_type': 'add_custom_event',
     'username': username,
     'start_time': startTime.toIso8601String(),
     'end_time': endTime.toIso8601String(),
-    'title': subject,
-    'color': color.value,
+    'title': title,
     'description': description,
-    'category': category,
+    'categoryID': categoryID,
     'isCustom': true,
   });
-  return response.statusCode;
+  if (response.statusCode == 200) {
+    final jsonResponse = json.decode(response.body);
+    int eventId = jsonResponse['ID'];
+
+    // Create an Event instance using Event.fromDict method
+    Event newEvent = Event.fromDict({
+      'id': eventId,
+      'start_time': startTime.toIso8601String(),
+      'end_time': endTime.toIso8601String(),
+      'title': title,
+      'description': description,
+      'categoryID': categoryID,
+      'isCustom': 1,
+      'flag': 0, // Replace with the correct flag value if needed
+    });
+
+    // Add the newEvent to the eventProvider
+    eventProvider.addEvent(newEvent);
+  } else {
+    // Handle the error case as needed
+  }
 }
 
+Future<void> sendDeleteCustomEvent(
+    int eventID) async {
+    await _sendJsonRequest({
+    'request_type': 'delete_event',
+    'event_id': eventID,
+  });
+}
+
+//good
 Future<int> sendGetUserSubscribedEvents(String username, EventProvider eventProvider) async {
   final response = await _sendJsonRequest({
     'request_type': 'get_user_subscribed_events',
     'username': username,
   });
-  print('Received JSON data: ${response.body}');  
+  print('Received JSON data: ${response.body}');
 
   if (response.statusCode == 200) {
     final List<Event> events = parseJsonToEvents(response.body);
     eventProvider.addEvents(events);
-    eventProvider.setColorsForCategories(events);
   }
   return response.statusCode;
 }
 
-Future<List<Map<String, dynamic>>> sendGetCaluCategoryNamesWithSubscriptionStatus(String username) async {
+Future<void> sendGetUserSubscribedCategories(String username, EventProvider eventProvider) async {
   final response = await _sendJsonRequest({
-    'request_type': 'get_calu_category_names',
+    'request_type': 'get_user_subscribed_categories',
     'username': username,
   });
 
   if (response.statusCode == 200) {
     List<dynamic> jsonResponse = json.decode(response.body);
-    return jsonResponse.cast<Map<String, dynamic>>();
-  } else {
-    return [];
+    List<EventCategory> categories = jsonResponse.map((categoryJson) => EventCategory.fromJson(categoryJson)).toList();
+    eventProvider.addCategories(categories);
   }
 }
 
-Future<void> sendUpdateCategorySubscription(String username, String categoryName, bool isSubscribed) async {
-  final response = await _sendJsonRequest({
+Future<void> sendUpdateCategorySubscription(String username, int categoryID, bool isSubscribed) async {
+  await _sendJsonRequest({
     'request_type': 'update_calu_category_subscription',
     'username': username,
-    'category_name': categoryName,
+    'category_id': categoryID,
     'is_subscribed': isSubscribed ? 1 : 0,
   });
 }
 
-Future<void> getCaluCategoryEvents(String categoryName, EventProvider eventProvider) async {
+Future<void> getCaluCategoryEvents(int categoryID, EventProvider eventProvider) async {
   final response = await _sendJsonRequest({
     'request_type': 'get_calu_category_events',
-    'category_name': categoryName,
+    'category_id': categoryID,
   });
   if (response.statusCode == 200) {
     final List<Event> events = parseJsonToEvents(response.body);
     eventProvider.addEvents(events);
-    eventProvider.setColorsForCategories(events);
   }
 }
 
+Future<int> sendAddCategory(String username, String categoryName, Color categoryColor, EventProvider eventProvider) async {
+  final response = await _sendJsonRequest({
+    'request_type': 'add_category',
+    'username' : username,
+    'category_name': categoryName,
+    'color' : categoryColor.value,
+  });
+  final jsonResponse = json.decode(response.body);
+  int categoryId = jsonResponse['category_id'];
+  eventProvider.addCategory(EventCategory(
+      id: categoryId,
+      name: categoryName,
+      color: categoryColor,
+    )
+  );
+  return categoryId;
+}
+
+//good
 Future<http.Response> _sendJsonRequest(Map<String, dynamic> requestBody) async {
   return await http.post(
     Uri.parse("http://10.0.2.2:80"),
@@ -152,19 +183,9 @@ Future<http.Response> _sendJsonRequest(Map<String, dynamic> requestBody) async {
   );
 }
 
-List<Event> parseJsonToEvents(String eventsJsonString) {
-  List<dynamic> jsonResponse = json.decode(eventsJsonString);
-  return jsonResponse.map((eventJson) => eventFromJson(eventJson)).toList();
+//good
+List<Event> parseJsonToEvents(String jsonString) {
+  final List<dynamic> parsedJson = jsonDecode(jsonString);
+  return parsedJson.map((eventDict) => Event.fromDict(eventDict as Map<String, dynamic>)).toList();
 }
 
-Event eventFromJson(Map<String, dynamic> json) {
-  return Event(
-    startTime: DateTime.parse(json['start_time']),
-    endTime: DateTime.parse(json['end_time']),
-    title: json['title'],
-    color: Color(json['color']),
-    description: json['description'],
-    category: json['category'],
-    isCustom: json['isCustom'].isOdd,
-  );
-}

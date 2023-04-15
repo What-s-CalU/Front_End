@@ -1,30 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/model/Events.dart';
-import '../model/categoryColorMapping.dart';
+import '../model/Category.dart';
 
 class EventProvider extends ChangeNotifier {
+  //events
   final List<Event> _events = [];
-
-  final CategoryColorMapping _categoryColorMapping = CategoryColorMapping();
-
-  String _username = '';
-
-  String get username => _username;
-
-  set username(String value) {
-    _username = value;
-    notifyListeners();
-  }
-
-  CategoryColorMapping get categoryColorMapping => _categoryColorMapping;
-
   List<Event> get events => _events;
-
-  void logout(){
-    _events.clear();
-    _username = '';
-    _categoryColorMapping.removeColorsForCategories();
-  }
 
   void addEvent(Event event) {
     _events.add(event);
@@ -41,21 +22,21 @@ class EventProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void removeEventsByCategory(String category) {
-    _events.removeWhere((event) => event.category == category);
+  void removeEventsByCategory(int categoryID) {
+    _events.removeWhere((event) => event.categoryID == categoryID);
+    _categories.removeWhere((category) => category.id == categoryID);
     notifyListeners();
   }
 
-  List<String> getCustomEventCategories() {
-    return _events.where((event) => event.isCustom == true && event.category != null).map((event) => event.category!).toSet().toList();
+  List<Event> getEventsByCategory(String categoryName) {
+    return _events.where((event) {
+      EventCategory category = findCategoryById(event.categoryID!);
+      return category.name == categoryName;
+    }).toList();
   }
 
-  List<String> getCaluEventCategories() {
-    return _events.where((event) => event.isCustom == false && event.category != null).map((event) => event.category!).toSet().toList();
-  }
-
-  List<Event> getEventsByCategory(String category) {
-    return _events.where((event) => event.category == category).toList();
+  int getNumberOfEventsByCategory(int categoryID) {
+    return _events.where((event) => event.categoryID == categoryID).length;
   }
 
   List<Event> getEventsByDaysAway(int daysAway) {
@@ -66,31 +47,83 @@ class EventProvider extends ChangeNotifier {
     return _events.where((event) => event.startTime.isAfter(startRange) && event.startTime.isBefore(endRange)).toList();
   }
 
-    int getNumberOfEventsByCategory(String category) {;
 
-    return _events.where((event) {
-      return event.category == category;
-    }).length;
-  }
+  //categories
+  final List<EventCategory> _categories = [];
 
-  void addCustomEventCategory(String category, Color color) {
-    _categoryColorMapping.setColorForCategory(category, color);
+  void addCategories(List<EventCategory> categoriesToAdd) {
+    _categories.addAll(categoriesToAdd);
     notifyListeners();
   }
 
-  bool isNotCustomCategory(String? category) {
-    if (category == null) {
-      return false;
-    }
-    return !_events.any((event) => event.isCustom && event.category == category);
+  void addCategory(EventCategory category) {
+    _categories.add(category);
+    notifyListeners();
   }
 
-  void setColorsForCategories(List<Event> events) {
-    for (Event event in events) {
-      if (categoryColorMapping.getColorForCategory(event.category) == Colors.blue) {
-        categoryColorMapping.setColorForCategory(event.category!, event.color);
+  String getCategoryNameById(int id) {
+    for (EventCategory category in _categories) {
+      if (category.id == id) {
+        return category.name;
       }
     }
+    return '';
+  }
+
+  Color getCategoryColorById(int id) {
+    for (EventCategory category in _categories) {
+      if (category.id == id) {
+        return category.color;
+      }
+    }
+    return Colors.blue;
+  }
+
+  int? getCategoryUserIdById(int id) {
+    for (EventCategory category in _categories) {
+      if (category.id == id) {
+        return category.userID;
+      }
+    }
+    return null;
+  }
+
+  List<EventCategory> getCustomEventCategories() {
+    return _categories.where((category) => category.userID != null).toList();
+  }
+
+  List<EventCategory> getCaluEventCategories() {
+    return _categories.where((category) => category.userID == null).toList();
+  }
+
+  EventCategory findCategoryById(int categoryId) {
+    return _categories.firstWhere((category) => category.id == categoryId);
+  }
+
+  //user
+  String _username = '';
+
+  String get username => _username;
+
+  set username(String value) {
+    _username = value;
+    notifyListeners();
+  }
+
+
+
+  void logout(){
+    _events.clear();
+    _categories.clear();
+    _username = '';
+  }
+
+
+  bool isNotCustomCategory(int? categoryID) {
+    if (categoryID == null) {
+      return false;
+    }
+    return !_events.any((event) => event.isCustom && event.categoryID == categoryID);
   }
 
 }

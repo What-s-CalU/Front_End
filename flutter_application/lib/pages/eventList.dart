@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/model/Category.dart';
 import 'package:flutter_application_1/model/Events.dart';
 import 'package:flutter_application_1/pages/AddEventPage.dart';
 import 'package:flutter_application_1/provider/eventProvider.dart';
@@ -15,16 +16,18 @@ class EventList extends StatefulWidget {
 
 class _EventListState extends State<EventList> {
   Color mainColor = const Color(0xff083c74);
-  String? selectedCategory;
+  int? selectedCategoryId;
 
-  List<String> _caluCategories = [];
-  List<String> _customCategories = [];
+  List<EventCategory> _caluCategories = [];
+  List<EventCategory> _customCategories = [];
 
   String getAppBarTitle() {
-    if (selectedCategory == null) {
+    if (selectedCategoryId == null) {
       return 'List';
     } else {
-      return 'List - $selectedCategory';
+      final eventProvider = Provider.of<EventProvider>(context, listen: false);
+      String categoryName = eventProvider.getCategoryNameById(selectedCategoryId!);
+      return 'List - $categoryName';
     }
   }
 
@@ -33,10 +36,10 @@ class _EventListState extends State<EventList> {
     final eventProvider = Provider.of<EventProvider>(context, listen: true);
     _caluCategories = eventProvider.getCaluEventCategories();
     _customCategories = eventProvider.getCustomEventCategories();
-    List<Event> Events = eventProvider.events;
+    List<Event> events = eventProvider.events;
 
-    if (selectedCategory != null) {
-      Events = Events.where((event) => event.category == selectedCategory).toList();
+    if (selectedCategoryId != null) {
+      events = events.where((event) => event.categoryID == selectedCategoryId).toList();
     }
 
     return Scaffold(
@@ -64,7 +67,7 @@ class _EventListState extends State<EventList> {
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: Events
+            children: events
                 .map((event) => EventContainer(
                       event: event,
                     ))
@@ -92,31 +95,32 @@ class _EventListState extends State<EventList> {
               title: const Text('CalU', style: TextStyle(fontSize: 18)),
               leading: Icon(Icons.school, color: mainColor),
               children: _caluCategories.map((category) {
-                int categoryCount = eventProvider.getNumberOfEventsByCategory(category);
+                int categoryCount = eventProvider.getNumberOfEventsByCategory(category.id);
                 return ListTile(
-                  title: Text(category, style: const TextStyle(fontSize: 16)),
-                  trailing: CategoryCircleNumber(color: eventProvider.categoryColorMapping.getColorForCategory(category), count: categoryCount),
+                  title: Text(category.name, style: const TextStyle(fontSize: 16)),
+                  trailing: CategoryCircleNumber(color: category.color, count: categoryCount),
                   leading: const SizedBox(width: 40),
                   onTap: () {
                     setState(() {
-                      selectedCategory = category;
+                      selectedCategoryId = category.id;
                     });
                   },
                 );
               }).toList(),
             ),
+
             ExpansionTile(
               title: const Text('Custom', style: TextStyle(fontSize: 18)),
               leading: Icon(Icons.create, color: mainColor),
               children: _customCategories.map((category) {
-              int categoryCount = eventProvider.getNumberOfEventsByCategory(category);
+                int categoryCount = eventProvider.getNumberOfEventsByCategory(category.id);
                 return ListTile(
-                  title: Text(category, style: const TextStyle(fontSize: 16)),
+                  title: Text(category.name, style: const TextStyle(fontSize: 16)),
                   leading: const SizedBox(width: 40),
-                  trailing: CategoryCircleNumber(color: eventProvider.categoryColorMapping.getColorForCategory(category), count: categoryCount),
+                  trailing: CategoryCircleNumber(color: category.color, count: categoryCount),
                   onTap: () {
                     setState(() {
-                      selectedCategory = category;
+                      selectedCategoryId = category.id;
                     });
                   },
                 );

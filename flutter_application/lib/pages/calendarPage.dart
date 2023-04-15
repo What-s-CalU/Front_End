@@ -24,7 +24,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final events = Provider.of<EventProvider>(context).events;
+    final eventProvider = Provider.of<EventProvider>(context);
+    final events = eventProvider.events;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: mainColor,
@@ -74,7 +75,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 CalendarView.month,
               ],
               initialDisplayDate: DateTime.now(),
-              dataSource: EventDataSource(events),
+              dataSource: EventDataSource(events, eventProvider),
               appointmentBuilder: (context, details) => appointmentBuilder(context, details, _calendarController),
               monthViewSettings: const MonthViewSettings(
                 showAgenda: true,

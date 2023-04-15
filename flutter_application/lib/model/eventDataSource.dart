@@ -1,9 +1,12 @@
-import 'Events.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
+import 'package:flutter_application_1/model/Events.dart';
+import 'package:flutter_application_1/provider/eventProvider.dart';
 
 class EventDataSource extends CalendarDataSource {
-  EventDataSource(List<Event> appointments) {
+  final EventProvider _eventProvider;
+
+  EventDataSource(List<Event> appointments, this._eventProvider) {
     this.appointments = appointments;
   }
 
@@ -26,7 +29,7 @@ class EventDataSource extends CalendarDataSource {
 
   @override
   Color getColor(int index) {
-    return appointments![index].color;
+    return _eventProvider.getCategoryColorById(appointments![index].categoryID!);
   }
 
   String getDescription(int index) {
@@ -34,10 +37,10 @@ class EventDataSource extends CalendarDataSource {
   }
 
   String? getCategory(int index) {
-    return appointments![index].category;
+    return _eventProvider.getCategoryNameById(appointments![index].categoryID!);
   }
 
-  bool getisCustom(int index) {
+  bool getIsCustom(int index) {
     return appointments![index].isCustom;
   }
 }

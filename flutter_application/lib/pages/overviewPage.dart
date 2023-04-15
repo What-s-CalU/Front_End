@@ -79,7 +79,7 @@ class OverviewPage extends StatelessWidget {
                           child: SfCalendar(
                             view: CalendarView.schedule,
                             headerHeight: 0,
-                            dataSource: EventDataSource(eventProvider.getEventsByDaysAway(30)),
+                            dataSource: EventDataSource(eventProvider.getEventsByDaysAway(7), eventProvider),
                             controller: calendarController,
                             appointmentBuilder: (context, details) => appointmentBuilder(context, details, calendarController),
                             scheduleViewSettings: const ScheduleViewSettings(
