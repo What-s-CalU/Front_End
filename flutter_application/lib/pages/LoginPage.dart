@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/pageUtility/notifcation.dart';
+import 'package:flutter_application_1/pageUtility/notifcationHelper.dart';
 import 'package:flutter_application_1/pages/SignUpPage.dart';
 import 'package:flutter_application_1/pages/overviewPage.dart';
 import 'package:provider/provider.dart';
 import '../httpRequests/httpRequests.dart';
 import '../pageUtility/LoginPageUtil.dart';
+import '../pageUtility/eventReminders.dart';
 import '../provider/eventProvider.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
@@ -88,12 +89,11 @@ class _MyLoginPageState extends State<MyLoginPage> {
                         print("yay we login");
                         print(statcode);
                         // Set the username in the event provider
-                        showNotification();
                         // Call sendGetUserSubscribedEvents and add the events to the event provider
                         final eventsStatusCode = await sendGetUserSubscribedEvents(_usernameController.text.toUpperCase(), eventProvider);
                         if (eventsStatusCode == 200 && statcode == 200) {
                           print("Events loaded with status code: $eventsStatusCode");
-
+                          scheduleEventReminders(eventProvider.events);
                           await sendGetUserSubscribedCategories(_usernameController.text.toUpperCase(), eventProvider);
                           // Navigate to the OverviewPage
                           navigator.push(MaterialPageRoute(builder: (context) => const OverviewPage()));

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:ui';
+import 'package:flutter_application_1/pageUtility/eventReminders.dart';
 import 'package:http/http.dart' as http;
 import '../model/EventCategory.dart';
 import '../model/Events.dart';
@@ -98,7 +99,7 @@ Future<void> sendAddCustomEvent(String username, DateTime startTime, DateTime en
       'flag': 0,
       'checksum' : eventProvider.user.checksum,
     });
-
+    scheduleEventReminder(newEvent);
     eventProvider.addEvent(newEvent);
   }
 }
@@ -166,6 +167,7 @@ Future<void> getCaluCategoryEvents(int categoryID, EventProvider eventProvider) 
   if (response.statusCode == 200) {
     final List<Event> events = parseJsonToEvents(response.body);
     eventProvider.addEvents(events);
+    scheduleEventReminders(events);
   }
 }
 

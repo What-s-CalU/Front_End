@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/pageUtility/notifcationHelper.dart';
 import 'package:flutter_application_1/provider/eventProvider.dart';
 import 'pages/LoginPage.dart';
 import 'package:provider/provider.dart';
 
-void main()
+void main()  async
 {
+  WidgetsFlutterBinding.ensureInitialized();
+  await NotificationHelper.initNotifications();
   runApp
   (
     const MyApp(),
