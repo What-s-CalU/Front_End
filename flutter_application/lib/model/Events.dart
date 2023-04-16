@@ -1,13 +1,13 @@
 
 class Event {
   final int id;
-  final DateTime startTime;
-  final DateTime endTime;
-  final String title;
-  final String? description;
-  final int? categoryID;
-  final bool isCustom;
-  final bool? flag;
+  DateTime startTime;
+  DateTime endTime;
+  String title;
+  String? description;
+  int? categoryID;
+  bool isCustom;
+  bool? flag;
 
   Event({
     required this.id,

@@ -15,7 +15,7 @@ class OverviewPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final eventProvider = Provider.of<EventProvider>(context);
+    final eventProvider = Provider.of<EventProvider>(context, listen: true);
     Color mainColor = const Color(0xff083c74);
     final CalendarController calendarController = CalendarController();
     return WillPopScope(

@@ -192,6 +192,21 @@ Future<int> sendAddCategory(String username, String categoryName, Color category
   return categoryId;
 }
 
+Future<void> sendEditEvent(String username, Event event, EventProvider eventProvider) async {
+  final response = await _sendJsonRequest({
+    'request_type': 'edit_event',
+    'username': username,
+    'event_id': event.id,
+    'start_time': event.startTime.toIso8601String(),
+    'end_time': event.endTime.toIso8601String(),
+    'title': event.title,
+    'description': event.description,
+    'category_id': event.categoryID,
+    'is_custom': event.isCustom,
+    'checksum': eventProvider.user.checksum,
+  });
+}
+
 Future<void> sendLogout(String username, String checksum, EventProvider eventProvider) async {
   await _sendJsonRequest({
     'request_type': 'signout',

@@ -25,7 +25,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final eventProvider = Provider.of<EventProvider>(context);
+    final eventProvider = Provider.of<EventProvider>(context, listen: true);
     final events = eventProvider.events;
     return WillPopScope(
       onWillPop: () async => false,

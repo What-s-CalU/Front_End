@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/model/EventCategory.dart';
 import 'package:flutter_application_1/pageUtility/addEventPageUtil.dart';
 import 'package:flutter_application_1/provider/eventProvider.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../httpRequests/httpRequests.dart';
 import '../model/Events.dart';
 import '../pageUtility/categoryDropdown.dart';
 
 class AddEventPage extends StatefulWidget {
-  const AddEventPage({Key? key}) : super(key: key);
+  final Event? event;
+  final Function(Event)? onUpdateEvent;
+
+  const AddEventPage({Key? key, this.onUpdateEvent, this.event}) : super(key: key);
+
   @override
   State<AddEventPage> createState() => _AddEventPageState();
 }
@@ -29,13 +33,26 @@ class _AddEventPageState extends State<AddEventPage> {
     _selectedCategory = newCategory;
   }
 
-  @override
+    @override
+    void initState() {
+      super.initState();
+      if (widget.event != null) {
+        _toTimeController.text = DateFormat.jm().format(widget.event!.endTime);
+        _fromTimeController.text = DateFormat.jm().format(widget.event!.startTime);
+        _dateController.text = DateFormat.yMd().format(widget.event!.startTime);
+        _titleController.text = widget.event!.title;
+        _descriptionController.text = widget.event!.description ?? "";
+        _selectedCategory = widget.event!.categoryID;
+      }
+    }
+
+ @override
   Widget build(BuildContext context) {
     final eventProvider = Provider.of<EventProvider>(context);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: mainColor,
-        title: const Text('ADD EVENT'),
+        title: Text(widget.event == null ? 'ADD EVENT' : 'EDIT EVENT'),
         centerTitle: true,
       ),
       body: Form(
@@ -44,12 +61,13 @@ class _AddEventPageState extends State<AddEventPage> {
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.fromLTRB(40, 20, 40, 5),
-              child: buildTitleTextField(_titleController),
+              child: buildTitleTextField(_titleController, editable: widget.event?.isCustom ?? true),
             ),
-            dateInputField(_dateController, context),
+            dateInputField(_dateController, context, editable: true),
             textBeforeTextField("Time"),
-            timeInputFields(_fromTimeController, _toTimeController, context),
-            descriptionTextField(context, _descriptionController),
+            timeInputFields(_fromTimeController, _toTimeController, context, editable: true),
+            descriptionTextField(context, _descriptionController, editable: widget.event?.isCustom ?? true),
+            if(widget.event?.isCustom == true)
             Padding(
               padding: const EdgeInsets.fromLTRB(40, 5, 40, 5),
               child: CategoryDropdown(
@@ -64,25 +82,41 @@ class _AddEventPageState extends State<AddEventPage> {
                 child: TextButton(
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
-                      
-                      await sendAddCustomEvent(
-                        eventProvider.user.getName, 
-                        convertStringsToDateTime(_dateController.text, _fromTimeController.text),
-                        convertStringsToDateTime(_dateController.text, _toTimeController.text),
-                        _titleController.text,
-                        _descriptionController.text,
-                        _selectedCategory,
-                        eventProvider
-                      );
+                      DateTime startTime = convertStringsToDateTime(_dateController.text, _fromTimeController.text);
+                      DateTime endTime = convertStringsToDateTime(_dateController.text, _toTimeController.text);
+                      String title = _titleController.text;
+                      String? description = _descriptionController.text;
 
-                        Navigator.pop(context);
+                      if (widget.event != null) {
+                        widget.event!.startTime = startTime;
+                        widget.event!.endTime = endTime;
+                        widget.event!.title = title;
+                        widget.event!.description = description;
+                        widget.event!.categoryID = _selectedCategory;
+                        eventProvider.updateEvent(widget.event!);
 
+                        await sendEditEvent(eventProvider.user.getName, widget.event!, eventProvider);
+                      } else {
+                        await sendAddCustomEvent(
+                          eventProvider.user.getName,
+                          startTime,
+                          endTime,
+                          title,
+                          description,
+                          _selectedCategory,
+                          eventProvider
+                        );
+                      }
+                      if (widget.onUpdateEvent != null) {
+                        widget.onUpdateEvent!(widget.event!);
+                      }
+                      Navigator.pop(context);
                     }
                   },
                   style: TextButton.styleFrom(backgroundColor: mainColor),
-                  child: const Text(
-                    'ADD EVENT',
-                    style: TextStyle(
+                  child: Text(
+                    widget.event == null ? 'ADD EVENT' : 'EDIT EVENT',
+                    style: const TextStyle(
                       color: Colors.white,
                     ),
                   ),

@@ -48,6 +48,14 @@ class EventProvider extends ChangeNotifier {
     return _events.where((event) => event.startTime.isAfter(startRange) && event.startTime.isBefore(endRange)).toList();
   }
 
+  void updateEvent(Event updatedEvent) {
+    final int index = events.indexWhere((event) => event.id == updatedEvent.id);
+    if (index != -1) {
+      events[index] = updatedEvent;
+      notifyListeners();
+    }
+  }
+
 
   //categories
   final List<EventCategory> _categories = [];

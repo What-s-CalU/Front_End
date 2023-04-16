@@ -5,6 +5,8 @@ import 'package:flutter_application_1/model/Events.dart';
 import 'package:flutter_application_1/provider/eventProvider.dart';
 import 'package:provider/provider.dart';
 
+import 'AddEventPage.dart';
+
 class EventViewPage extends StatefulWidget {
   final Event event;
   const EventViewPage({Key? key, required this.event}) : super(key: key);
@@ -16,6 +18,16 @@ class EventViewPage extends StatefulWidget {
 class _EventViewPageState extends State<EventViewPage> {
   Color mainColor = const Color(0xff083c74);
 
+  void _updateEvent(Event updatedEvent) {
+    setState(() {
+      widget.event.startTime = updatedEvent.startTime;
+      widget.event.endTime = updatedEvent.endTime;
+      widget.event.title = updatedEvent.title;
+      widget.event.description = updatedEvent.description;
+      widget.event.categoryID = updatedEvent.categoryID;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final eventProvider = Provider.of<EventProvider>(context, listen: false);
@@ -24,18 +36,31 @@ class _EventViewPageState extends State<EventViewPage> {
         backgroundColor: mainColor,
         title: const Text('Event Details'),
         centerTitle: true,
-        actions: widget.event.isCustom
-            ? [
-                IconButton(
-                  icon: const Icon(Icons.delete),
-                  onPressed: () async {
-                    sendDeleteCustomEvent(widget.event.id, eventProvider);
-                    eventProvider.removeEvent(widget.event);
-                    Navigator.of(context).pop();
-                  },
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.edit),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => AddEventPage(
+                    event: widget.event,
+                    onUpdateEvent: _updateEvent,
+                  ),
                 ),
-              ]
-            : null,
+              );
+            },
+          ),
+          if (widget.event.isCustom)
+            IconButton(
+              icon: const Icon(Icons.delete),
+              onPressed: () async {
+                sendDeleteCustomEvent(widget.event.id, eventProvider);
+                eventProvider.removeEvent(widget.event);
+                Navigator.of(context).pop();
+              },
+            ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Padding(

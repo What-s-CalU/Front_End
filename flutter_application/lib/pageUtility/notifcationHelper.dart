@@ -11,7 +11,7 @@ class NotificationHelper {
   static Future<void> initNotifications() async {
     tz.initializeTimeZones();
     final AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings('@mipmap/ic_launcher');
+        AndroidInitializationSettings('@mipmap/logo');
 
     final InitializationSettings initializationSettings =
         InitializationSettings(android: initializationSettingsAndroid);
@@ -31,6 +31,7 @@ class NotificationHelper {
       importance: Importance.max,
       priority: Priority.high,
       showWhen: true,
+      icon: '@drawable/logo',
     );
 
     final notificationDetails = NotificationDetails(
