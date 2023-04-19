@@ -34,13 +34,13 @@ Widget appointmentBuilder(BuildContext context,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             if (controller.view != CalendarView.week && controller.view != CalendarView.day)
-              customText(event.title, 15),
+              customText(event.title, 15, controller.view),
             if (controller.view == CalendarView.day)
-              customText(event.title, 12),
+              customText(event.title, 12, controller.view),
             if (controller.view == CalendarView.month || controller.view == CalendarView.schedule)
               customText(
                   '${DateFormat.jm().format(event.startTime)} - ${DateFormat.jm().format(event.endTime)}',
-                  15),
+                  15, controller.view),
           ],
         ),
       ),
@@ -48,10 +48,12 @@ Widget appointmentBuilder(BuildContext context,
   );
 }
 
-Widget customText(String text, double fontSize) {
+Flexible customText(String text, double fontSize, CalendarView? view) {
   return Flexible(
+    fit: FlexFit.loose,
     child: Text(
       text,
+      overflow: (view == CalendarView.month || view == CalendarView.schedule) ? TextOverflow.ellipsis : null, // Conditional overflow
       style: TextStyle(
         color: Colors.white,
         fontSize: fontSize,

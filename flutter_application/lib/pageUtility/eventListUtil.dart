@@ -53,7 +53,8 @@ class _EventContainerState extends State<EventContainer> {
                 customText('Time: ', '${DateFormat.jm().format(widget.event.startTime)} - ${DateFormat.jm().format(widget.event.endTime)}', 14,
                     FontWeight.bold),
                 const SizedBox(height: 4),
-                customText('Description: ', widget.event.description ?? "No Description", 14, FontWeight.bold),
+                if(widget.event.isCustom)
+                  customText('Description: ', widget.event.description ?? "No Description", 14, FontWeight.bold),
                 const SizedBox(height: 4),
                 customText('Category: ', Provider.of<EventProvider>(context, listen: false).getCategoryNameById(widget.event.categoryID!), 14,
                     FontWeight.bold),

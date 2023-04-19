@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:ui';
 import 'package:flutter_application_1/pageUtility/eventReminders.dart';
@@ -224,6 +225,25 @@ Future<void> sendLogout(String username, String checksum, EventProvider eventPro
     'request_type': 'signout',
     'username' : username,
     'checksum' : eventProvider.user.checksum,
+  });
+}
+
+Future<int> sendKeepAlive(EventProvider eventProvider) async {
+  final response = await _sendJsonRequest({
+    'request_type': 'keep_alive',
+    'username': eventProvider.user.getName,
+    'checksum': eventProvider.user.getChecsum,
+  });
+  return response.statusCode;
+}
+
+void startKeepAliveTimer(EventProvider eventProvider) {
+  Timer.periodic(const Duration(minutes: 1), (Timer t) {
+    sendKeepAlive(eventProvider).then((status) {
+      print('Keep-alive request sent with status: $status');
+    }).catchError((error) {
+      print('Error sending keep-alive request: $error');
+    });
   });
 }
 

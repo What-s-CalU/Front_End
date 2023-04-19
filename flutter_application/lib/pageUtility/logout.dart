@@ -26,6 +26,7 @@ Future<void> showLogoutConfirmation(BuildContext context) async {
               // Perform the logout action here
               sendLogout(eventProvider.user.getName, eventProvider.user.getChecsum, eventProvider);
               eventProvider.logout();
+              eventProvider.stopKeepAliveTimer();
               Navigator.of(context).pop();
               Navigator.of(context).pop();
             },

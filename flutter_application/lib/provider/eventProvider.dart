@@ -1,5 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/model/Events.dart';
+import 'package:flutter_application_1/pageUtility/keepAlive.dart';
+import '../httpRequests/httpRequests.dart';
 import '../model/EventCategory.dart';
 import '../model/User.dart';
 
@@ -124,6 +128,24 @@ class EventProvider extends ChangeNotifier {
     _categories.clear();
     _user.setnull();
   }
+  final KeepAliveService _keepAliveService = KeepAliveService();
+
+
+  void startKeepAliveTimer() {
+    _keepAliveService.startKeepAliveTimer(() {
+      sendKeepAlive(user.getName, user.getChecsum).then((status) {
+        print('Keep-alive request sent with status: $status');
+      }).catchError((error) {
+        print('Error sending keep-alive request: $error');
+      });
+    });
+  }
+
+  // Call this function when you want to stop the keep-alive timer
+  void stopKeepAliveTimer() {
+    _keepAliveService.stopKeepAliveTimer();
+  }
+
 
 
   bool isNotCustomCategory(int? categoryID) {

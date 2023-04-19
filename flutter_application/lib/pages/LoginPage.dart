@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/pageUtility/notifcationHelper.dart';
 import 'package:flutter_application_1/pages/SignUpPage.dart';
@@ -81,7 +83,6 @@ class _MyLoginPageState extends State<MyLoginPage> {
                   // Script for the signin button (inline)
                   buildSignInButton(context, _usernameController, _passwordController, _clicked, () async {
                     final navigator = Navigator.of(context);
-                                              //showNotification();
                     setState(() => _clicked = true);
                     if (_loginformKey.currentState!.validate()) {
                       final statcode = await (sendCredentials(_usernameController.text, _passwordController.text, eventProvider));
@@ -95,6 +96,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
                           print("Events loaded with status code: $eventsStatusCode");
                           scheduleEventReminders(eventProvider.events);
                           await sendGetUserSubscribedCategories(_usernameController.text.toUpperCase(), eventProvider);
+                          eventProvider.startKeepAliveTimer();
                           // Navigate to the OverviewPage
                           navigator.push(MaterialPageRoute(builder: (context) => const OverviewPage()));
                         }
