@@ -6,13 +6,20 @@ import '../provider/eventProvider.dart';
 
 class CategoryDropdown extends StatefulWidget {
   final ValueChanged<int?> onCategoryChanged;
-  const CategoryDropdown({required this.onCategoryChanged});
+  final int? selectedCategory;
+  const CategoryDropdown({required this.onCategoryChanged, this.selectedCategory});
   @override
   _CategoryDropdownState createState() => _CategoryDropdownState();
 }
 
 class _CategoryDropdownState extends State<CategoryDropdown> {
   int? _selectedCategory;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedCategory = widget.selectedCategory;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,10 +34,10 @@ class _CategoryDropdownState extends State<CategoryDropdown> {
       ),
       value: _selectedCategory,
       items: [
-          const DropdownMenuItem<int>(
-            value: null,
-            child: Text('No category'),
-          ),
+        const DropdownMenuItem<int>(
+          value: null,
+          child: Text('No category'),
+        ),
         ...customCategories.map<DropdownMenuItem<int>>(
           (category) => DropdownMenuItem<int>(
             value: category.getId,
@@ -51,10 +58,10 @@ class _CategoryDropdownState extends State<CategoryDropdown> {
             ),
           ),
         ),
-          const DropdownMenuItem<int>(
-            value: -1,
-            child: Text('Add new category'),
-          ),
+        const DropdownMenuItem<int>(
+          value: -1,
+          child: Text('Add new category'),
+        ),
       ],
       onChanged: (value) async {
         if (value == -1) {

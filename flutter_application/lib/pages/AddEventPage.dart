@@ -33,20 +33,20 @@ class _AddEventPageState extends State<AddEventPage> {
     _selectedCategory = newCategory;
   }
 
-    @override
-    void initState() {
-      super.initState();
-      if (widget.event != null) {
-        _toTimeController.text = DateFormat.jm().format(widget.event!.endTime);
-        _fromTimeController.text = DateFormat.jm().format(widget.event!.startTime);
-        _dateController.text = DateFormat.yMd().format(widget.event!.startTime);
-        _titleController.text = widget.event!.title;
-        _descriptionController.text = widget.event!.description ?? "";
-        _selectedCategory = widget.event!.categoryID;
-      }
+  @override
+  void initState() {
+    super.initState();
+    if (widget.event != null) {
+      _toTimeController.text = DateFormat.jm().format(widget.event!.endTime);
+      _fromTimeController.text = DateFormat.jm().format(widget.event!.startTime);
+      _dateController.text = DateFormat.yMd().format(widget.event!.startTime);
+      _titleController.text = widget.event!.title;
+      _descriptionController.text = widget.event!.description ?? "";
+      _selectedCategory = widget.event!.categoryID;
     }
+  }
 
- @override
+  @override
   Widget build(BuildContext context) {
     final eventProvider = Provider.of<EventProvider>(context);
     return Scaffold(
@@ -72,6 +72,7 @@ class _AddEventPageState extends State<AddEventPage> {
                 padding: const EdgeInsets.fromLTRB(40, 5, 40, 5),
                 child: CategoryDropdown(
                   onCategoryChanged: _onCategoryChanged,
+                  selectedCategory: _selectedCategory,
                 ),
               ),
             Padding(
@@ -98,14 +99,7 @@ class _AddEventPageState extends State<AddEventPage> {
                         await sendEditEvent(eventProvider.user.getName, widget.event!, eventProvider);
                       } else {
                         await sendAddCustomEvent(
-                          eventProvider.user.getName,
-                          startTime,
-                          endTime,
-                          title,
-                          description,
-                          _selectedCategory,
-                          eventProvider
-                        );
+                            eventProvider.user.getName, startTime, endTime, title, description, _selectedCategory, eventProvider);
                       }
                       if (widget.onUpdateEvent != null) {
                         widget.onUpdateEvent!(widget.event!);

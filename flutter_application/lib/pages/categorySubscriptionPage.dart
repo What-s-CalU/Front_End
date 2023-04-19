@@ -15,9 +15,9 @@ class CategorySubscriptionPage extends StatefulWidget {
 
 class _CategorySubscriptionPageState extends State<CategorySubscriptionPage> {
   Color mainColor = const Color(0xff083c74);
-  List<EventCategory> categories     = [];
-  List<bool>          subscribedList = [];
-  
+  List<EventCategory> categories = [];
+  List<bool> subscribedList = [];
+
   @override
   void initState() {
     super.initState();
@@ -38,7 +38,7 @@ class _CategorySubscriptionPageState extends State<CategorySubscriptionPage> {
     final response = await _sendJsonRequest({
       'request_type': 'get_calu_category_names',
       'username': eventProvider.user.getName,
-      'checksum' : eventProvider.user.checksum,
+      'checksum': eventProvider.user.checksum,
     });
 
     if (response.statusCode == 200) {
@@ -57,7 +57,7 @@ class _CategorySubscriptionPageState extends State<CategorySubscriptionPage> {
 
   Future<void> _updateCategorySubscription(EventCategory category, bool isSubscribed) async {
     final eventProvider = Provider.of<EventProvider>(context, listen: false);
-    if(!isSubscribed){
+    if (!isSubscribed) {
       eventProvider.removeEventsByCategory(category.id);
     } else {
       eventProvider.addCategory(category);

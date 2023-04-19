@@ -1,4 +1,3 @@
-
 class Event {
   final int id;
   DateTime startTime;

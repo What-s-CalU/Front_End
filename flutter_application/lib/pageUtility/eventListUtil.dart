@@ -55,7 +55,8 @@ class _EventContainerState extends State<EventContainer> {
                 const SizedBox(height: 4),
                 customText('Description: ', widget.event.description ?? "No Description", 14, FontWeight.bold),
                 const SizedBox(height: 4),
-                customText('Category: ',  Provider.of<EventProvider>(context, listen: false).getCategoryNameById(widget.event.categoryID!), 14, FontWeight.bold),
+                customText('Category: ', Provider.of<EventProvider>(context, listen: false).getCategoryNameById(widget.event.categoryID!), 14,
+                    FontWeight.bold),
               ],
             ),
           ],
@@ -68,19 +69,23 @@ class _EventContainerState extends State<EventContainer> {
 Row customText(String text, String text2, double fontSize, FontWeight fontWeight) {
   return Row(
     children: [
-      Text(
-        text,
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: fontSize,
-          fontWeight: fontWeight,
+      Flexible(
+        child: Text(
+          text,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: fontSize,
+            fontWeight: fontWeight,
+          ),
         ),
       ),
-      Text(
-        text2,
-        style: const TextStyle(
-          color: Colors.white,
-          fontSize: 14,
+      Flexible(
+        child: Text(
+          text2,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 14,
+          ),
         ),
       ),
     ],
