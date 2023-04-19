@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/httpRequests/httpRequests.dart';
 import 'package:flutter_application_1/model/EventCategory.dart';
 import 'package:flutter_application_1/model/Events.dart';
 import 'package:flutter_application_1/pages/AddEventPage.dart';
@@ -6,6 +7,7 @@ import 'package:flutter_application_1/provider/eventProvider.dart';
 import 'package:flutter_application_1/pageUtility/eventListUtil.dart';
 import 'package:provider/provider.dart';
 import '../pageUtility/categoryCircleNumber.dart';
+import '../pageUtility/deletecategorydialog.dart';
 import '../pageUtility/navigationBar.dart';
 
 class EventList extends StatefulWidget {
@@ -101,16 +103,16 @@ class _EventListState extends State<EventList> {
                   return ListTile(
                     title: Text(category.name, style: const TextStyle(fontSize: 16)),
                     trailing: CategoryCircleNumber(color: category.color, count: categoryCount),
-                    leading: const SizedBox(width: 40),
+                    leading: const SizedBox(width: 45),
                     onTap: () {
                       setState(() {
                         selectedCategoryId = category.id;
+                        Navigator.pop(context);
                       });
                     },
                   );
                 }).toList(),
               ),
-    
               ExpansionTile(
                 title: const Text('Custom', style: TextStyle(fontSize: 18)),
                 leading: Icon(Icons.create, color: mainColor),
@@ -118,11 +120,17 @@ class _EventListState extends State<EventList> {
                   int categoryCount = eventProvider.getNumberOfEventsByCategory(category.id);
                   return ListTile(
                     title: Text(category.name, style: const TextStyle(fontSize: 16)),
-                    leading: const SizedBox(width: 40),
+                    leading: IconButton(
+                      icon: Icon(Icons.delete, color: mainColor),
+                      onPressed: () {
+                        showDeleteCategoryDialog(context, category.getId, eventProvider);
+                      },
+                    ),
                     trailing: CategoryCircleNumber(color: category.color, count: categoryCount),
                     onTap: () {
                       setState(() {
                         selectedCategoryId = category.id;
+                        Navigator.pop(context);
                       });
                     },
                   );

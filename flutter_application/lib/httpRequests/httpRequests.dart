@@ -109,6 +109,7 @@ Future<void> sendDeleteCustomEvent(
     int eventID, EventProvider eventProvider) async {
     await _sendJsonRequest({
     'request_type': 'delete_event',
+    'username' : eventProvider.user.name,
     'event_id': eventID,
     'checksum' : eventProvider.user.checksum,
   });
@@ -161,6 +162,7 @@ Future<void> sendUpdateCategorySubscription(String username, int categoryID, boo
 Future<void> getCaluCategoryEvents(int categoryID, EventProvider eventProvider) async {
   final response = await _sendJsonRequest({
     'request_type': 'get_calu_category_events',
+    'username' : eventProvider.user.getName,
     'category_id': categoryID,
     'checksum' : eventProvider.user.checksum,
   });
@@ -190,6 +192,16 @@ Future<int> sendAddCategory(String username, String categoryName, Color category
     )
   );
   return categoryId;
+}
+
+///adds a new user created category to the database, returns id and adds it to the event provider
+Future<void> sendDeleteCategory(int categoryID, EventProvider eventProvider) async {
+  await _sendJsonRequest({
+    'request_type': 'delete_category',
+    'username' : eventProvider.user.getName,
+    'category_id': categoryID,
+    'checksum' : eventProvider.user.checksum,
+  });
 }
 
 Future<void> sendEditEvent(String username, Event event, EventProvider eventProvider) async {

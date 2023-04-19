@@ -97,6 +97,11 @@ class EventProvider extends ChangeNotifier {
     return null;
   }
 
+  void removeCategoryById(int categoryId) {
+    _categories.removeWhere((category) => category.id == categoryId);
+    notifyListeners();
+  }
+
   List<EventCategory> getCustomEventCategories() {
     return _categories.where((category) => category.userID != null).toList();
   }

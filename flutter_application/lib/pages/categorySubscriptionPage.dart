@@ -38,6 +38,7 @@ class _CategorySubscriptionPageState extends State<CategorySubscriptionPage> {
     final response = await _sendJsonRequest({
       'request_type': 'get_calu_category_names',
       'username': eventProvider.user.getName,
+      'checksum' : eventProvider.user.checksum,
     });
 
     if (response.statusCode == 200) {
