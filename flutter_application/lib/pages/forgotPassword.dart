@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/pageUtility/signUpPageUtil.dart';
+import 'package:flutter_application_1/pages/LoginPage.dart';
 import '../httpRequests/httpRequests.dart';
 import 'calendarPage.dart';
 
@@ -156,7 +157,7 @@ class _MyResetPageState extends State<MyResetPage> {
                         // Builds the home page. This probably should boot you back to the login screen instead.
                         setState(() {
                           Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => const MyHomePage()));
+                              builder: (context) => const MyLoginPage()));
                         });
                       } else {
                         errorText =

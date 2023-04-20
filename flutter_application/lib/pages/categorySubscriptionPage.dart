@@ -26,7 +26,7 @@ class _CategorySubscriptionPageState extends State<CategorySubscriptionPage> {
 
   Future<http.Response> _sendJsonRequest(Map<String, dynamic> requestBody) async {
     return await http.post(
-      Uri.parse("http://10.0.2.2:80"),
+      Uri.parse("http://10.0.90.99:80"),
       headers: {'Content-Type': 'application/json'},
       body: json.encode(requestBody),
     );
