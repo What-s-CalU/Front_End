@@ -50,12 +50,18 @@ Padding buildUsernameTextFieldPadding(TextEditingController controller) {
       controller: controller,
       decoration: const InputDecoration(
         prefixIcon: Icon(Icons.account_circle),
-        hintText: "Username",
+        hintText: "E-mail",
         border: OutlineInputBorder(),
       ),
       validator: (value) {
         if (value == null || value.isEmpty) {
-          return 'Please enter a username';
+          return 'Please enter an email';
+        }
+        // Email validation
+        String emailPattern = r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$';
+        RegExp emailRegExp = RegExp(emailPattern);
+        if (!emailRegExp.hasMatch(value)) {
+          return 'Please enter a valid email';
         }
         return null;
       },

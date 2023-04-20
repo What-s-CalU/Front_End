@@ -118,7 +118,6 @@ class EventProvider extends ChangeNotifier {
     return _categories.firstWhere((category) => category.id == categoryId);
   }
 
-  //user TODO
   final User _user = User(id: null, name: "", checksum: "");
   User get user => _user;
 
