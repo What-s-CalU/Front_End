@@ -228,24 +228,15 @@ Future<void> sendLogout(String username, String checksum, EventProvider eventPro
   });
 }
 
-Future<int> sendKeepAlive(EventProvider eventProvider) async {
+Future<int> sendKeepAlive(String username, String checksum) async {
   final response = await _sendJsonRequest({
     'request_type': 'keep_alive',
-    'username': eventProvider.user.getName,
-    'checksum': eventProvider.user.getChecsum,
+    'username': username,
+    'checksum':checksum,
   });
   return response.statusCode;
 }
 
-void startKeepAliveTimer(EventProvider eventProvider) {
-  Timer.periodic(const Duration(minutes: 1), (Timer t) {
-    sendKeepAlive(eventProvider).then((status) {
-      print('Keep-alive request sent with status: $status');
-    }).catchError((error) {
-      print('Error sending keep-alive request: $error');
-    });
-  });
-}
 
 ///base request template
 Future<http.Response> _sendJsonRequest(Map<String, dynamic> requestBody) async {
