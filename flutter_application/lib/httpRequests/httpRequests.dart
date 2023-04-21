@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'dart:ui';
 import 'package:flutter_application_1/pageUtility/eventReminders.dart';
 import 'package:http/http.dart' as http;
@@ -227,24 +228,48 @@ Future<void> sendLogout(String username, String checksum, EventProvider eventPro
   });
 }
 
-Future<void> sendKeepAlive(String username, String checksum) async {
+Future<int> sendKeepAlive(String username, String checksum) async {
   final response = await _sendJsonRequest({
     'request_type': 'keep_alive',
     'username': username,
     'checksum': checksum,
   });
+  return response.statusCode;
 }
 
 ///base request template
+
 Future<http.Response> _sendJsonRequest(Map<String, dynamic> requestBody) async {
-  return await http.post(
-    //10.0.2.2
-    //10.2.90.99
-    Uri.parse("http://10.0.2.2:80"),
-    headers: {'Content-Type': 'application/json'},
-    body: json.encode(requestBody),
-  );
+  HttpClient client = HttpClient();
+  String inputData = json.encode(requestBody);
+  client.connectionTimeout = Duration(seconds: 30);
+
+  try {
+    HttpClientRequest request = await client.postUrl(Uri.parse("http://10.0.2.2:80"));
+    request.headers.contentType = ContentType("application", "json", charset: "utf-8");
+    request.headers.contentLength = inputData.length;
+
+
+    if (inputData != null) {
+      request.write(inputData);
+    }
+
+    HttpClientResponse response = await request.close();
+
+    if (response.statusCode == HttpStatus.ok) {
+      String contents = await response.transform(utf8.decoder).join();
+      return http.Response(contents, response.statusCode);
+    } else {
+      throw Exception('Request failed with status: ${response.statusCode}.');
+    }
+  } catch (e) {
+    print(e);
+    throw Exception('Error in _sendJsonRequest: $e');
+  } finally {
+    client.close();
+  }
 }
+
 
 ///parse json to event object
 List<Event> parseJsonToEvents(String jsonString) {
