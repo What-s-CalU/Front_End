@@ -83,8 +83,8 @@ class _MyLoginPageState extends State<MyLoginPage> {
                   // Script for the signin button (inline)
                   buildSignInButton(context, _usernameController, _passwordController, _clicked, () async {
                     final navigator = Navigator.of(context);
-                    setState(() => _clicked = true);
                     if (_loginformKey.currentState!.validate()) {
+                      setState(() => _clicked = true);
                       final statcode = await (sendCredentials(_usernameController.text, _passwordController.text, eventProvider));
                       if (statcode == 200) {
                         print("yay we login");

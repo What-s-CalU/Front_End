@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import '../pageUtility/categoryCircleNumber.dart';
 import '../pageUtility/deletecategorydialog.dart';
 import '../pageUtility/navigationBar.dart';
+import 'categorySubscriptionPage.dart';
 
 class EventList extends StatefulWidget {
   const EventList({super.key});
@@ -58,6 +59,12 @@ class _EventListState extends State<EventList> {
           ),
           centerTitle: true,
           actions: [
+            IconButton(
+              icon: const Icon(Icons.tune),
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => const CategorySubscriptionPage()));
+              },
+            ),
             IconButton(
               icon: const Icon(Icons.add),
               onPressed: () {

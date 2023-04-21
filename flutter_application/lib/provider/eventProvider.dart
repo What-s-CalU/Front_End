@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/model/Events.dart';
 import 'package:flutter_application_1/pageUtility/keepAlive.dart';
@@ -132,11 +131,7 @@ class EventProvider extends ChangeNotifier {
 
   void startKeepAliveTimer() {
     _keepAliveService.startKeepAliveTimer(() {
-      sendKeepAlive(user.getName, user.getChecsum).then((status) {
-        print('Keep-alive request sent with status: $status');
-      }).catchError((error) {
-        print('Error sending keep-alive request: $error');
-      });
+      sendKeepAlive(user.getName, user.getChecsum);
     });
   }
 

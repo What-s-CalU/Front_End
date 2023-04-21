@@ -33,6 +33,12 @@ class OverviewPage extends StatelessWidget {
           ),
           actions: [
             IconButton(
+              icon: const Icon(Icons.tune),
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => const CategorySubscriptionPage()));
+              },
+            ),
+            IconButton(
               icon: const Icon(Icons.add),
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(builder: (context) => const AddEventPage()));
@@ -93,7 +99,7 @@ class OverviewPage extends StatelessWidget {
                           ),
                           const SizedBox(height: 10),
                           SizedBox(
-                            height: 310,
+                            height: 350,
                             child: SfCalendar(
                               view: CalendarView.schedule,
                               headerHeight: 0,
@@ -115,32 +121,11 @@ class OverviewPage extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(height: 20),
-                buildButton(context, 'MANAGE SUBSCRIPTIONS', mainColor, () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => const CategorySubscriptionPage()));
-                }),
               ],
             ),
           ),
         ),
         bottomNavigationBar: customBottomNavigationBar(context),
-      ),
-    );
-  }
-
-  SizedBox buildButton(BuildContext context, String text, Color mainColor, VoidCallback onPressed) {
-    return SizedBox(
-      width: double.infinity,
-      height: 40,
-      child: TextButton(
-        onPressed: onPressed,
-        style: TextButton.styleFrom(backgroundColor: mainColor),
-        child: Text(
-          text,
-          style: const TextStyle(
-            color: Colors.white,
-          ),
-        ),
       ),
     );
   }

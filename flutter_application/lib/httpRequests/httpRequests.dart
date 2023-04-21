@@ -227,13 +227,12 @@ Future<void> sendLogout(String username, String checksum, EventProvider eventPro
   });
 }
 
-Future<int> sendKeepAlive(String username, String checksum) async {
+Future<void> sendKeepAlive(String username, String checksum) async {
   final response = await _sendJsonRequest({
     'request_type': 'keep_alive',
     'username': username,
     'checksum': checksum,
   });
-  return response.statusCode;
 }
 
 ///base request template
@@ -241,7 +240,7 @@ Future<http.Response> _sendJsonRequest(Map<String, dynamic> requestBody) async {
   return await http.post(
     //10.0.2.2
     //10.2.90.99
-    Uri.parse("http://10.2.90.99:80"),
+    Uri.parse("http://10.0.2.2:80"),
     headers: {'Content-Type': 'application/json'},
     body: json.encode(requestBody),
   );

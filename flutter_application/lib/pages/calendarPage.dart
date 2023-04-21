@@ -10,6 +10,8 @@ import '../model/appointmentBuilder.dart';
 import '../pageUtility/navigationBar.dart';
 import 'package:intl/intl.dart';
 
+import 'categorySubscriptionPage.dart';
+
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
 
@@ -42,6 +44,12 @@ class _MyHomePageState extends State<MyHomePage> {
             }
           ),
           actions: [
+            IconButton(
+              icon: const Icon(Icons.tune),
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => const CategorySubscriptionPage()));
+              },
+            ),
             IconButton(
               icon: const Icon(Icons.add),
               onPressed: () {
