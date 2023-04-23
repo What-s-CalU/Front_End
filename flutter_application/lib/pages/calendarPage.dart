@@ -84,7 +84,7 @@ class _MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
             Expanded(
               child: SfCalendar(
-                view: CalendarView.day,
+                view: CalendarView.month,
                 controller: _calendarController,
                 allowedViews: const [
                   CalendarView.day,
