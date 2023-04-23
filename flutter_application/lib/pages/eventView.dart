@@ -37,20 +37,21 @@ class _EventViewPageState extends State<EventViewPage> {
         title: const Text('Event Details'),
         centerTitle: true,
         actions: [
-          IconButton(
-            icon: const Icon(Icons.edit),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => AddEventPage(
-                    event: widget.event,
-                    onUpdateEvent: _updateEvent,
+          if (widget.event.isCustom)
+            IconButton(
+              icon: const Icon(Icons.edit),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AddEventPage(
+                      event: widget.event,
+                      onUpdateEvent: _updateEvent,
+                    ),
                   ),
-                ),
-              );
-            },
-          ),
+                );
+              },
+            ),
           if (widget.event.isCustom)
             IconButton(
               icon: const Icon(Icons.delete),

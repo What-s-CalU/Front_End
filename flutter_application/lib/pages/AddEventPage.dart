@@ -61,20 +61,19 @@ class _AddEventPageState extends State<AddEventPage> {
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.fromLTRB(40, 20, 40, 5),
-              child: buildTitleTextField(_titleController, editable: widget.event?.isCustom ?? true),
+              child: buildTitleTextField(_titleController, editable:  true),
             ),
             dateInputField(_dateController, context, editable: true),
             textBeforeTextField("Time"),
             timeInputFields(_fromTimeController, _toTimeController, context, editable: true),
-            descriptionTextField(context, _descriptionController, editable: widget.event?.isCustom ?? true),
-            if (widget.event?.isCustom ?? true)
-              Padding(
-                padding: const EdgeInsets.fromLTRB(40, 5, 40, 5),
-                child: CategoryDropdown(
-                  onCategoryChanged: _onCategoryChanged,
-                  selectedCategory: _selectedCategory,
-                ),
+            descriptionTextField(context, _descriptionController, editable:  true),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(40, 5, 40, 5),
+              child: CategoryDropdown(
+                onCategoryChanged: _onCategoryChanged,
+                selectedCategory: _selectedCategory,
               ),
+            ),
             Padding(
               padding: const EdgeInsets.fromLTRB(60, 30, 60, 0),
               child: SizedBox(

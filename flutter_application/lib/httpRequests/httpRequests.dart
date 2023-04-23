@@ -242,10 +242,10 @@ Future<int> sendKeepAlive(String username, String checksum) async {
 Future<http.Response> _sendJsonRequest(Map<String, dynamic> requestBody) async {
   HttpClient client = HttpClient();
   String inputData = json.encode(requestBody);
-  client.connectionTimeout = Duration(seconds: 30);
+  client.connectionTimeout = const Duration(seconds: 30);
 
   try {
-    HttpClientRequest request = await client.postUrl(Uri.parse("http://10.0.2.2:80"));
+    HttpClientRequest request = await client.postUrl(Uri.parse("http://10.0.2.2:4400"));
     request.headers.contentType = ContentType("application", "json", charset: "utf-8");
     request.headers.contentLength = inputData.length;
 
