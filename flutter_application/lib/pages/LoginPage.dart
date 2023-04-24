@@ -32,6 +32,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
   final TextEditingController _passwordController = TextEditingController();
   final websiteUrl = 'https://sea3212.wixsite.com/whatsatcalu';
   final websiteAboutUrl = 'https://sea3212.wixsite.com/whatsatcalu/about';
+  final websiteHelpUrl = 'https://sea3212.wixsite.com/whatsatcalu/post/user-manual';
   Color mainColor = const Color(0xff083c74);
 
   //This function will change the state of password visibility
@@ -118,7 +119,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
                     children: [
                       buildIconButtonWithText(Icons.web, "WEBSITE", websiteUrl),
                       buildIconButtonWithText(Icons.announcement_rounded, "ABOUT", websiteAboutUrl),
-                      buildIconButtonWithText(Icons.question_mark, "HELP", websiteUrl)
+                      buildIconButtonWithText(Icons.question_mark, "HELP", websiteHelpUrl)
                     ],
                   ),
                 ],
