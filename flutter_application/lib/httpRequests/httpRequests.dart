@@ -243,9 +243,10 @@ Future<http.Response> _sendJsonRequest(Map<String, dynamic> requestBody) async {
   HttpClient client = HttpClient();
   String inputData = json.encode(requestBody);
   client.connectionTimeout = const Duration(seconds: 30);
+  String ip = "http://10.0.2.2:4400"; //change this ip
 
   try {
-    HttpClientRequest request = await client.postUrl(Uri.parse("http://10.0.2.2:4400"));
+    HttpClientRequest request = await client.postUrl(Uri.parse(ip));
     request.headers.contentType = ContentType("application", "json", charset: "utf-8");
     request.headers.contentLength = inputData.length;
 
